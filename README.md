@@ -58,13 +58,17 @@ Python · Streamlit · MySQL · MongoDB · pandas
 | Leticia | Testing + Database Comparison/Performance |
 
 ## Repo Structure
-data/cleaned/   → cleaned + synthetic CSVs (Abinaya) 
-notebooks/      → data processing & analysis (Abinaya, Leticia)
-mysql/          → schema, seed, CRUD + advanced queries (Xue E)
-mongodb/        → schema, seed, CRUD + aggregation pipelines (Chu Ying)
-app/            → Streamlit UI + data access layer (Minal)
-tests/          → CRUD tests, performance benchmarks (Leticia)
-docs/           → report, architecture diagram, ERD, document model
+```
+INF2003-MovieDB/
+├── data/
+│   └── cleaned/     # cleaned + synthetic CSVs (Abinaya)
+├── notebooks/       # data processing & analysis (Abinaya, Leticia)
+├── mysql/           # schema, seed, CRUD + advanced queries (Xue E)
+├── mongodb/         # schema, seed, CRUD + aggregation pipelines (Chu Ying)
+├── app/             # Streamlit UI + data access layer (Minal)
+├── tests/           # CRUD tests, performance benchmarks (Leticia)
+└── docs/            # report, architecture diagram, ERD, document model
+```
 
 ## Team Rules
 1. Work on your own branch, then open a Pull Request into `main`.
