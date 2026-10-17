@@ -21,13 +21,22 @@ Streamlit (frontend) → Python application layer → MySQL | MongoDB
   without changing frontend code.
 - All queries are parameterised to prevent SQL injection.
 
-## Data
-- [IMDb Dataset of Top 1000 Movies and TV Shows (Kaggle)](https://www.kaggle.com/datasets/harshitshankhdhar/imdb-dataset-of-top-1000-movies-and-tv-shows):
-  title, release year, genre, runtime, description, director, cast
-- Cleaned and preprocessed, with unique movie IDs generated and genres extracted
-  into separate `genres` and `movie_genres` datasets
-- **Synthetic data:** users, reviews (rating + written feedback) and watchlists
-- The same underlying data is used for both database implementations
+## Data and Preprocessing
+The project uses the IMDb Dataset of Top 1000 Movies and TV Shows on Kaggle as its source for movie information. The dataset was cleaned and transformed using Python and pandas, with unique movie IDs generated and genres normalised into separate datasets.
+
+- [IMDb Dataset of Top 1000 Movies and TV Shows (Kaggle)](https://www.kaggle.com/datasets/harshitshankhdhar/imdb-dataset-of-top-1000-movies-and-tv-shows): source for movie titles, release years, genres, runtime, descriptions, directors, cast and other movie information.
+- **`movies.csv`**: cleaned movie information, including unique movie IDs, poster URLs, titles, release years, certificates, durations, genres, descriptions, directors, cast and IMDb vote counts.
+- **`genres.csv`**: unique genres with generated genre IDs.
+- **`movie_genres.csv`**: relationships between movies and genres, linking `movie_id` and `genre_id`.
+- **`users.csv`**: synthetic user account data.
+- **`reviews.csv`**: synthetic user reviews, individual ratings and timestamps.
+- **`watchlists.csv`**: synthetic user watchlist entries.
+
+The movie dataset was cleaned and preprocessed to handle missing values, standardise data types and generate unique movie IDs. Genres were extracted into separate `genres` and `movie_genres` datasets to support relational database design.
+
+Synthetic users, reviews and watchlists were generated for application testing and demonstration. Individual user ratings are stored in `reviews.csv`, while average movie ratings can be calculated from the submitted reviews.
+
+The same six datasets are used as the basis for both MySQL and MongoDB implementations, enabling a comparison of their data management, querying capabilities and performance.
 
 ## Database Design
 | | MySQL | MongoDB |
