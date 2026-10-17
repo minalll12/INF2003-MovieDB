@@ -1,0 +1,751 @@
+review_id,user_id,movie_id,rating,review_text,created_at,updated_at
+R0001,U008,M0435,7.8,Entertaining from start to finish.,2025-07-10 02:03:51,2025-07-14 02:03:51
+R0002,U003,M0006,6.8,A thoughtful film that stayed with me afterwards.,2026-07-21 14:12:48,2026-08-13 14:12:48
+R0003,U011,M0696,9.5,Entertaining from start to finish.,2026-09-21 22:36:01,2026-09-21 22:36:01
+R0004,U029,M0269,4.4,Entertaining from start to finish.,2025-06-24 20:40:47,2025-07-07 20:40:47
+R0005,U020,M0715,10.0,Entertaining from start to finish.,2025-01-19 01:55:59,2025-01-24 01:55:59
+R0006,U013,M0639,9.1,A visually impressive film with an engaging plot.,2026-04-21 05:16:16,2026-05-19 05:16:16
+R0007,U011,M0297,6.5,"The pacing was uneven, but the characters were compelling.",2025-12-01 05:34:17,2025-12-11 05:34:17
+R0008,U020,M0350,6.4,A solid film with a few flaws.,2025-06-09 13:00:15,2025-06-25 13:00:15
+R0009,U030,M0418,5.2,A thoughtful film that stayed with me afterwards.,2026-06-29 17:11:29,2026-07-02 17:11:29
+R0010,U019,M0563,10.0,A thoughtful film that stayed with me afterwards.,2026-03-04 20:45:37,2026-03-10 20:45:37
+R0011,U009,M0683,7.2,Excellent direction and a satisfying ending.,2024-06-27 00:19:28,2024-07-22 00:19:28
+R0012,U029,M0434,7.2,Entertaining from start to finish.,2026-05-25 12:11:46,2026-06-22 12:11:46
+R0013,U011,M0113,5.2,"The pacing was uneven, but the characters were compelling.",2025-12-19 13:09:18,2026-01-07 13:09:18
+R0014,U014,M0780,8.0,A memorable story with strong performances.,2025-05-12 01:34:15,2025-05-23 01:34:15
+R0015,U016,M0047,7.6,"The pacing was uneven, but the characters were compelling.",2026-07-03 03:00:22,2026-07-20 03:00:22
+R0016,U030,M0924,7.3,"I enjoyed the performances, although the story felt familiar.",2026-04-01 18:07:25,2026-04-18 18:07:25
+R0017,U012,M0608,4.9,Excellent direction and a satisfying ending.,2024-07-06 08:04:08,2024-07-14 08:04:08
+R0018,U021,M0344,9.5,A thoughtful film that stayed with me afterwards.,2026-04-07 12:44:47,2026-05-05 12:44:47
+R0019,U023,M0364,6.6,"The pacing was uneven, but the characters were compelling.",2024-12-22 09:48:44,2025-01-06 09:48:44
+R0020,U030,M0697,6.0,"I enjoyed the performances, although the story felt familiar.",2024-02-24 13:41:19,2024-03-20 13:41:19
+R0021,U026,M0119,8.9,"I enjoyed the performances, although the story felt familiar.",2026-05-19 15:31:52,2026-05-24 15:31:52
+R0022,U012,M0700,7.1,A memorable story with strong performances.,2024-05-22 17:02:13,2024-06-08 17:02:13
+R0023,U024,M0364,3.8,The soundtrack and cinematography were outstanding.,2024-07-27 08:29:35,2024-08-03 08:29:35
+R0024,U002,M0115,8.2,"I enjoyed the performances, although the story felt familiar.",2025-08-27 17:13:15,2025-09-21 17:13:15
+R0025,U013,M0550,8.7,A visually impressive film with an engaging plot.,2024-11-16 08:01:28,2024-11-30 08:01:28
+R0026,U013,M0816,6.8,"Some scenes felt slow, but the overall experience was worthwhile.",2026-08-02 19:58:24,2026-08-23 19:58:24
+R0027,U025,M0612,8.5,Excellent direction and a satisfying ending.,2025-01-24 03:19:30,2025-02-15 03:19:30
+R0028,U019,M0816,7.2,A good rewatch with plenty of memorable moments.,2026-07-07 02:26:51,2026-07-25 02:26:51
+R0029,U029,M0763,5.3,A memorable story with strong performances.,2024-04-27 05:01:09,2024-05-22 05:01:09
+R0030,U028,M0025,6.6,"The pacing was uneven, but the characters were compelling.",2026-03-13 21:31:33,2026-03-31 21:31:33
+R0031,U015,M0316,9.6,A solid film with a few flaws.,2026-09-10 01:37:41,2026-09-19 01:37:41
+R0032,U015,M0792,6.2,A solid film with a few flaws.,2025-02-17 10:06:05,2025-02-27 10:06:05
+R0033,U019,M0690,7.2,Excellent direction and a satisfying ending.,2026-07-31 04:34:43,2026-08-18 04:34:43
+R0034,U006,M0543,8.9,A solid film with a few flaws.,2026-05-10 18:08:46,2026-05-23 18:08:46
+R0035,U003,M0764,6.1,Excellent direction and a satisfying ending.,2026-08-09 03:44:10,2026-08-16 03:44:10
+R0036,U017,M0969,7.7,"Some scenes felt slow, but the overall experience was worthwhile.",2024-03-31 11:18:29,2024-04-25 11:18:29
+R0037,U018,M0639,8.9,"I enjoyed the performances, although the story felt familiar.",2026-07-14 02:59:29,2026-07-17 02:59:29
+R0038,U023,M0031,7.1,Excellent direction and a satisfying ending.,2025-04-07 23:38:45,2025-04-27 23:38:45
+R0039,U006,M0288,3.7,The soundtrack and cinematography were outstanding.,2024-12-16 09:17:34,2024-12-31 09:17:34
+R0040,U018,M0747,6.6,The soundtrack and cinematography were outstanding.,2024-01-21 16:41:03,2024-02-07 16:41:03
+R0041,U007,M0002,9.7,A visually impressive film with an engaging plot.,2025-01-26 08:12:44,2025-01-26 08:12:44
+R0042,U002,M0030,9.0,Excellent direction and a satisfying ending.,2024-10-12 13:34:44,2024-10-13 13:34:44
+R0043,U015,M0129,7.4,"I enjoyed the performances, although the story felt familiar.",2025-04-28 15:45:51,2025-05-23 15:45:51
+R0044,U021,M0940,6.5,"I enjoyed the performances, although the story felt familiar.",2024-11-17 17:45:00,2024-11-20 17:45:00
+R0045,U008,M0836,8.9,Excellent direction and a satisfying ending.,2024-04-12 01:17:59,2024-04-19 01:17:59
+R0046,U021,M0129,8.7,"The characters were interesting, but the ending could have been stronger.",2025-09-03 16:48:25,2025-09-15 16:48:25
+R0047,U027,M0724,7.8,Entertaining from start to finish.,2024-08-17 15:33:04,2024-09-03 15:33:04
+R0048,U012,M0932,4.4,A memorable story with strong performances.,2025-09-24 23:56:58,2025-09-27 23:56:58
+R0049,U009,M0121,7.7,A solid film with a few flaws.,2026-07-05 00:24:51,2026-07-24 00:24:51
+R0050,U019,M0573,3.9,"The characters were interesting, but the ending could have been stronger.",2026-05-21 17:55:02,2026-06-10 17:55:02
+R0051,U003,M0468,7.4,The soundtrack and cinematography were outstanding.,2024-02-04 01:35:36,2024-03-02 01:35:36
+R0052,U013,M0393,6.6,Excellent direction and a satisfying ending.,2024-04-13 18:41:18,2024-04-21 18:41:18
+R0053,U012,M0772,5.6,The soundtrack and cinematography were outstanding.,2026-04-20 18:29:25,2026-05-06 18:29:25
+R0054,U002,M0572,9.0,A memorable story with strong performances.,2026-06-03 18:59:45,2026-06-20 18:59:45
+R0055,U016,M0581,6.1,"The pacing was uneven, but the characters were compelling.",2025-11-16 04:48:24,2025-12-04 04:48:24
+R0056,U008,M0582,6.7,A solid film with a few flaws.,2026-01-18 18:35:09,2026-02-08 18:35:09
+R0057,U007,M0515,7.7,Entertaining from start to finish.,2024-12-18 21:51:13,2025-01-15 21:51:13
+R0058,U007,M0317,5.6,"I enjoyed the performances, although the story felt familiar.",2024-05-19 03:24:14,2024-05-23 03:24:14
+R0059,U026,M0733,7.0,A thoughtful film that stayed with me afterwards.,2026-03-26 01:48:17,2026-04-09 01:48:17
+R0060,U007,M0423,10.0,"The characters were interesting, but the ending could have been stronger.",2024-11-13 18:37:43,2024-11-16 18:37:43
+R0061,U009,M0410,4.9,A thoughtful film that stayed with me afterwards.,2024-02-11 20:39:30,2024-02-15 20:39:30
+R0062,U003,M0807,8.1,"The characters were interesting, but the ending could have been stronger.",2026-09-13 19:42:34,2026-09-13 19:42:34
+R0063,U017,M0388,7.2,Excellent direction and a satisfying ending.,2026-07-15 16:27:26,2026-08-11 16:27:26
+R0064,U017,M0424,10.0,Excellent direction and a satisfying ending.,2024-10-26 11:56:23,2024-11-09 11:56:23
+R0065,U010,M0731,7.7,A thoughtful film that stayed with me afterwards.,2024-03-31 19:25:29,2024-04-27 19:25:29
+R0066,U005,M0561,9.5,A solid film with a few flaws.,2026-02-12 23:27:51,2026-03-11 23:27:51
+R0067,U024,M0611,7.6,A solid film with a few flaws.,2024-10-03 00:17:52,2024-10-20 00:17:52
+R0068,U010,M0117,8.9,A thoughtful film that stayed with me afterwards.,2024-10-09 15:18:30,2024-11-02 15:18:30
+R0069,U027,M0921,8.1,A visually impressive film with an engaging plot.,2025-04-25 23:24:26,2025-04-30 23:24:26
+R0070,U028,M0665,7.7,A good rewatch with plenty of memorable moments.,2025-06-14 04:28:20,2025-06-28 04:28:20
+R0071,U005,M0481,8.6,Entertaining from start to finish.,2024-01-19 14:32:36,2024-01-22 14:32:36
+R0072,U003,M0877,6.7,Excellent direction and a satisfying ending.,2026-02-10 00:40:32,2026-03-03 00:40:32
+R0073,U005,M0074,7.9,A thoughtful film that stayed with me afterwards.,2026-05-21 15:53:10,2026-06-03 15:53:10
+R0074,U012,M0220,6.5,The soundtrack and cinematography were outstanding.,2024-05-28 08:24:25,2024-06-22 08:24:25
+R0075,U013,M0941,6.4,A visually impressive film with an engaging plot.,2024-12-23 14:10:06,2025-01-14 14:10:06
+R0076,U021,M0961,6.7,Excellent direction and a satisfying ending.,2024-10-14 06:15:58,2024-11-04 06:15:58
+R0077,U025,M0642,6.2,The soundtrack and cinematography were outstanding.,2025-12-11 14:06:22,2025-12-30 14:06:22
+R0078,U004,M0954,7.3,A solid film with a few flaws.,2024-01-01 03:11:04,2024-01-26 03:11:04
+R0079,U008,M0968,6.8,A good rewatch with plenty of memorable moments.,2026-09-30 01:00:23,2026-09-30 01:00:23
+R0080,U015,M0004,5.0,"The characters were interesting, but the ending could have been stronger.",2024-04-25 22:34:03,2024-04-28 22:34:03
+R0081,U020,M0639,10.0,"Some scenes felt slow, but the overall experience was worthwhile.",2025-04-30 16:53:12,2025-05-15 16:53:12
+R0082,U025,M0297,4.5,A thoughtful film that stayed with me afterwards.,2025-10-05 08:09:47,2025-11-03 08:09:47
+R0083,U005,M0998,3.9,A solid film with a few flaws.,2026-07-15 20:17:30,2026-07-22 20:17:30
+R0084,U003,M0612,6.5,"I enjoyed the performances, although the story felt familiar.",2024-02-13 15:41:15,2024-02-19 15:41:15
+R0085,U017,M0407,10.0,The soundtrack and cinematography were outstanding.,2025-08-19 10:46:32,2025-09-04 10:46:32
+R0086,U006,M0278,7.1,A visually impressive film with an engaging plot.,2025-06-12 18:32:13,2025-06-30 18:32:13
+R0087,U012,M0883,7.7,"The pacing was uneven, but the characters were compelling.",2025-05-09 22:47:05,2025-06-02 22:47:05
+R0088,U013,M0439,5.3,A solid film with a few flaws.,2024-05-26 12:02:34,2024-06-20 12:02:34
+R0089,U016,M0140,9.3,A thoughtful film that stayed with me afterwards.,2024-07-04 12:41:29,2024-07-05 12:41:29
+R0090,U001,M0604,10.0,"The pacing was uneven, but the characters were compelling.",2025-01-31 16:01:39,2025-02-04 16:01:39
+R0091,U028,M0447,7.8,Entertaining from start to finish.,2025-06-07 01:56:59,2025-06-16 01:56:59
+R0092,U015,M0115,7.2,Excellent direction and a satisfying ending.,2025-05-09 17:48:09,2025-05-12 17:48:09
+R0093,U023,M0872,8.1,Excellent direction and a satisfying ending.,2026-07-15 13:45:27,2026-08-14 13:45:27
+R0094,U008,M0550,4.6,A visually impressive film with an engaging plot.,2024-01-17 09:45:56,2024-02-02 09:45:56
+R0095,U021,M0237,8.0,A memorable story with strong performances.,2024-11-06 18:20:43,2024-11-17 18:20:43
+R0096,U010,M0597,7.0,"The characters were interesting, but the ending could have been stronger.",2026-09-01 07:35:48,2026-09-08 07:35:48
+R0097,U002,M0344,6.0,A thoughtful film that stayed with me afterwards.,2024-06-15 06:00:10,2024-07-08 06:00:10
+R0098,U027,M0137,5.6,A memorable story with strong performances.,2024-08-10 06:07:26,2024-08-20 06:07:26
+R0099,U005,M0610,6.0,The soundtrack and cinematography were outstanding.,2025-06-06 03:29:54,2025-06-06 03:29:54
+R0100,U024,M0252,6.1,Entertaining from start to finish.,2024-09-06 07:51:05,2024-09-08 07:51:05
+R0101,U027,M0549,5.8,"I enjoyed the performances, although the story felt familiar.",2024-01-17 07:39:30,2024-01-29 07:39:30
+R0102,U013,M0056,3.8,"I enjoyed the performances, although the story felt familiar.",2024-03-05 16:29:23,2024-03-30 16:29:23
+R0103,U006,M0220,8.2,Excellent direction and a satisfying ending.,2025-04-12 18:43:17,2025-05-09 18:43:17
+R0104,U018,M0563,5.8,Entertaining from start to finish.,2024-08-31 15:53:05,2024-08-31 15:53:05
+R0105,U016,M0665,9.0,A good rewatch with plenty of memorable moments.,2025-09-02 14:16:41,2025-09-24 14:16:41
+R0106,U024,M0089,10.0,"The characters were interesting, but the ending could have been stronger.",2025-09-28 17:59:58,2025-10-12 17:59:58
+R0107,U027,M0780,7.5,"The pacing was uneven, but the characters were compelling.",2025-10-04 17:14:47,2025-10-28 17:14:47
+R0108,U010,M0214,6.8,The soundtrack and cinematography were outstanding.,2026-02-05 03:08:34,2026-02-10 03:08:34
+R0109,U022,M0667,5.1,Entertaining from start to finish.,2026-08-01 22:04:20,2026-08-29 22:04:20
+R0110,U026,M0702,7.8,"I enjoyed the performances, although the story felt familiar.",2025-11-01 22:00:13,2025-11-09 22:00:13
+R0111,U018,M0611,5.8,"The characters were interesting, but the ending could have been stronger.",2024-11-11 21:25:33,2024-11-30 21:25:33
+R0112,U021,M0152,7.7,A good rewatch with plenty of memorable moments.,2026-05-09 07:52:36,2026-05-16 07:52:36
+R0113,U029,M0362,8.1,Excellent direction and a satisfying ending.,2024-05-11 05:04:19,2024-05-22 05:04:19
+R0114,U003,M0062,6.8,Excellent direction and a satisfying ending.,2025-02-22 04:27:39,2025-03-13 04:27:39
+R0115,U014,M0578,5.3,A memorable story with strong performances.,2024-06-08 22:16:47,2024-06-29 22:16:47
+R0116,U020,M0587,7.8,A thoughtful film that stayed with me afterwards.,2025-01-31 09:13:30,2025-02-08 09:13:30
+R0117,U002,M0744,5.6,A visually impressive film with an engaging plot.,2025-02-27 17:51:04,2025-03-13 17:51:04
+R0118,U009,M0918,10.0,A good rewatch with plenty of memorable moments.,2025-08-17 15:34:50,2025-09-01 15:34:50
+R0119,U009,M0641,4.4,"The pacing was uneven, but the characters were compelling.",2024-05-23 08:28:34,2024-06-06 08:28:34
+R0120,U016,M0206,6.1,A memorable story with strong performances.,2024-03-09 09:10:00,2024-04-04 09:10:00
+R0121,U010,M0924,5.2,A thoughtful film that stayed with me afterwards.,2025-03-27 06:16:34,2025-04-20 06:16:34
+R0122,U001,M0078,9.4,"I enjoyed the performances, although the story felt familiar.",2026-08-04 22:56:22,2026-08-17 22:56:22
+R0123,U013,M0733,6.8,Excellent direction and a satisfying ending.,2025-01-03 06:17:22,2025-01-22 06:17:22
+R0124,U004,M0496,7.7,"The characters were interesting, but the ending could have been stronger.",2025-03-29 19:26:55,2025-04-11 19:26:55
+R0125,U023,M0103,7.1,The soundtrack and cinematography were outstanding.,2024-03-13 12:59:23,2024-04-02 12:59:23
+R0126,U014,M0646,7.2,A memorable story with strong performances.,2024-06-15 20:29:45,2024-07-14 20:29:45
+R0127,U017,M0735,6.4,Entertaining from start to finish.,2024-12-19 04:01:28,2025-01-12 04:01:28
+R0128,U018,M0915,7.5,A solid film with a few flaws.,2024-12-09 04:00:27,2024-12-20 04:00:27
+R0129,U023,M0257,6.2,A thoughtful film that stayed with me afterwards.,2026-07-29 05:01:26,2026-08-25 05:01:26
+R0130,U014,M0886,9.0,A visually impressive film with an engaging plot.,2026-01-04 22:09:53,2026-01-26 22:09:53
+R0131,U003,M0887,7.9,"The characters were interesting, but the ending could have been stronger.",2026-06-20 17:04:33,2026-07-13 17:04:33
+R0132,U024,M0717,7.9,A thoughtful film that stayed with me afterwards.,2025-01-01 03:41:37,2025-01-31 03:41:37
+R0133,U012,M0115,3.5,"The characters were interesting, but the ending could have been stronger.",2025-02-19 20:10:48,2025-02-27 20:10:48
+R0134,U022,M0729,5.8,"The pacing was uneven, but the characters were compelling.",2024-02-21 23:58:58,2024-03-13 23:58:58
+R0135,U017,M0015,9.8,"The pacing was uneven, but the characters were compelling.",2024-08-11 09:18:17,2024-09-09 09:18:17
+R0136,U018,M0980,4.7,A solid film with a few flaws.,2024-12-02 12:53:52,2024-12-24 12:53:52
+R0137,U019,M0269,5.0,"I enjoyed the performances, although the story felt familiar.",2024-02-12 05:10:10,2024-02-23 05:10:10
+R0138,U020,M0440,8.9,A visually impressive film with an engaging plot.,2024-09-28 21:26:53,2024-10-27 21:26:53
+R0139,U028,M0124,8.0,A thoughtful film that stayed with me afterwards.,2025-02-01 14:18:09,2025-03-01 14:18:09
+R0140,U030,M0433,8.8,A thoughtful film that stayed with me afterwards.,2025-08-23 07:18:00,2025-09-09 07:18:00
+R0141,U007,M0030,7.7,A good rewatch with plenty of memorable moments.,2026-01-11 17:52:16,2026-02-06 17:52:16
+R0142,U023,M0673,8.4,Entertaining from start to finish.,2026-01-18 03:03:07,2026-02-03 03:03:07
+R0143,U019,M0128,8.8,"Some scenes felt slow, but the overall experience was worthwhile.",2025-11-27 03:27:29,2025-12-23 03:27:29
+R0144,U001,M0709,9.3,A memorable story with strong performances.,2025-08-06 14:39:22,2025-08-25 14:39:22
+R0145,U009,M0863,6.3,A visually impressive film with an engaging plot.,2024-06-03 09:50:57,2024-06-26 09:50:57
+R0146,U001,M0314,9.2,"Some scenes felt slow, but the overall experience was worthwhile.",2024-10-21 20:03:17,2024-10-24 20:03:17
+R0147,U001,M0643,10.0,A solid film with a few flaws.,2024-03-07 12:54:22,2024-03-12 12:54:22
+R0148,U013,M0728,5.9,A memorable story with strong performances.,2024-04-09 09:46:33,2024-04-28 09:46:33
+R0149,U001,M0015,6.7,"I enjoyed the performances, although the story felt familiar.",2026-09-16 04:09:10,2026-09-16 04:09:10
+R0150,U019,M0521,7.1,The soundtrack and cinematography were outstanding.,2024-02-15 05:36:08,2024-02-24 05:36:08
+R0151,U026,M0305,7.2,"The characters were interesting, but the ending could have been stronger.",2026-01-20 01:12:38,2026-01-23 01:12:38
+R0152,U004,M0769,8.1,A solid film with a few flaws.,2025-09-06 01:58:33,2025-09-28 01:58:33
+R0153,U011,M0462,6.5,"I enjoyed the performances, although the story felt familiar.",2026-05-19 17:52:49,2026-06-07 17:52:49
+R0154,U007,M0668,7.9,A visually impressive film with an engaging plot.,2024-05-11 07:21:40,2024-06-07 07:21:40
+R0155,U012,M0042,3.9,The soundtrack and cinematography were outstanding.,2024-09-03 17:48:38,2024-10-03 17:48:38
+R0156,U004,M0968,7.5,Excellent direction and a satisfying ending.,2024-10-21 19:05:33,2024-11-18 19:05:33
+R0157,U022,M0980,9.0,A solid film with a few flaws.,2024-04-04 09:04:36,2024-04-07 09:04:36
+R0158,U001,M0855,6.4,"The characters were interesting, but the ending could have been stronger.",2025-12-07 03:43:10,2025-12-29 03:43:10
+R0159,U015,M0140,9.5,Excellent direction and a satisfying ending.,2024-08-07 00:38:56,2024-08-28 00:38:56
+R0160,U007,M0718,5.3,A memorable story with strong performances.,2024-02-29 07:39:56,2024-03-11 07:39:56
+R0161,U011,M0129,5.3,A thoughtful film that stayed with me afterwards.,2026-04-28 09:12:32,2026-05-15 09:12:32
+R0162,U018,M0192,10.0,The soundtrack and cinematography were outstanding.,2026-04-12 08:42:38,2026-05-05 08:42:38
+R0163,U021,M0510,5.7,"The pacing was uneven, but the characters were compelling.",2026-05-20 17:04:30,2026-05-28 17:04:30
+R0164,U030,M0369,5.6,"The characters were interesting, but the ending could have been stronger.",2026-06-15 12:30:58,2026-06-21 12:30:58
+R0165,U001,M0407,7.6,A visually impressive film with an engaging plot.,2024-07-27 20:02:24,2024-08-07 20:02:24
+R0166,U026,M0169,8.2,A visually impressive film with an engaging plot.,2025-06-06 09:53:59,2025-06-06 09:53:59
+R0167,U024,M0829,8.7,Excellent direction and a satisfying ending.,2026-03-25 14:24:53,2026-04-10 14:24:53
+R0168,U023,M0788,6.3,"The characters were interesting, but the ending could have been stronger.",2025-08-03 11:00:22,2025-08-07 11:00:22
+R0169,U004,M0685,7.2,Excellent direction and a satisfying ending.,2025-11-10 01:46:39,2025-11-24 01:46:39
+R0170,U004,M0186,4.8,"Some scenes felt slow, but the overall experience was worthwhile.",2024-12-09 21:41:33,2024-12-22 21:41:33
+R0171,U003,M0214,5.8,A good rewatch with plenty of memorable moments.,2026-06-12 21:33:23,2026-07-12 21:33:23
+R0172,U028,M0577,8.3,Entertaining from start to finish.,2024-07-19 00:00:17,2024-07-27 00:00:17
+R0173,U001,M0373,5.4,The soundtrack and cinematography were outstanding.,2024-01-20 18:29:28,2024-02-15 18:29:28
+R0174,U004,M0072,10.0,The soundtrack and cinematography were outstanding.,2024-10-07 07:42:56,2024-11-03 07:42:56
+R0175,U015,M0921,10.0,Entertaining from start to finish.,2025-04-23 07:08:49,2025-04-29 07:08:49
+R0176,U022,M0119,4.5,"The characters were interesting, but the ending could have been stronger.",2026-07-19 15:59:07,2026-08-05 15:59:07
+R0177,U023,M0409,2.9,A memorable story with strong performances.,2025-04-07 01:39:22,2025-04-26 01:39:22
+R0178,U025,M0567,7.7,"The pacing was uneven, but the characters were compelling.",2025-03-04 16:28:40,2025-03-25 16:28:40
+R0179,U018,M0395,9.4,A thoughtful film that stayed with me afterwards.,2024-01-16 23:02:39,2024-01-28 23:02:39
+R0180,U008,M0683,10.0,"I enjoyed the performances, although the story felt familiar.",2024-07-14 13:19:45,2024-07-14 13:19:45
+R0181,U014,M0398,7.5,Excellent direction and a satisfying ending.,2024-12-13 13:20:55,2024-12-14 13:20:55
+R0182,U004,M0709,10.0,A solid film with a few flaws.,2025-01-12 15:32:51,2025-01-25 15:32:51
+R0183,U020,M0559,6.0,A visually impressive film with an engaging plot.,2024-01-19 06:54:42,2024-01-19 06:54:42
+R0184,U030,M0930,10.0,"Some scenes felt slow, but the overall experience was worthwhile.",2026-04-08 13:51:39,2026-04-19 13:51:39
+R0185,U028,M0244,10.0,A visually impressive film with an engaging plot.,2024-03-27 22:01:36,2024-03-27 22:01:36
+R0186,U008,M0371,7.9,A good rewatch with plenty of memorable moments.,2026-06-26 06:19:38,2026-07-03 06:19:38
+R0187,U014,M0253,8.9,A memorable story with strong performances.,2024-12-17 10:12:58,2025-01-10 10:12:58
+R0188,U025,M0131,7.8,"The pacing was uneven, but the characters were compelling.",2026-02-12 20:04:37,2026-02-19 20:04:37
+R0189,U019,M0658,6.7,A solid film with a few flaws.,2025-09-28 21:30:05,2025-10-27 21:30:05
+R0190,U017,M0711,7.2,"The characters were interesting, but the ending could have been stronger.",2026-02-02 09:06:16,2026-02-02 09:06:16
+R0191,U003,M0182,9.6,A solid film with a few flaws.,2024-04-30 23:05:57,2024-05-11 23:05:57
+R0192,U014,M0730,5.6,"The characters were interesting, but the ending could have been stronger.",2024-03-27 20:05:38,2024-04-05 20:05:38
+R0193,U023,M0264,3.4,Excellent direction and a satisfying ending.,2026-05-12 11:10:45,2026-05-18 11:10:45
+R0194,U017,M0108,4.9,"Some scenes felt slow, but the overall experience was worthwhile.",2024-10-04 09:07:53,2024-10-19 09:07:53
+R0195,U030,M0283,10.0,Excellent direction and a satisfying ending.,2026-05-05 12:09:52,2026-05-25 12:09:52
+R0196,U005,M0144,10.0,"The characters were interesting, but the ending could have been stronger.",2026-05-15 02:02:15,2026-06-05 02:02:15
+R0197,U005,M0432,8.9,"Some scenes felt slow, but the overall experience was worthwhile.",2024-11-19 09:47:33,2024-11-26 09:47:33
+R0198,U001,M0989,7.4,"The characters were interesting, but the ending could have been stronger.",2024-04-01 22:28:48,2024-04-16 22:28:48
+R0199,U022,M0145,5.9,"Some scenes felt slow, but the overall experience was worthwhile.",2026-01-20 23:07:46,2026-02-16 23:07:46
+R0200,U005,M0735,6.3,"The characters were interesting, but the ending could have been stronger.",2024-08-15 16:25:11,2024-09-03 16:25:11
+R0201,U016,M0303,5.6,"Some scenes felt slow, but the overall experience was worthwhile.",2025-12-11 01:13:05,2025-12-24 01:13:05
+R0202,U002,M0510,7.7,A memorable story with strong performances.,2025-01-19 11:55:21,2025-02-18 11:55:21
+R0203,U028,M0562,6.9,A good rewatch with plenty of memorable moments.,2026-09-25 17:15:57,2026-09-25 17:15:57
+R0204,U028,M0923,7.7,A thoughtful film that stayed with me afterwards.,2025-04-29 11:52:20,2025-05-16 11:52:20
+R0205,U015,M0068,7.0,"The pacing was uneven, but the characters were compelling.",2024-07-12 01:45:22,2024-07-13 01:45:22
+R0206,U023,M0700,2.7,Entertaining from start to finish.,2024-08-04 21:30:54,2024-08-05 21:30:54
+R0207,U020,M0220,9.4,A memorable story with strong performances.,2024-03-17 16:28:15,2024-04-16 16:28:15
+R0208,U013,M0453,5.5,A good rewatch with plenty of memorable moments.,2024-05-23 07:04:46,2024-06-08 07:04:46
+R0209,U014,M0321,7.6,Entertaining from start to finish.,2024-04-09 12:28:19,2024-05-08 12:28:19
+R0210,U005,M0503,6.3,Entertaining from start to finish.,2025-04-03 15:20:53,2025-04-11 15:20:53
+R0211,U024,M0162,5.2,"The pacing was uneven, but the characters were compelling.",2026-08-25 12:21:18,2026-09-04 12:21:18
+R0212,U009,M0731,6.7,"The pacing was uneven, but the characters were compelling.",2026-07-25 20:14:30,2026-08-11 20:14:30
+R0213,U009,M0023,7.2,"Some scenes felt slow, but the overall experience was worthwhile.",2026-06-16 07:08:10,2026-06-25 07:08:10
+R0214,U006,M0855,8.5,"I enjoyed the performances, although the story felt familiar.",2026-07-01 15:46:47,2026-07-09 15:46:47
+R0215,U020,M0444,6.6,A thoughtful film that stayed with me afterwards.,2025-02-28 01:23:34,2025-03-14 01:23:34
+R0216,U021,M0356,9.0,A visually impressive film with an engaging plot.,2024-04-20 11:44:22,2024-04-25 11:44:22
+R0217,U017,M0503,9.4,A thoughtful film that stayed with me afterwards.,2024-12-27 22:22:57,2025-01-25 22:22:57
+R0218,U020,M0163,9.7,The soundtrack and cinematography were outstanding.,2024-06-23 18:37:05,2024-07-17 18:37:05
+R0219,U008,M0355,8.3,The soundtrack and cinematography were outstanding.,2026-03-05 12:20:28,2026-03-15 12:20:28
+R0220,U029,M0074,5.0,"Some scenes felt slow, but the overall experience was worthwhile.",2024-07-14 14:23:27,2024-07-17 14:23:27
+R0221,U018,M0816,8.6,A memorable story with strong performances.,2025-02-28 20:25:10,2025-03-05 20:25:10
+R0222,U003,M0425,7.1,"Some scenes felt slow, but the overall experience was worthwhile.",2026-09-26 08:23:49,2026-09-26 08:23:49
+R0223,U016,M0174,10.0,A good rewatch with plenty of memorable moments.,2026-06-25 13:23:27,2026-07-19 13:23:27
+R0224,U007,M0643,8.3,Excellent direction and a satisfying ending.,2025-03-24 05:21:06,2025-03-31 05:21:06
+R0225,U007,M0788,6.2,A solid film with a few flaws.,2025-10-05 10:40:51,2025-10-17 10:40:51
+R0226,U025,M0195,7.2,"Some scenes felt slow, but the overall experience was worthwhile.",2025-05-23 05:52:05,2025-06-11 05:52:05
+R0227,U021,M0220,8.7,A solid film with a few flaws.,2026-01-16 21:16:01,2026-02-01 21:16:01
+R0228,U025,M0393,4.6,"I enjoyed the performances, although the story felt familiar.",2024-08-29 03:06:49,2024-09-18 03:06:49
+R0229,U003,M0200,6.1,A visually impressive film with an engaging plot.,2025-09-07 16:42:12,2025-09-13 16:42:12
+R0230,U011,M0039,7.2,A memorable story with strong performances.,2025-08-18 11:40:19,2025-08-20 11:40:19
+R0231,U004,M0767,5.8,A thoughtful film that stayed with me afterwards.,2025-06-05 12:28:59,2025-06-05 12:28:59
+R0232,U025,M0967,5.1,"Some scenes felt slow, but the overall experience was worthwhile.",2026-05-15 23:01:08,2026-05-16 23:01:08
+R0233,U028,M0056,6.4,Excellent direction and a satisfying ending.,2026-09-01 05:02:14,2026-09-27 05:02:14
+R0234,U021,M0787,7.8,A thoughtful film that stayed with me afterwards.,2025-08-22 20:23:12,2025-09-09 20:23:12
+R0235,U019,M0431,10.0,The soundtrack and cinematography were outstanding.,2026-03-29 11:09:58,2026-04-17 11:09:58
+R0236,U003,M0153,8.1,"I enjoyed the performances, although the story felt familiar.",2026-06-30 04:28:21,2026-07-09 04:28:21
+R0237,U025,M0004,8.3,"The characters were interesting, but the ending could have been stronger.",2025-05-12 03:29:42,2025-06-08 03:29:42
+R0238,U015,M0945,6.6,"The characters were interesting, but the ending could have been stronger.",2024-06-01 22:18:27,2024-06-05 22:18:27
+R0239,U028,M0921,9.0,Excellent direction and a satisfying ending.,2024-01-10 21:38:29,2024-02-07 21:38:29
+R0240,U022,M0945,8.2,A good rewatch with plenty of memorable moments.,2024-04-08 09:54:15,2024-04-20 09:54:15
+R0241,U014,M0769,9.0,"Some scenes felt slow, but the overall experience was worthwhile.",2026-05-20 07:19:21,2026-06-09 07:19:21
+R0242,U023,M0303,9.9,A thoughtful film that stayed with me afterwards.,2025-11-01 07:15:17,2025-11-09 07:15:17
+R0243,U028,M0672,4.4,A visually impressive film with an engaging plot.,2025-05-07 02:47:07,2025-06-01 02:47:07
+R0244,U001,M0650,6.3,A thoughtful film that stayed with me afterwards.,2024-03-05 21:52:02,2024-03-07 21:52:02
+R0245,U012,M0614,5.5,"I enjoyed the performances, although the story felt familiar.",2024-10-04 07:17:58,2024-10-16 07:17:58
+R0246,U025,M0405,5.8,Excellent direction and a satisfying ending.,2025-07-31 05:22:36,2025-08-23 05:22:36
+R0247,U002,M0433,7.2,"The pacing was uneven, but the characters were compelling.",2024-08-01 01:47:55,2024-08-04 01:47:55
+R0248,U017,M0569,6.7,"The pacing was uneven, but the characters were compelling.",2026-07-03 05:43:41,2026-07-28 05:43:41
+R0249,U019,M0032,9.7,A visually impressive film with an engaging plot.,2024-07-26 13:05:54,2024-08-13 13:05:54
+R0250,U028,M0843,6.4,Entertaining from start to finish.,2026-07-12 01:36:32,2026-07-17 01:36:32
+R0251,U019,M0081,5.9,Entertaining from start to finish.,2026-07-21 23:36:27,2026-07-27 23:36:27
+R0252,U027,M0316,7.3,A memorable story with strong performances.,2025-06-09 01:54:49,2025-06-16 01:54:49
+R0253,U019,M0605,8.9,Excellent direction and a satisfying ending.,2026-08-02 10:49:23,2026-08-11 10:49:23
+R0254,U015,M0373,5.8,A visually impressive film with an engaging plot.,2025-02-01 07:04:27,2025-02-28 07:04:27
+R0255,U013,M0403,10.0,A memorable story with strong performances.,2026-01-17 11:29:46,2026-01-20 11:29:46
+R0256,U024,M0730,8.5,Entertaining from start to finish.,2025-04-13 13:35:36,2025-04-14 13:35:36
+R0257,U022,M0567,7.5,"Some scenes felt slow, but the overall experience was worthwhile.",2024-01-10 11:16:37,2024-01-22 11:16:37
+R0258,U022,M0117,6.6,"Some scenes felt slow, but the overall experience was worthwhile.",2024-08-22 15:00:22,2024-09-04 15:00:22
+R0259,U022,M0997,9.8,"The characters were interesting, but the ending could have been stronger.",2025-08-04 18:54:03,2025-08-17 18:54:03
+R0260,U008,M0444,9.3,A memorable story with strong performances.,2024-04-01 17:22:06,2024-04-05 17:22:06
+R0261,U027,M0424,8.1,A good rewatch with plenty of memorable moments.,2026-06-04 12:25:29,2026-06-08 12:25:29
+R0262,U006,M0011,6.2,"The pacing was uneven, but the characters were compelling.",2026-02-16 11:18:43,2026-02-24 11:18:43
+R0263,U017,M0520,6.9,"Some scenes felt slow, but the overall experience was worthwhile.",2024-09-25 18:42:32,2024-09-26 18:42:32
+R0264,U014,M0435,9.2,"The characters were interesting, but the ending could have been stronger.",2024-06-06 18:11:06,2024-06-23 18:11:06
+R0265,U014,M0054,5.3,Excellent direction and a satisfying ending.,2024-06-15 15:16:59,2024-07-05 15:16:59
+R0266,U030,M0162,4.8,A memorable story with strong performances.,2025-03-23 23:36:14,2025-04-03 23:36:14
+R0267,U012,M0287,7.1,"The characters were interesting, but the ending could have been stronger.",2024-11-02 11:40:58,2024-11-18 11:40:58
+R0268,U028,M0374,8.5,The soundtrack and cinematography were outstanding.,2024-11-30 23:54:33,2024-12-15 23:54:33
+R0269,U009,M0953,5.1,A memorable story with strong performances.,2024-03-13 05:19:30,2024-03-21 05:19:30
+R0270,U005,M0063,6.7,Entertaining from start to finish.,2025-12-09 09:55:46,2025-12-28 09:55:46
+R0271,U003,M0856,5.7,Excellent direction and a satisfying ending.,2026-04-23 22:29:47,2026-05-11 22:29:47
+R0272,U023,M0608,6.4,"Some scenes felt slow, but the overall experience was worthwhile.",2025-10-08 17:46:55,2025-10-28 17:46:55
+R0273,U013,M0547,5.9,Entertaining from start to finish.,2025-04-02 05:10:21,2025-04-16 05:10:21
+R0274,U004,M0795,8.0,A thoughtful film that stayed with me afterwards.,2025-07-17 21:49:08,2025-08-09 21:49:08
+R0275,U012,M0914,7.4,"The characters were interesting, but the ending could have been stronger.",2025-01-29 08:39:54,2025-02-12 08:39:54
+R0276,U013,M0146,5.0,A solid film with a few flaws.,2025-08-29 14:10:38,2025-09-21 14:10:38
+R0277,U006,M0510,5.4,A good rewatch with plenty of memorable moments.,2024-07-30 18:42:21,2024-07-30 18:42:21
+R0278,U022,M0520,9.4,A good rewatch with plenty of memorable moments.,2025-05-28 02:38:07,2025-06-13 02:38:07
+R0279,U006,M0316,7.1,The soundtrack and cinematography were outstanding.,2026-08-15 22:06:07,2026-08-21 22:06:07
+R0280,U021,M0959,6.9,The soundtrack and cinematography were outstanding.,2025-06-21 02:04:16,2025-06-21 02:04:16
+R0281,U004,M0550,9.1,A solid film with a few flaws.,2024-08-20 08:42:43,2024-09-01 08:42:43
+R0282,U009,M0345,6.5,A good rewatch with plenty of memorable moments.,2025-07-21 07:18:51,2025-08-05 07:18:51
+R0283,U019,M0442,7.7,"The characters were interesting, but the ending could have been stronger.",2026-07-02 07:06:16,2026-07-21 07:06:16
+R0284,U027,M0637,9.2,A memorable story with strong performances.,2025-02-17 15:36:55,2025-02-24 15:36:55
+R0285,U002,M0642,7.2,A memorable story with strong performances.,2025-05-11 11:34:56,2025-05-20 11:34:56
+R0286,U005,M0342,9.4,"Some scenes felt slow, but the overall experience was worthwhile.",2026-04-18 09:44:00,2026-04-23 09:44:00
+R0287,U009,M0978,8.5,"The characters were interesting, but the ending could have been stronger.",2025-01-19 21:09:01,2025-02-01 21:09:01
+R0288,U008,M0872,8.6,Entertaining from start to finish.,2024-07-28 08:13:45,2024-08-26 08:13:45
+R0289,U022,M0299,5.2,A thoughtful film that stayed with me afterwards.,2024-02-06 22:49:34,2024-02-18 22:49:34
+R0290,U018,M0917,9.9,The soundtrack and cinematography were outstanding.,2025-01-24 06:25:36,2025-02-18 06:25:36
+R0291,U010,M0535,5.7,Entertaining from start to finish.,2024-12-07 02:00:13,2025-01-05 02:00:13
+R0292,U023,M0072,8.2,"The pacing was uneven, but the characters were compelling.",2024-02-05 01:13:56,2024-02-09 01:13:56
+R0293,U003,M0941,8.3,A visually impressive film with an engaging plot.,2025-08-17 17:49:25,2025-09-15 17:49:25
+R0294,U013,M0703,10.0,Entertaining from start to finish.,2026-01-01 16:11:13,2026-01-03 16:11:13
+R0295,U007,M0475,6.8,Entertaining from start to finish.,2024-11-29 19:00:31,2024-12-01 19:00:31
+R0296,U009,M0357,9.5,"Some scenes felt slow, but the overall experience was worthwhile.",2025-07-20 09:00:21,2025-08-06 09:00:21
+R0297,U014,M0263,7.5,A solid film with a few flaws.,2024-11-15 08:38:08,2024-11-29 08:38:08
+R0298,U030,M0677,8.0,The soundtrack and cinematography were outstanding.,2026-01-19 05:44:34,2026-02-03 05:44:34
+R0299,U005,M0713,4.6,A thoughtful film that stayed with me afterwards.,2024-10-07 15:04:23,2024-10-15 15:04:23
+R0300,U018,M0859,8.2,A thoughtful film that stayed with me afterwards.,2025-11-26 11:28:13,2025-12-23 11:28:13
+R0301,U005,M0263,5.6,A solid film with a few flaws.,2024-05-27 08:15:09,2024-06-03 08:15:09
+R0302,U005,M0174,6.5,The soundtrack and cinematography were outstanding.,2024-08-28 04:45:47,2024-09-25 04:45:47
+R0303,U025,M0574,8.6,A memorable story with strong performances.,2025-11-11 09:31:02,2025-12-09 09:31:02
+R0304,U011,M0027,7.5,"I enjoyed the performances, although the story felt familiar.",2025-11-28 18:58:46,2025-12-28 18:58:46
+R0305,U021,M0023,8.5,A solid film with a few flaws.,2024-07-20 18:45:23,2024-07-25 18:45:23
+R0306,U023,M0439,6.5,A visually impressive film with an engaging plot.,2025-09-18 02:15:17,2025-09-29 02:15:17
+R0307,U009,M0075,7.7,A thoughtful film that stayed with me afterwards.,2026-05-26 04:31:48,2026-06-09 04:31:48
+R0308,U023,M0854,6.7,A solid film with a few flaws.,2024-12-12 00:07:54,2025-01-07 00:07:54
+R0309,U027,M0062,9.5,Excellent direction and a satisfying ending.,2024-12-01 05:58:01,2024-12-02 05:58:01
+R0310,U020,M0967,7.8,A visually impressive film with an engaging plot.,2025-12-30 08:02:08,2026-01-29 08:02:08
+R0311,U022,M0614,8.8,A good rewatch with plenty of memorable moments.,2026-09-27 23:55:40,2026-09-27 23:55:40
+R0312,U005,M0039,5.0,A good rewatch with plenty of memorable moments.,2024-11-28 23:32:28,2024-12-03 23:32:28
+R0313,U005,M0940,4.2,"Some scenes felt slow, but the overall experience was worthwhile.",2024-03-05 22:57:53,2024-03-24 22:57:53
+R0314,U014,M0441,8.8,A solid film with a few flaws.,2025-07-02 09:00:36,2025-07-29 09:00:36
+R0315,U011,M0662,5.5,"The pacing was uneven, but the characters were compelling.",2024-03-30 02:47:25,2024-04-10 02:47:25
+R0316,U023,M0516,7.1,A visually impressive film with an engaging plot.,2024-10-29 18:16:04,2024-11-01 18:16:04
+R0317,U003,M0078,8.7,"The pacing was uneven, but the characters were compelling.",2024-01-08 17:51:14,2024-01-12 17:51:14
+R0318,U028,M0769,8.2,A good rewatch with plenty of memorable moments.,2025-10-09 22:46:07,2025-10-28 22:46:07
+R0319,U022,M0409,10.0,Entertaining from start to finish.,2025-09-04 02:58:14,2025-09-06 02:58:14
+R0320,U016,M0437,5.9,"The pacing was uneven, but the characters were compelling.",2024-10-22 09:52:15,2024-10-29 09:52:15
+R0321,U012,M0451,7.9,"The characters were interesting, but the ending could have been stronger.",2024-09-12 08:42:39,2024-09-24 08:42:39
+R0322,U013,M0063,5.3,A good rewatch with plenty of memorable moments.,2026-06-17 22:19:11,2026-06-20 22:19:11
+R0323,U003,M0841,4.8,"I enjoyed the performances, although the story felt familiar.",2024-10-25 08:38:47,2024-11-20 08:38:47
+R0324,U003,M0787,7.6,"I enjoyed the performances, although the story felt familiar.",2024-09-06 10:07:16,2024-09-29 10:07:16
+R0325,U009,M0469,9.1,A visually impressive film with an engaging plot.,2025-05-28 21:23:43,2025-06-20 21:23:43
+R0326,U025,M0461,7.3,"The pacing was uneven, but the characters were compelling.",2026-05-06 03:02:07,2026-05-14 03:02:07
+R0327,U011,M0287,6.9,"I enjoyed the performances, although the story felt familiar.",2026-06-08 06:00:45,2026-07-03 06:00:45
+R0328,U006,M0340,10.0,Excellent direction and a satisfying ending.,2025-06-13 11:43:15,2025-06-15 11:43:15
+R0329,U024,M0645,10.0,A thoughtful film that stayed with me afterwards.,2024-01-11 03:28:04,2024-02-07 03:28:04
+R0330,U007,M0466,4.4,Excellent direction and a satisfying ending.,2025-10-31 07:01:46,2025-11-17 07:01:46
+R0331,U007,M0961,7.7,"Some scenes felt slow, but the overall experience was worthwhile.",2024-05-16 02:10:50,2024-05-25 02:10:50
+R0332,U027,M0968,7.1,The soundtrack and cinematography were outstanding.,2026-09-12 19:20:50,2026-09-12 19:20:50
+R0333,U008,M0329,9.4,"Some scenes felt slow, but the overall experience was worthwhile.",2025-10-29 18:59:34,2025-11-27 18:59:34
+R0334,U012,M0440,6.0,A good rewatch with plenty of memorable moments.,2026-05-28 16:15:02,2026-06-01 16:15:02
+R0335,U027,M0694,7.5,"The characters were interesting, but the ending could have been stronger.",2024-05-11 11:19:05,2024-06-02 11:19:05
+R0336,U022,M0843,7.2,"The characters were interesting, but the ending could have been stronger.",2025-08-02 11:54:24,2025-08-17 11:54:24
+R0337,U001,M0403,8.0,A visually impressive film with an engaging plot.,2026-05-15 19:41:02,2026-06-08 19:41:02
+R0338,U020,M0371,5.2,A visually impressive film with an engaging plot.,2024-10-12 10:59:35,2024-11-07 10:59:35
+R0339,U005,M0466,7.7,A good rewatch with plenty of memorable moments.,2026-03-18 09:02:41,2026-04-01 09:02:41
+R0340,U028,M0747,9.7,A memorable story with strong performances.,2024-02-16 05:07:55,2024-03-13 05:07:55
+R0341,U007,M0023,8.2,"I enjoyed the performances, although the story felt familiar.",2025-06-20 18:26:41,2025-06-28 18:26:41
+R0342,U010,M0417,5.6,The soundtrack and cinematography were outstanding.,2024-03-28 22:19:21,2024-04-19 22:19:21
+R0343,U006,M0318,5.4,"Some scenes felt slow, but the overall experience was worthwhile.",2024-12-28 16:35:57,2025-01-05 16:35:57
+R0344,U022,M0810,8.7,The soundtrack and cinematography were outstanding.,2025-01-23 22:03:27,2025-01-26 22:03:27
+R0345,U008,M0671,7.5,"Some scenes felt slow, but the overall experience was worthwhile.",2024-09-06 21:15:58,2024-09-29 21:15:58
+R0346,U012,M0515,6.9,"I enjoyed the performances, although the story felt familiar.",2026-07-28 07:14:01,2026-07-28 07:14:01
+R0347,U015,M0580,5.0,A memorable story with strong performances.,2025-02-22 07:07:53,2025-03-02 07:07:53
+R0348,U029,M0084,10.0,A visually impressive film with an engaging plot.,2025-07-08 20:08:06,2025-08-01 20:08:06
+R0349,U010,M0346,8.9,A thoughtful film that stayed with me afterwards.,2025-12-01 01:08:28,2025-12-04 01:08:28
+R0350,U004,M0733,9.3,A thoughtful film that stayed with me afterwards.,2026-05-28 07:25:55,2026-06-18 07:25:55
+R0351,U016,M0102,9.5,A visually impressive film with an engaging plot.,2026-06-20 00:22:54,2026-06-21 00:22:54
+R0352,U017,M0486,8.1,A memorable story with strong performances.,2025-03-16 20:18:22,2025-04-08 20:18:22
+R0353,U006,M0915,6.7,"The characters were interesting, but the ending could have been stronger.",2026-03-03 03:10:35,2026-03-16 03:10:35
+R0354,U022,M0160,9.0,"I enjoyed the performances, although the story felt familiar.",2026-08-07 00:28:17,2026-08-24 00:28:17
+R0355,U003,M0855,7.0,Entertaining from start to finish.,2026-02-18 20:44:37,2026-03-12 20:44:37
+R0356,U017,M0658,7.2,Excellent direction and a satisfying ending.,2025-03-27 08:39:16,2025-04-06 08:39:16
+R0357,U021,M0810,3.4,A solid film with a few flaws.,2026-04-21 16:01:00,2026-05-02 16:01:00
+R0358,U007,M0046,6.7,The soundtrack and cinematography were outstanding.,2025-10-18 10:38:49,2025-11-05 10:38:49
+R0359,U001,M0597,7.1,"The pacing was uneven, but the characters were compelling.",2025-08-09 08:23:28,2025-09-01 08:23:28
+R0360,U029,M0038,7.0,The soundtrack and cinematography were outstanding.,2026-05-25 21:48:29,2026-06-01 21:48:29
+R0361,U009,M0914,6.2,A good rewatch with plenty of memorable moments.,2025-11-24 03:49:35,2025-12-10 03:49:35
+R0362,U020,M0681,5.1,A solid film with a few flaws.,2024-09-08 21:36:14,2024-10-08 21:36:14
+R0363,U025,M0283,8.0,A good rewatch with plenty of memorable moments.,2024-08-31 12:30:48,2024-09-06 12:30:48
+R0364,U009,M0783,9.3,A visually impressive film with an engaging plot.,2026-06-07 06:31:11,2026-06-20 06:31:11
+R0365,U014,M0596,6.4,"I enjoyed the performances, although the story felt familiar.",2026-02-01 04:14:44,2026-03-01 04:14:44
+R0366,U002,M0047,6.6,A solid film with a few flaws.,2024-02-05 16:56:27,2024-03-01 16:56:27
+R0367,U025,M0052,9.5,A good rewatch with plenty of memorable moments.,2024-04-28 17:02:00,2024-05-01 17:02:00
+R0368,U022,M0016,5.5,A thoughtful film that stayed with me afterwards.,2025-10-12 20:19:00,2025-10-14 20:19:00
+R0369,U002,M0872,9.7,"The characters were interesting, but the ending could have been stronger.",2025-10-09 00:31:31,2025-10-28 00:31:31
+R0370,U014,M0201,7.5,"Some scenes felt slow, but the overall experience was worthwhile.",2025-07-07 22:17:10,2025-07-29 22:17:10
+R0371,U026,M0945,10.0,Entertaining from start to finish.,2025-10-18 02:55:08,2025-10-30 02:55:08
+R0372,U008,M0616,5.3,A visually impressive film with an engaging plot.,2024-03-12 11:13:58,2024-03-30 11:13:58
+R0373,U009,M0585,5.7,"The pacing was uneven, but the characters were compelling.",2024-04-16 04:02:05,2024-04-18 04:02:05
+R0374,U011,M0234,3.9,A thoughtful film that stayed with me afterwards.,2025-08-06 23:06:06,2025-08-11 23:06:06
+R0375,U023,M0441,8.6,"The characters were interesting, but the ending could have been stronger.",2024-12-31 07:20:18,2025-01-12 07:20:18
+R0376,U027,M0923,10.0,A solid film with a few flaws.,2024-07-09 23:32:11,2024-07-12 23:32:11
+R0377,U023,M0297,5.6,"The characters were interesting, but the ending could have been stronger.",2025-03-19 03:27:08,2025-04-14 03:27:08
+R0378,U014,M0314,5.6,A visually impressive film with an engaging plot.,2026-03-26 02:46:13,2026-04-21 02:46:13
+R0379,U001,M0922,7.2,"The characters were interesting, but the ending could have been stronger.",2025-04-04 09:00:21,2025-04-18 09:00:21
+R0380,U025,M0026,9.7,"The characters were interesting, but the ending could have been stronger.",2025-02-20 18:31:32,2025-02-21 18:31:32
+R0381,U021,M0343,8.4,The soundtrack and cinematography were outstanding.,2025-02-02 01:43:46,2025-02-11 01:43:46
+R0382,U023,M0543,7.0,Entertaining from start to finish.,2025-12-14 01:45:51,2026-01-05 01:45:51
+R0383,U007,M0045,6.8,A good rewatch with plenty of memorable moments.,2026-04-01 01:54:11,2026-04-10 01:54:11
+R0384,U004,M0120,6.8,Entertaining from start to finish.,2024-06-30 04:13:32,2024-07-12 04:13:32
+R0385,U028,M0516,7.8,The soundtrack and cinematography were outstanding.,2024-07-01 01:49:48,2024-07-21 01:49:48
+R0386,U010,M0878,7.7,"The characters were interesting, but the ending could have been stronger.",2024-05-21 02:16:12,2024-06-20 02:16:12
+R0387,U014,M0183,8.5,A memorable story with strong performances.,2025-07-15 09:40:13,2025-07-31 09:40:13
+R0388,U016,M0769,5.8,"The characters were interesting, but the ending could have been stronger.",2025-12-01 07:07:09,2025-12-20 07:07:09
+R0389,U006,M0148,6.5,A visually impressive film with an engaging plot.,2026-01-30 09:35:25,2026-02-02 09:35:25
+R0390,U004,M0755,6.8,"The pacing was uneven, but the characters were compelling.",2025-03-16 06:55:10,2025-04-01 06:55:10
+R0391,U003,M0292,8.4,"Some scenes felt slow, but the overall experience was worthwhile.",2025-02-26 05:05:46,2025-03-16 05:05:46
+R0392,U026,M0882,8.2,A good rewatch with plenty of memorable moments.,2026-01-30 20:30:32,2026-02-13 20:30:32
+R0393,U010,M0893,3.4,Entertaining from start to finish.,2026-04-28 23:41:00,2026-05-25 23:41:00
+R0394,U021,M0788,6.8,A solid film with a few flaws.,2024-10-10 17:07:38,2024-10-28 17:07:38
+R0395,U029,M0923,5.8,"The pacing was uneven, but the characters were compelling.",2024-05-23 22:52:08,2024-05-26 22:52:08
+R0396,U004,M0558,7.1,A memorable story with strong performances.,2025-08-24 09:37:43,2025-09-13 09:37:43
+R0397,U027,M0587,8.3,The soundtrack and cinematography were outstanding.,2026-04-28 01:39:16,2026-05-10 01:39:16
+R0398,U004,M0859,8.5,Entertaining from start to finish.,2024-12-03 15:00:23,2024-12-23 15:00:23
+R0399,U001,M0614,6.1,The soundtrack and cinematography were outstanding.,2024-03-25 02:23:14,2024-04-24 02:23:14
+R0400,U024,M0393,7.4,A memorable story with strong performances.,2026-05-13 16:39:32,2026-06-01 16:39:32
+R0401,U013,M0857,8.1,A good rewatch with plenty of memorable moments.,2026-06-08 20:19:32,2026-06-19 20:19:32
+R0402,U026,M0922,7.5,"The characters were interesting, but the ending could have been stronger.",2026-08-29 11:37:33,2026-09-03 11:37:33
+R0403,U026,M0871,6.6,The soundtrack and cinematography were outstanding.,2025-01-04 08:13:00,2025-01-22 08:13:00
+R0404,U020,M0553,9.6,A thoughtful film that stayed with me afterwards.,2024-09-14 04:12:31,2024-10-03 04:12:31
+R0405,U026,M0529,7.1,Excellent direction and a satisfying ending.,2024-08-29 07:33:28,2024-09-22 07:33:28
+R0406,U021,M0267,7.3,A solid film with a few flaws.,2025-05-27 19:11:41,2025-06-23 19:11:41
+R0407,U001,M0985,5.1,"The pacing was uneven, but the characters were compelling.",2024-10-30 14:29:14,2024-11-07 14:29:14
+R0408,U020,M0306,5.6,"I enjoyed the performances, although the story felt familiar.",2025-05-06 04:36:56,2025-05-20 04:36:56
+R0409,U028,M0681,7.7,A solid film with a few flaws.,2025-10-13 18:16:06,2025-10-21 18:16:06
+R0410,U006,M0731,6.0,The soundtrack and cinematography were outstanding.,2025-06-27 23:02:09,2025-06-29 23:02:09
+R0411,U017,M0994,5.3,A good rewatch with plenty of memorable moments.,2026-02-23 10:47:52,2026-02-27 10:47:52
+R0412,U025,M0383,7.7,A good rewatch with plenty of memorable moments.,2024-09-16 22:26:24,2024-10-13 22:26:24
+R0413,U017,M0201,6.7,A solid film with a few flaws.,2025-07-25 00:55:13,2025-07-25 00:55:13
+R0414,U001,M0425,9.4,"I enjoyed the performances, although the story felt familiar.",2025-08-29 18:15:43,2025-09-13 18:15:43
+R0415,U005,M0110,3.6,"I enjoyed the performances, although the story felt familiar.",2025-11-12 00:40:57,2025-12-07 00:40:57
+R0416,U006,M0489,4.7,Excellent direction and a satisfying ending.,2024-07-31 03:19:25,2024-08-14 03:19:25
+R0417,U009,M0764,5.5,Excellent direction and a satisfying ending.,2026-09-17 07:35:55,2026-09-17 07:35:55
+R0418,U030,M0980,9.5,The soundtrack and cinematography were outstanding.,2025-08-13 10:56:43,2025-09-02 10:56:43
+R0419,U015,M0516,5.8,"Some scenes felt slow, but the overall experience was worthwhile.",2024-10-19 15:40:20,2024-11-05 15:40:20
+R0420,U009,M0124,7.7,"I enjoyed the performances, although the story felt familiar.",2026-07-04 20:58:32,2026-07-09 20:58:32
+R0421,U013,M0121,5.6,Entertaining from start to finish.,2025-01-08 23:54:36,2025-01-18 23:54:36
+R0422,U022,M0799,8.0,A good rewatch with plenty of memorable moments.,2024-05-31 23:30:21,2024-06-17 23:30:21
+R0423,U022,M0861,6.8,"The characters were interesting, but the ending could have been stronger.",2025-10-27 02:42:13,2025-11-11 02:42:13
+R0424,U014,M0032,5.8,A thoughtful film that stayed with me afterwards.,2024-09-11 21:49:55,2024-10-01 21:49:55
+R0425,U025,M0928,8.1,A thoughtful film that stayed with me afterwards.,2024-01-13 13:08:23,2024-01-13 13:08:23
+R0426,U025,M0055,7.1,A thoughtful film that stayed with me afterwards.,2026-06-01 21:42:41,2026-06-24 21:42:41
+R0427,U013,M0246,8.9,"Some scenes felt slow, but the overall experience was worthwhile.",2024-10-22 11:13:30,2024-10-30 11:13:30
+R0428,U013,M0967,5.4,A solid film with a few flaws.,2024-09-05 07:00:40,2024-09-13 07:00:40
+R0429,U027,M0895,7.0,"The pacing was uneven, but the characters were compelling.",2024-04-12 14:58:09,2024-04-26 14:58:09
+R0430,U017,M0143,8.7,"The pacing was uneven, but the characters were compelling.",2025-09-06 00:32:10,2025-09-27 00:32:10
+R0431,U022,M0446,5.4,Excellent direction and a satisfying ending.,2025-12-01 19:11:26,2025-12-03 19:11:26
+R0432,U009,M0643,5.6,Entertaining from start to finish.,2024-06-29 02:00:45,2024-07-28 02:00:45
+R0433,U020,M0877,7.2,A visually impressive film with an engaging plot.,2026-09-05 20:00:48,2026-09-10 20:00:48
+R0434,U023,M0739,8.8,"Some scenes felt slow, but the overall experience was worthwhile.",2026-02-19 15:06:44,2026-02-23 15:06:44
+R0435,U004,M0356,6.8,Excellent direction and a satisfying ending.,2024-05-11 07:02:42,2024-05-16 07:02:42
+R0436,U021,M0854,7.5,"I enjoyed the performances, although the story felt familiar.",2024-01-28 09:26:02,2024-02-16 09:26:02
+R0437,U009,M0660,10.0,"The pacing was uneven, but the characters were compelling.",2025-12-11 17:09:29,2025-12-31 17:09:29
+R0438,U023,M0372,5.3,"The pacing was uneven, but the characters were compelling.",2025-03-30 04:42:27,2025-04-17 04:42:27
+R0439,U030,M0038,6.7,Excellent direction and a satisfying ending.,2025-10-10 11:57:17,2025-11-08 11:57:17
+R0440,U021,M0246,7.4,Entertaining from start to finish.,2026-03-26 19:06:49,2026-04-11 19:06:49
+R0441,U006,M0941,8.0,A good rewatch with plenty of memorable moments.,2025-06-12 02:11:15,2025-06-17 02:11:15
+R0442,U012,M0763,8.9,"The characters were interesting, but the ending could have been stronger.",2026-08-26 23:48:17,2026-09-01 23:48:17
+R0443,U014,M0709,7.7,A thoughtful film that stayed with me afterwards.,2024-10-30 14:32:46,2024-11-09 14:32:46
+R0444,U018,M0442,4.2,"Some scenes felt slow, but the overall experience was worthwhile.",2024-08-18 02:03:05,2024-08-22 02:03:05
+R0445,U018,M0193,7.4,"I enjoyed the performances, although the story felt familiar.",2026-09-23 02:22:51,2026-09-23 02:22:51
+R0446,U018,M0171,8.3,A solid film with a few flaws.,2026-07-18 12:56:47,2026-08-12 12:56:47
+R0447,U028,M0794,8.3,A good rewatch with plenty of memorable moments.,2024-10-02 09:31:52,2024-10-11 09:31:52
+R0448,U012,M0753,7.4,"Some scenes felt slow, but the overall experience was worthwhile.",2026-01-22 13:15:14,2026-02-09 13:15:14
+R0449,U010,M0612,7.9,A memorable story with strong performances.,2025-02-25 10:07:32,2025-03-23 10:07:32
+R0450,U008,M0610,4.2,The soundtrack and cinematography were outstanding.,2025-02-27 00:19:46,2025-03-02 00:19:46
+R0451,U004,M0989,7.8,A memorable story with strong performances.,2025-06-11 08:06:45,2025-07-03 08:06:45
+R0452,U010,M0329,9.5,A memorable story with strong performances.,2024-07-07 12:00:24,2024-07-15 12:00:24
+R0453,U021,M0633,6.0,A thoughtful film that stayed with me afterwards.,2025-01-06 11:25:47,2025-01-21 11:25:47
+R0454,U002,M0444,6.5,A visually impressive film with an engaging plot.,2026-03-12 18:28:28,2026-04-01 18:28:28
+R0455,U005,M0146,7.1,"Some scenes felt slow, but the overall experience was worthwhile.",2025-10-01 00:50:46,2025-10-14 00:50:46
+R0456,U024,M0637,8.4,Entertaining from start to finish.,2026-05-04 16:22:32,2026-05-11 16:22:32
+R0457,U003,M0461,8.3,The soundtrack and cinematography were outstanding.,2024-10-31 04:44:36,2024-11-21 04:44:36
+R0458,U016,M0027,6.6,Entertaining from start to finish.,2026-03-24 14:25:05,2026-04-05 14:25:05
+R0459,U020,M0026,7.7,A solid film with a few flaws.,2024-04-22 21:49:17,2024-04-22 21:49:17
+R0460,U001,M0440,8.6,Excellent direction and a satisfying ending.,2026-01-10 02:48:55,2026-01-27 02:48:55
+R0461,U019,M0863,5.0,Excellent direction and a satisfying ending.,2025-12-17 13:09:17,2025-12-17 13:09:17
+R0462,U008,M0309,5.8,Excellent direction and a satisfying ending.,2026-09-24 10:10:43,2026-09-24 10:10:43
+R0463,U016,M0610,8.5,The soundtrack and cinematography were outstanding.,2024-06-10 00:19:34,2024-07-01 00:19:34
+R0464,U017,M0376,5.2,A good rewatch with plenty of memorable moments.,2025-03-06 19:18:09,2025-04-05 19:18:09
+R0465,U006,M0068,7.0,Entertaining from start to finish.,2024-12-06 04:17:02,2024-12-28 04:17:02
+R0466,U007,M0297,6.2,"I enjoyed the performances, although the story felt familiar.",2024-10-04 19:23:41,2024-10-10 19:23:41
+R0467,U014,M0693,8.5,A memorable story with strong performances.,2025-05-15 03:45:28,2025-05-18 03:45:28
+R0468,U003,M0732,7.8,"I enjoyed the performances, although the story felt familiar.",2025-01-22 22:40:32,2025-01-23 22:40:32
+R0469,U015,M0204,6.5,"The characters were interesting, but the ending could have been stronger.",2024-07-25 11:18:13,2024-08-22 11:18:13
+R0470,U005,M0352,8.4,A solid film with a few flaws.,2024-03-17 23:33:21,2024-03-17 23:33:21
+R0471,U014,M0717,2.8,Entertaining from start to finish.,2026-03-07 18:48:36,2026-03-14 18:48:36
+R0472,U008,M0984,8.0,"Some scenes felt slow, but the overall experience was worthwhile.",2025-10-27 02:07:46,2025-11-26 02:07:46
+R0473,U009,M0989,10.0,"I enjoyed the performances, although the story felt familiar.",2025-07-08 01:12:16,2025-07-08 01:12:16
+R0474,U001,M0431,4.9,"I enjoyed the performances, although the story felt familiar.",2025-09-20 21:00:00,2025-10-08 21:00:00
+R0475,U005,M0613,5.7,Excellent direction and a satisfying ending.,2025-06-22 09:53:10,2025-07-21 09:53:10
+R0476,U013,M1000,6.0,"The pacing was uneven, but the characters were compelling.",2024-01-18 09:08:11,2024-02-11 09:08:11
+R0477,U026,M0489,8.3,The soundtrack and cinematography were outstanding.,2025-11-28 17:45:37,2025-12-09 17:45:37
+R0478,U024,M0327,8.1,Entertaining from start to finish.,2025-11-03 23:16:30,2025-11-28 23:16:30
+R0479,U015,M0447,10.0,"I enjoyed the performances, although the story felt familiar.",2026-06-17 03:54:48,2026-06-25 03:54:48
+R0480,U025,M0246,10.0,"The pacing was uneven, but the characters were compelling.",2025-01-03 07:41:03,2025-01-06 07:41:03
+R0481,U007,M0400,5.1,"Some scenes felt slow, but the overall experience was worthwhile.",2026-08-22 13:40:24,2026-09-02 13:40:24
+R0482,U030,M0309,7.3,"The characters were interesting, but the ending could have been stronger.",2024-01-19 15:02:55,2024-02-16 15:02:55
+R0483,U012,M0803,9.2,A visually impressive film with an engaging plot.,2025-01-14 03:31:53,2025-01-24 03:31:53
+R0484,U015,M0220,7.1,"Some scenes felt slow, but the overall experience was worthwhile.",2026-08-05 03:11:09,2026-09-01 03:11:09
+R0485,U006,M0669,6.8,A thoughtful film that stayed with me afterwards.,2025-02-11 15:23:05,2025-02-24 15:23:05
+R0486,U016,M0418,6.9,Entertaining from start to finish.,2024-08-16 22:28:53,2024-08-28 22:28:53
+R0487,U013,M0383,9.1,A good rewatch with plenty of memorable moments.,2026-08-30 09:05:02,2026-09-02 09:05:02
+R0488,U004,M0084,7.7,"Some scenes felt slow, but the overall experience was worthwhile.",2024-03-08 04:54:46,2024-03-08 04:54:46
+R0489,U014,M0828,7.2,A thoughtful film that stayed with me afterwards.,2024-01-24 22:12:41,2024-02-19 22:12:41
+R0490,U011,M0999,5.5,The soundtrack and cinematography were outstanding.,2026-02-12 10:34:46,2026-03-01 10:34:46
+R0491,U029,M0009,6.5,"The characters were interesting, but the ending could have been stronger.",2025-04-15 05:18:28,2025-04-29 05:18:28
+R0492,U003,M0959,6.9,A visually impressive film with an engaging plot.,2025-08-11 12:01:39,2025-08-19 12:01:39
+R0493,U017,M0329,5.3,A good rewatch with plenty of memorable moments.,2026-08-24 00:28:56,2026-08-25 00:28:56
+R0494,U026,M0143,8.6,Excellent direction and a satisfying ending.,2025-04-08 13:28:42,2025-05-01 13:28:42
+R0495,U024,M0567,4.8,A good rewatch with plenty of memorable moments.,2026-09-26 02:17:33,2026-09-30 02:17:33
+R0496,U004,M0666,8.6,A thoughtful film that stayed with me afterwards.,2024-06-24 20:49:10,2024-07-08 20:49:10
+R0497,U014,M0436,6.5,A good rewatch with plenty of memorable moments.,2024-02-08 04:09:44,2024-02-15 04:09:44
+R0498,U003,M0488,4.8,The soundtrack and cinematography were outstanding.,2026-07-18 07:17:10,2026-08-11 07:17:10
+R0499,U002,M0116,7.2,"Some scenes felt slow, but the overall experience was worthwhile.",2025-08-22 12:05:06,2025-09-17 12:05:06
+R0500,U017,M0374,7.5,A visually impressive film with an engaging plot.,2025-11-10 09:48:09,2025-12-01 09:48:09
+R0501,U006,M0667,7.3,A memorable story with strong performances.,2024-02-27 08:00:13,2024-02-28 08:00:13
+R0502,U004,M0878,6.7,A visually impressive film with an engaging plot.,2025-03-02 05:58:54,2025-03-02 05:58:54
+R0503,U024,M0626,5.0,"I enjoyed the performances, although the story felt familiar.",2024-10-01 15:31:46,2024-10-10 15:31:46
+R0504,U006,M0925,9.9,"I enjoyed the performances, although the story felt familiar.",2026-05-16 22:46:10,2026-06-09 22:46:10
+R0505,U020,M0200,3.4,A thoughtful film that stayed with me afterwards.,2024-05-20 20:07:05,2024-05-31 20:07:05
+R0506,U030,M0863,8.7,The soundtrack and cinematography were outstanding.,2024-06-14 02:35:47,2024-07-02 02:35:47
+R0507,U015,M0732,7.7,The soundtrack and cinematography were outstanding.,2024-07-22 20:05:25,2024-08-17 20:05:25
+R0508,U024,M0657,7.2,A thoughtful film that stayed with me afterwards.,2024-10-21 21:57:40,2024-11-10 21:57:40
+R0509,U024,M0614,7.1,A visually impressive film with an engaging plot.,2026-02-14 00:47:06,2026-02-15 00:47:06
+R0510,U018,M0080,9.1,A solid film with a few flaws.,2024-08-10 16:41:13,2024-08-23 16:41:13
+R0511,U020,M0424,8.2,A visually impressive film with an engaging plot.,2024-08-01 21:06:04,2024-08-21 21:06:04
+R0512,U006,M0763,4.4,A visually impressive film with an engaging plot.,2024-05-25 08:34:48,2024-06-20 08:34:48
+R0513,U030,M0821,6.2,A thoughtful film that stayed with me afterwards.,2026-05-29 08:46:34,2026-06-27 08:46:34
+R0514,U028,M0886,8.8,A visually impressive film with an engaging plot.,2024-05-01 03:49:26,2024-05-21 03:49:26
+R0515,U025,M0751,6.9,Excellent direction and a satisfying ending.,2024-09-12 18:52:09,2024-10-07 18:52:09
+R0516,U027,M0559,5.7,A visually impressive film with an engaging plot.,2026-02-02 16:56:29,2026-02-12 16:56:29
+R0517,U025,M0338,7.2,Entertaining from start to finish.,2025-03-13 11:06:16,2025-04-01 11:06:16
+R0518,U020,M0032,4.7,A solid film with a few flaws.,2025-11-24 14:23:13,2025-12-13 14:23:13
+R0519,U022,M0751,7.4,"Some scenes felt slow, but the overall experience was worthwhile.",2025-09-07 10:04:16,2025-09-15 10:04:16
+R0520,U026,M0129,9.4,The soundtrack and cinematography were outstanding.,2026-05-13 15:06:34,2026-06-05 15:06:34
+R0521,U022,M0431,5.6,A solid film with a few flaws.,2024-04-23 09:35:31,2024-04-30 09:35:31
+R0522,U016,M0852,7.9,Excellent direction and a satisfying ending.,2025-11-30 11:25:59,2025-12-17 11:25:59
+R0523,U024,M0605,8.3,A thoughtful film that stayed with me afterwards.,2026-09-20 19:53:27,2026-09-20 19:53:27
+R0524,U011,M0343,7.3,A thoughtful film that stayed with me afterwards.,2024-11-13 10:51:19,2024-11-17 10:51:19
+R0525,U013,M0228,6.3,Excellent direction and a satisfying ending.,2024-06-14 05:35:43,2024-06-25 05:35:43
+R0526,U014,M0326,5.1,A visually impressive film with an engaging plot.,2024-11-24 12:58:38,2024-11-29 12:58:38
+R0527,U012,M0128,8.2,A memorable story with strong performances.,2025-09-08 17:36:50,2025-10-03 17:36:50
+R0528,U005,M0508,7.5,A solid film with a few flaws.,2024-02-20 20:55:06,2024-02-29 20:55:06
+R0529,U012,M0383,8.4,A memorable story with strong performances.,2024-10-23 04:53:23,2024-10-23 04:53:23
+R0530,U026,M0461,6.5,"The pacing was uneven, but the characters were compelling.",2026-01-18 13:24:56,2026-01-21 13:24:56
+R0531,U029,M0623,6.8,The soundtrack and cinematography were outstanding.,2026-06-08 22:44:28,2026-06-14 22:44:28
+R0532,U002,M0367,8.5,A thoughtful film that stayed with me afterwards.,2024-12-24 19:58:34,2025-01-07 19:58:34
+R0533,U027,M0265,5.9,Excellent direction and a satisfying ending.,2025-05-21 16:11:11,2025-05-22 16:11:11
+R0534,U006,M0643,10.0,A thoughtful film that stayed with me afterwards.,2025-11-23 10:45:25,2025-12-03 10:45:25
+R0535,U013,M0129,5.9,"The pacing was uneven, but the characters were compelling.",2025-08-13 22:03:18,2025-08-21 22:03:18
+R0536,U002,M0263,5.4,A memorable story with strong performances.,2025-03-04 05:11:58,2025-03-10 05:11:58
+R0537,U030,M0195,8.3,"The characters were interesting, but the ending could have been stronger.",2025-02-13 09:33:41,2025-02-13 09:33:41
+R0538,U007,M0353,4.9,A solid film with a few flaws.,2024-08-11 17:16:24,2024-08-25 17:16:24
+R0539,U011,M0562,5.3,A good rewatch with plenty of memorable moments.,2024-11-22 03:18:55,2024-12-01 03:18:55
+R0540,U005,M0732,6.6,"The characters were interesting, but the ending could have been stronger.",2024-01-30 05:07:02,2024-02-17 05:07:02
+R0541,U020,M0072,8.1,Excellent direction and a satisfying ending.,2025-08-26 11:22:53,2025-08-26 11:22:53
+R0542,U009,M0882,4.6,A solid film with a few flaws.,2025-09-29 01:08:32,2025-10-12 01:08:32
+R0543,U025,M0733,7.4,A memorable story with strong performances.,2024-05-07 14:38:21,2024-05-09 14:38:21
+R0544,U026,M0126,6.2,A solid film with a few flaws.,2025-11-13 09:07:13,2025-11-21 09:07:13
+R0545,U013,M0081,3.6,A solid film with a few flaws.,2025-10-29 16:58:45,2025-11-19 16:58:45
+R0546,U018,M0739,8.9,Entertaining from start to finish.,2025-07-09 09:22:39,2025-07-18 09:22:39
+R0547,U029,M0016,8.4,"The pacing was uneven, but the characters were compelling.",2024-02-21 02:14:28,2024-03-01 02:14:28
+R0548,U009,M0141,8.4,Entertaining from start to finish.,2026-02-18 05:55:58,2026-03-19 05:55:58
+R0549,U012,M0453,9.7,"The pacing was uneven, but the characters were compelling.",2026-02-10 07:33:52,2026-02-16 07:33:52
+R0550,U003,M0794,7.1,The soundtrack and cinematography were outstanding.,2024-01-12 04:10:45,2024-02-08 04:10:45
+R0551,U009,M0146,6.6,"The characters were interesting, but the ending could have been stronger.",2025-09-20 00:46:23,2025-10-07 00:46:23
+R0552,U028,M0380,7.1,"The characters were interesting, but the ending could have been stronger.",2026-07-25 04:38:18,2026-08-06 04:38:18
+R0553,U029,M0672,10.0,"The pacing was uneven, but the characters were compelling.",2025-08-22 13:22:15,2025-09-20 13:22:15
+R0554,U008,M0327,7.2,A thoughtful film that stayed with me afterwards.,2024-03-04 05:46:06,2024-03-16 05:46:06
+R0555,U014,M0257,3.8,A memorable story with strong performances.,2026-04-20 14:41:49,2026-05-01 14:41:49
+R0556,U012,M0946,5.9,"The pacing was uneven, but the characters were compelling.",2025-06-06 12:32:14,2025-07-04 12:32:14
+R0557,U014,M0803,4.5,"The characters were interesting, but the ending could have been stronger.",2025-12-07 12:14:47,2026-01-01 12:14:47
+R0558,U020,M0788,8.8,A visually impressive film with an engaging plot.,2025-07-01 10:55:11,2025-07-21 10:55:11
+R0559,U028,M0678,7.6,A visually impressive film with an engaging plot.,2025-12-06 00:49:40,2025-12-31 00:49:40
+R0560,U027,M0056,8.0,"I enjoyed the performances, although the story felt familiar.",2024-03-23 21:04:41,2024-04-14 21:04:41
+R0561,U027,M0091,4.0,A good rewatch with plenty of memorable moments.,2025-03-15 20:58:56,2025-03-20 20:58:56
+R0562,U021,M0531,7.0,Excellent direction and a satisfying ending.,2024-06-07 08:14:06,2024-06-22 08:14:06
+R0563,U027,M0267,7.7,"I enjoyed the performances, although the story felt familiar.",2026-07-18 06:43:24,2026-07-21 06:43:24
+R0564,U030,M0944,7.5,"I enjoyed the performances, although the story felt familiar.",2025-10-08 11:48:33,2025-10-20 11:48:33
+R0565,U016,M0316,6.7,A solid film with a few flaws.,2024-08-26 10:23:17,2024-08-28 10:23:17
+R0566,U019,M0271,5.6,"The characters were interesting, but the ending could have been stronger.",2026-08-02 14:19:18,2026-08-03 14:19:18
+R0567,U029,M0125,4.9,Entertaining from start to finish.,2025-04-06 16:56:05,2025-04-07 16:56:05
+R0568,U023,M0357,7.4,A good rewatch with plenty of memorable moments.,2025-12-19 07:30:10,2026-01-03 07:30:10
+R0569,U012,M0174,7.6,A good rewatch with plenty of memorable moments.,2024-03-03 05:19:01,2024-03-25 05:19:01
+R0570,U013,M0070,7.4,"Some scenes felt slow, but the overall experience was worthwhile.",2026-04-08 16:14:28,2026-05-05 16:14:28
+R0571,U027,M0781,10.0,A thoughtful film that stayed with me afterwards.,2024-09-08 10:42:23,2024-09-19 10:42:23
+R0572,U020,M0338,7.1,A visually impressive film with an engaging plot.,2025-03-04 11:04:53,2025-03-05 11:04:53
+R0573,U025,M0543,5.9,A memorable story with strong performances.,2026-07-27 04:41:56,2026-08-16 04:41:56
+R0574,U026,M0767,9.4,"The characters were interesting, but the ending could have been stronger.",2024-07-17 04:34:04,2024-07-25 04:34:04
+R0575,U005,M0673,8.1,A memorable story with strong performances.,2024-11-23 03:55:49,2024-12-02 03:55:49
+R0576,U018,M0201,7.1,The soundtrack and cinematography were outstanding.,2024-09-25 02:23:43,2024-10-23 02:23:43
+R0577,U001,M0129,3.2,A thoughtful film that stayed with me afterwards.,2026-02-19 14:32:10,2026-03-18 14:32:10
+R0578,U025,M0374,8.1,The soundtrack and cinematography were outstanding.,2026-07-04 00:54:30,2026-07-07 00:54:30
+R0579,U025,M0568,4.7,A memorable story with strong performances.,2026-01-31 01:56:19,2026-02-03 01:56:19
+R0580,U012,M0959,6.2,A thoughtful film that stayed with me afterwards.,2024-06-08 17:46:42,2024-06-16 17:46:42
+R0581,U024,M0081,5.0,"The pacing was uneven, but the characters were compelling.",2026-03-29 17:51:41,2026-03-31 17:51:41
+R0582,U011,M0732,8.2,Excellent direction and a satisfying ending.,2024-07-12 18:37:57,2024-08-03 18:37:57
+R0583,U011,M0780,8.9,A thoughtful film that stayed with me afterwards.,2025-01-06 10:16:06,2025-01-21 10:16:06
+R0584,U026,M0026,9.8,A thoughtful film that stayed with me afterwards.,2024-08-14 13:50:39,2024-08-18 13:50:39
+R0585,U025,M0668,10.0,A good rewatch with plenty of memorable moments.,2025-02-09 22:27:43,2025-02-28 22:27:43
+R0586,U015,M0444,7.7,A good rewatch with plenty of memorable moments.,2026-05-29 18:32:37,2026-06-19 18:32:37
+R0587,U019,M0688,7.4,Entertaining from start to finish.,2025-12-09 19:36:26,2025-12-13 19:36:26
+R0588,U030,M0666,8.4,A thoughtful film that stayed with me afterwards.,2025-12-26 23:41:23,2026-01-10 23:41:23
+R0589,U002,M0980,6.6,A solid film with a few flaws.,2024-10-28 14:31:26,2024-11-15 14:31:26
+R0590,U006,M0357,8.0,"The characters were interesting, but the ending could have been stronger.",2024-10-11 16:42:18,2024-10-26 16:42:18
+R0591,U015,M0201,7.2,The soundtrack and cinematography were outstanding.,2025-09-10 13:24:52,2025-09-29 13:24:52
+R0592,U017,M0574,5.0,A thoughtful film that stayed with me afterwards.,2025-04-04 23:42:05,2025-04-23 23:42:05
+R0593,U012,M0665,6.1,"I enjoyed the performances, although the story felt familiar.",2026-04-08 18:00:26,2026-05-02 18:00:26
+R0594,U001,M0767,6.4,A solid film with a few flaws.,2024-09-25 09:45:05,2024-10-14 09:45:05
+R0595,U019,M0940,7.5,"I enjoyed the performances, although the story felt familiar.",2025-08-25 22:33:56,2025-08-25 22:33:56
+R0596,U010,M0141,6.7,A visually impressive film with an engaging plot.,2025-01-21 12:29:23,2025-02-06 12:29:23
+R0597,U011,M0678,7.4,The soundtrack and cinematography were outstanding.,2025-03-28 05:07:58,2025-04-10 05:07:58
+R0598,U024,M0502,7.9,A memorable story with strong performances.,2026-06-21 14:29:00,2026-07-20 14:29:00
+R0599,U027,M0047,6.9,A thoughtful film that stayed with me afterwards.,2024-07-27 19:11:14,2024-07-28 19:11:14
+R0600,U019,M0435,10.0,A good rewatch with plenty of memorable moments.,2024-09-24 10:26:05,2024-10-11 10:26:05
+R0601,U010,M0713,9.3,Excellent direction and a satisfying ending.,2025-04-14 18:11:43,2025-05-02 18:11:43
+R0602,U014,M0182,6.8,The soundtrack and cinematography were outstanding.,2025-07-16 03:58:23,2025-08-03 03:58:23
+R0603,U015,M0730,3.6,A good rewatch with plenty of memorable moments.,2024-04-10 11:30:40,2024-04-16 11:30:40
+R0604,U026,M0275,4.8,"The pacing was uneven, but the characters were compelling.",2026-03-04 16:12:56,2026-03-09 16:12:56
+R0605,U015,M0882,5.2,Entertaining from start to finish.,2025-08-05 02:20:42,2025-08-15 02:20:42
+R0606,U014,M0872,4.3,"Some scenes felt slow, but the overall experience was worthwhile.",2024-04-27 23:35:33,2024-05-12 23:35:33
+R0607,U023,M0771,5.6,"The pacing was uneven, but the characters were compelling.",2025-02-22 18:59:52,2025-03-09 18:59:52
+R0608,U009,M0573,4.3,A good rewatch with plenty of memorable moments.,2026-09-14 19:53:52,2026-09-14 19:53:52
+R0609,U011,M0733,7.7,A memorable story with strong performances.,2025-10-15 12:39:00,2025-10-26 12:39:00
+R0610,U011,M0085,7.0,A solid film with a few flaws.,2024-11-14 04:43:13,2024-11-27 04:43:13
+R0611,U030,M0861,7.8,A good rewatch with plenty of memorable moments.,2025-05-31 06:23:15,2025-06-18 06:23:15
+R0612,U020,M0954,6.9,Entertaining from start to finish.,2026-09-11 21:46:40,2026-09-14 21:46:40
+R0613,U021,M0482,6.6,A memorable story with strong performances.,2025-12-13 10:41:18,2026-01-06 10:41:18
+R0614,U024,M0143,4.9,A memorable story with strong performances.,2025-01-15 04:02:53,2025-01-20 04:02:53
+R0615,U006,M0346,7.2,Excellent direction and a satisfying ending.,2025-01-13 07:52:50,2025-01-21 07:52:50
+R0616,U030,M0246,8.8,Entertaining from start to finish.,2024-02-14 08:15:03,2024-02-16 08:15:03
+R0617,U012,M0302,6.3,A solid film with a few flaws.,2026-07-02 03:28:17,2026-07-03 03:28:17
+R0618,U002,M0868,8.5,"I enjoyed the performances, although the story felt familiar.",2026-08-01 08:54:16,2026-08-27 08:54:16
+R0619,U026,M0581,6.6,A good rewatch with plenty of memorable moments.,2024-01-15 02:38:33,2024-01-20 02:38:33
+R0620,U028,M0326,8.0,A solid film with a few flaws.,2024-12-25 17:01:03,2024-12-31 17:01:03
+R0621,U005,M0025,4.6,"Some scenes felt slow, but the overall experience was worthwhile.",2025-11-15 05:37:44,2025-11-18 05:37:44
+R0622,U002,M0611,8.0,A solid film with a few flaws.,2025-09-22 02:42:22,2025-09-22 02:42:22
+R0623,U028,M0418,7.9,A solid film with a few flaws.,2025-01-11 15:07:24,2025-01-24 15:07:24
+R0624,U028,M0166,7.0,"The characters were interesting, but the ending could have been stronger.",2026-05-20 11:32:43,2026-05-28 11:32:43
+R0625,U028,M0969,5.6,"I enjoyed the performances, although the story felt familiar.",2024-12-21 21:12:43,2025-01-10 21:12:43
+R0626,U017,M0038,10.0,Excellent direction and a satisfying ending.,2026-07-10 07:41:21,2026-07-21 07:41:21
+R0627,U027,M0272,8.9,A visually impressive film with an engaging plot.,2024-10-23 14:55:57,2024-11-04 14:55:57
+R0628,U005,M0195,7.2,A thoughtful film that stayed with me afterwards.,2026-02-09 19:14:22,2026-02-14 19:14:22
+R0629,U019,M0117,3.6,A solid film with a few flaws.,2025-03-05 19:00:37,2025-03-07 19:00:37
+R0630,U009,M0788,8.7,The soundtrack and cinematography were outstanding.,2026-05-28 15:43:09,2026-05-30 15:43:09
+R0631,U006,M0642,8.0,A memorable story with strong performances.,2024-08-05 07:14:18,2024-08-12 07:14:18
+R0632,U008,M0805,6.8,"The characters were interesting, but the ending could have been stronger.",2025-11-05 01:35:19,2025-11-12 01:35:19
+R0633,U014,M0056,7.9,Entertaining from start to finish.,2026-04-26 06:05:37,2026-05-22 06:05:37
+R0634,U002,M0857,6.7,A good rewatch with plenty of memorable moments.,2024-12-31 13:43:07,2025-01-14 13:43:07
+R0635,U002,M0436,7.5,A visually impressive film with an engaging plot.,2025-01-29 07:57:26,2025-02-07 07:57:26
+R0636,U030,M0996,8.2,"The characters were interesting, but the ending could have been stronger.",2025-02-19 05:14:00,2025-03-01 05:14:00
+R0637,U017,M0089,7.5,Excellent direction and a satisfying ending.,2025-01-16 17:20:24,2025-02-14 17:20:24
+R0638,U028,M0503,7.8,Excellent direction and a satisfying ending.,2026-05-20 02:01:38,2026-06-02 02:01:38
+R0639,U019,M0944,7.8,"The characters were interesting, but the ending could have been stronger.",2026-06-08 02:50:10,2026-06-12 02:50:10
+R0640,U017,M0418,9.4,A solid film with a few flaws.,2025-06-18 12:04:44,2025-07-17 12:04:44
+R0641,U029,M0515,4.9,"Some scenes felt slow, but the overall experience was worthwhile.",2025-08-27 11:39:15,2025-08-31 11:39:15
+R0642,U012,M0342,8.3,"I enjoyed the performances, although the story felt familiar.",2025-02-03 00:44:45,2025-02-20 00:44:45
+R0643,U015,M0345,10.0,A solid film with a few flaws.,2024-12-05 13:43:40,2024-12-15 13:43:40
+R0644,U025,M0795,5.5,Excellent direction and a satisfying ending.,2026-05-18 23:35:29,2026-05-24 23:35:29
+R0645,U025,M0771,6.2,A good rewatch with plenty of memorable moments.,2026-05-14 22:51:34,2026-05-24 22:51:34
+R0646,U012,M0531,7.0,"The pacing was uneven, but the characters were compelling.",2024-10-07 19:08:59,2024-10-25 19:08:59
+R0647,U018,M0437,6.9,"The characters were interesting, but the ending could have been stronger.",2025-07-01 12:56:34,2025-07-01 12:56:34
+R0648,U023,M0328,5.6,A thoughtful film that stayed with me afterwards.,2024-02-12 21:51:08,2024-02-24 21:51:08
+R0649,U002,M0724,7.8,"I enjoyed the performances, although the story felt familiar.",2026-01-17 12:54:58,2026-02-11 12:54:58
+R0650,U027,M0341,5.5,Excellent direction and a satisfying ending.,2025-05-21 04:28:09,2025-06-05 04:28:09
+R0651,U002,M0489,6.4,A solid film with a few flaws.,2025-12-02 10:37:20,2025-12-13 10:37:20
+R0652,U012,M0392,8.3,A thoughtful film that stayed with me afterwards.,2025-10-16 01:05:02,2025-10-29 01:05:02
+R0653,U003,M0771,9.8,"The characters were interesting, but the ending could have been stronger.",2024-01-15 13:56:07,2024-02-12 13:56:07
+R0654,U002,M0718,10.0,A visually impressive film with an engaging plot.,2026-04-08 17:09:35,2026-04-30 17:09:35
+R0655,U003,M0561,6.7,"The characters were interesting, but the ending could have been stronger.",2025-03-10 18:38:06,2025-03-18 18:38:06
+R0656,U024,M0100,10.0,A thoughtful film that stayed with me afterwards.,2026-06-20 22:31:59,2026-06-24 22:31:59
+R0657,U021,M0637,8.1,A good rewatch with plenty of memorable moments.,2025-12-06 06:09:51,2025-12-07 06:09:51
+R0658,U026,M0866,6.8,The soundtrack and cinematography were outstanding.,2024-11-13 08:44:59,2024-11-16 08:44:59
+R0659,U018,M0717,10.0,A thoughtful film that stayed with me afterwards.,2025-03-31 15:36:34,2025-04-27 15:36:34
+R0660,U006,M0326,5.5,A thoughtful film that stayed with me afterwards.,2024-05-19 20:41:01,2024-05-29 20:41:01
+R0661,U009,M0769,7.1,Entertaining from start to finish.,2025-01-27 07:37:04,2025-02-21 07:37:04
+R0662,U007,M0809,4.5,Entertaining from start to finish.,2026-02-24 18:42:07,2026-03-26 18:42:07
+R0663,U013,M0342,7.6,A good rewatch with plenty of memorable moments.,2024-04-11 01:29:23,2024-04-20 01:29:23
+R0664,U013,M0736,7.4,A memorable story with strong performances.,2025-03-29 08:23:46,2025-04-18 08:23:46
+R0665,U011,M0701,7.2,A visually impressive film with an engaging plot.,2024-08-10 16:02:45,2024-08-19 16:02:45
+R0666,U019,M0744,6.9,A memorable story with strong performances.,2024-08-25 20:14:32,2024-09-20 20:14:32
+R0667,U012,M0863,9.6,"The characters were interesting, but the ending could have been stronger.",2025-08-07 03:19:49,2025-08-11 03:19:49
+R0668,U010,M0220,5.0,"The characters were interesting, but the ending could have been stronger.",2026-05-15 21:39:56,2026-06-05 21:39:56
+R0669,U005,M0133,6.8,A good rewatch with plenty of memorable moments.,2024-03-03 05:38:06,2024-03-27 05:38:06
+R0670,U004,M0509,8.8,"The pacing was uneven, but the characters were compelling.",2024-08-10 09:13:34,2024-08-17 09:13:34
+R0671,U002,M0356,7.5,The soundtrack and cinematography were outstanding.,2024-11-09 05:54:57,2024-12-03 05:54:57
+R0672,U016,M0669,6.8,A visually impressive film with an engaging plot.,2026-02-13 13:46:27,2026-02-22 13:46:27
+R0673,U027,M0089,7.9,A solid film with a few flaws.,2024-10-07 05:14:11,2024-10-25 05:14:11
+R0674,U027,M0462,7.9,"Some scenes felt slow, but the overall experience was worthwhile.",2024-11-01 12:33:54,2024-11-03 12:33:54
+R0675,U019,M0246,9.3,A visually impressive film with an engaging plot.,2026-04-21 03:04:07,2026-05-02 03:04:07
+R0676,U016,M0380,9.2,"The pacing was uneven, but the characters were compelling.",2026-09-26 21:59:52,2026-09-26 21:59:52
+R0677,U004,M0573,6.9,"I enjoyed the performances, although the story felt familiar.",2025-11-13 14:37:24,2025-11-16 14:37:24
+R0678,U012,M0558,10.0,The soundtrack and cinematography were outstanding.,2024-08-02 01:34:14,2024-09-01 01:34:14
+R0679,U030,M0503,7.5,"I enjoyed the performances, although the story felt familiar.",2026-01-21 09:39:58,2026-01-25 09:39:58
+R0680,U024,M0955,9.8,"I enjoyed the performances, although the story felt familiar.",2026-08-04 03:43:28,2026-09-03 03:43:28
+R0681,U016,M0621,7.8,The soundtrack and cinematography were outstanding.,2026-01-06 17:46:36,2026-01-20 17:46:36
+R0682,U013,M0214,8.6,Excellent direction and a satisfying ending.,2025-07-14 04:17:07,2025-08-06 04:17:07
+R0683,U005,M0047,7.3,A visually impressive film with an engaging plot.,2026-08-26 09:14:37,2026-09-07 09:14:37
+R0684,U021,M0708,6.5,"The pacing was uneven, but the characters were compelling.",2024-09-11 19:39:11,2024-10-09 19:39:11
+R0685,U023,M0531,6.8,"The characters were interesting, but the ending could have been stronger.",2024-11-12 03:09:06,2024-12-11 03:09:06
+R0686,U021,M0126,5.8,A thoughtful film that stayed with me afterwards.,2026-08-21 00:45:10,2026-08-29 00:45:10
+R0687,U020,M0025,8.3,"The characters were interesting, but the ending could have been stronger.",2024-02-03 03:52:30,2024-03-01 03:52:30
+R0688,U010,M0817,4.6,A thoughtful film that stayed with me afterwards.,2026-01-26 11:41:23,2026-02-12 11:41:23
+R0689,U023,M0393,8.0,A thoughtful film that stayed with me afterwards.,2025-07-16 09:27:47,2025-08-06 09:27:47
+R0690,U008,M0201,6.4,A thoughtful film that stayed with me afterwards.,2025-07-13 14:31:42,2025-07-26 14:31:42
+R0691,U020,M0717,7.8,"The characters were interesting, but the ending could have been stronger.",2026-01-06 22:05:41,2026-01-09 22:05:41
+R0692,U016,M0446,9.9,Entertaining from start to finish.,2025-01-01 07:37:18,2025-01-23 07:37:18
+R0693,U019,M0027,3.7,A memorable story with strong performances.,2026-07-18 18:07:18,2026-08-10 18:07:18
+R0694,U021,M0739,5.3,"The pacing was uneven, but the characters were compelling.",2026-01-29 17:57:47,2026-02-23 17:57:47
+R0695,U014,M0747,5.1,A visually impressive film with an engaging plot.,2026-06-14 13:57:34,2026-07-08 13:57:34
+R0696,U018,M0871,6.8,Entertaining from start to finish.,2024-02-29 22:18:48,2024-03-24 22:18:48
+R0697,U027,M0306,8.2,A memorable story with strong performances.,2026-08-13 05:17:11,2026-09-02 05:17:11
+R0698,U003,M0369,10.0,The soundtrack and cinematography were outstanding.,2025-09-17 12:32:51,2025-10-17 12:32:51
+R0699,U012,M0084,8.5,A solid film with a few flaws.,2026-04-27 01:39:18,2026-05-02 01:39:18
+R0700,U026,M0543,8.8,A good rewatch with plenty of memorable moments.,2026-09-07 19:05:45,2026-09-16 19:05:45
+R0701,U025,M0007,5.4,A good rewatch with plenty of memorable moments.,2024-11-03 22:38:41,2024-11-07 22:38:41
+R0702,U014,M0550,8.6,Excellent direction and a satisfying ending.,2026-05-05 22:50:36,2026-05-09 22:50:36
+R0703,U005,M0801,6.1,A visually impressive film with an engaging plot.,2024-06-26 09:39:30,2024-06-27 09:39:30
+R0704,U019,M0395,8.4,A thoughtful film that stayed with me afterwards.,2025-02-03 06:34:12,2025-02-28 06:34:12
+R0705,U027,M0027,6.2,Entertaining from start to finish.,2026-07-17 05:10:03,2026-08-09 05:10:03
+R0706,U023,M0203,8.1,A memorable story with strong performances.,2026-05-05 04:19:23,2026-05-31 04:19:23
+R0707,U019,M0307,9.3,A good rewatch with plenty of memorable moments.,2025-12-31 01:56:34,2026-01-04 01:56:34
+R0708,U003,M0715,3.4,Entertaining from start to finish.,2025-07-01 04:03:59,2025-07-31 04:03:59
+R0709,U025,M0697,6.8,A solid film with a few flaws.,2026-08-12 03:08:37,2026-08-29 03:08:37
+R0710,U012,M0006,6.9,A thoughtful film that stayed with me afterwards.,2025-05-05 17:26:27,2025-05-08 17:26:27
+R0711,U009,M0287,4.8,A visually impressive film with an engaging plot.,2025-08-24 02:26:59,2025-09-01 02:26:59
+R0712,U009,M0709,9.2,"The characters were interesting, but the ending could have been stronger.",2025-11-05 11:58:16,2025-11-23 11:58:16
+R0713,U022,M0039,6.3,Entertaining from start to finish.,2025-07-26 15:16:07,2025-08-22 15:16:07
+R0714,U001,M0441,8.3,"Some scenes felt slow, but the overall experience was worthwhile.",2026-03-10 21:54:46,2026-03-23 21:54:46
+R0715,U004,M0563,6.7,"The pacing was uneven, but the characters were compelling.",2026-05-13 06:09:46,2026-05-30 06:09:46
+R0716,U016,M0259,10.0,A thoughtful film that stayed with me afterwards.,2025-12-26 13:58:39,2026-01-10 13:58:39
+R0717,U028,M0827,7.8,"The pacing was uneven, but the characters were compelling.",2025-11-28 17:39:57,2025-12-12 17:39:57
+R0718,U028,M0153,7.0,A solid film with a few flaws.,2026-04-27 09:03:36,2026-05-03 09:03:36
+R0719,U007,M0950,6.9,A thoughtful film that stayed with me afterwards.,2026-04-13 13:36:36,2026-04-16 13:36:36
+R0720,U011,M0269,6.7,A memorable story with strong performances.,2024-05-14 11:03:51,2024-05-28 11:03:51
+R0721,U018,M0892,8.0,A visually impressive film with an engaging plot.,2025-04-13 15:32:30,2025-04-22 15:32:30
+R0722,U013,M0466,8.9,"I enjoyed the performances, although the story felt familiar.",2025-05-15 15:06:17,2025-05-26 15:06:17
+R0723,U023,M0380,7.5,"The characters were interesting, but the ending could have been stronger.",2024-08-29 14:42:18,2024-08-31 14:42:18
+R0724,U017,M0694,5.9,A visually impressive film with an engaging plot.,2024-04-18 04:20:46,2024-05-01 04:20:46
+R0725,U004,M0736,9.7,A thoughtful film that stayed with me afterwards.,2026-05-17 20:46:58,2026-06-03 20:46:58
+R0726,U006,M0298,6.7,A good rewatch with plenty of memorable moments.,2024-04-05 11:25:01,2024-04-25 11:25:01
+R0727,U006,M0341,4.6,"The characters were interesting, but the ending could have been stronger.",2024-08-07 19:37:03,2024-08-18 19:37:03
+R0728,U008,M0195,7.5,"The pacing was uneven, but the characters were compelling.",2026-05-05 00:03:41,2026-05-26 00:03:41
+R0729,U014,M0753,6.9,A visually impressive film with an engaging plot.,2026-07-16 05:57:46,2026-07-22 05:57:46
+R0730,U024,M0372,8.1,"Some scenes felt slow, but the overall experience was worthwhile.",2026-08-03 22:11:44,2026-08-29 22:11:44
+R0731,U010,M0045,6.7,A solid film with a few flaws.,2025-01-02 07:35:50,2025-01-09 07:35:50
+R0732,U012,M0819,5.5,A good rewatch with plenty of memorable moments.,2024-01-17 20:09:53,2024-01-19 20:09:53
+R0733,U030,M0344,8.0,A visually impressive film with an engaging plot.,2026-07-30 05:36:28,2026-08-01 05:36:28
+R0734,U023,M0174,7.8,A solid film with a few flaws.,2026-02-19 03:43:43,2026-03-19 03:43:43
+R0735,U015,M0917,7.9,"The characters were interesting, but the ending could have been stronger.",2025-11-13 19:14:17,2025-12-01 19:14:17
+R0736,U020,M0733,6.5,Excellent direction and a satisfying ending.,2026-02-05 07:11:09,2026-02-10 07:11:09
+R0737,U003,M0731,6.8,A memorable story with strong performances.,2026-08-09 04:43:17,2026-08-18 04:43:17
+R0738,U019,M0824,5.8,A solid film with a few flaws.,2026-02-27 03:11:57,2026-03-16 03:11:57
+R0739,U003,M0233,6.8,"The characters were interesting, but the ending could have been stronger.",2024-01-15 06:14:22,2024-01-15 06:14:22
+R0740,U019,M0728,7.2,A good rewatch with plenty of memorable moments.,2026-01-16 09:40:01,2026-02-10 09:40:01
+R0741,U023,M0580,5.2,The soundtrack and cinematography were outstanding.,2024-05-11 17:47:07,2024-05-24 17:47:07
+R0742,U028,M0884,6.9,A solid film with a few flaws.,2024-06-23 17:25:09,2024-07-20 17:25:09
+R0743,U008,M0350,8.2,"Some scenes felt slow, but the overall experience was worthwhile.",2026-04-01 17:10:05,2026-04-13 17:10:05
+R0744,U023,M0011,7.6,Entertaining from start to finish.,2024-01-16 18:41:34,2024-02-04 18:41:34
+R0745,U028,M0608,4.8,"I enjoyed the performances, although the story felt familiar.",2026-02-15 18:49:19,2026-02-16 18:49:19
+R0746,U029,M0327,7.5,A memorable story with strong performances.,2026-09-21 08:19:53,2026-09-22 08:19:53
+R0747,U010,M0869,8.6,A thoughtful film that stayed with me afterwards.,2024-12-30 01:41:33,2025-01-27 01:41:33
+R0748,U016,M0192,9.7,"I enjoyed the performances, although the story felt familiar.",2025-02-08 11:16:10,2025-02-26 11:16:10
+R0749,U027,M0883,8.4,A good rewatch with plenty of memorable moments.,2025-02-16 03:35:51,2025-03-03 03:35:51
+R0750,U007,M0403,9.0,The soundtrack and cinematography were outstanding.,2026-01-07 11:54:33,2026-01-07 11:54:33
