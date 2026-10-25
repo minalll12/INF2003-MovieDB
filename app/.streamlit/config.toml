@@ -1,0 +1,21 @@
+[theme]
+base = "dark"
+primaryColor = "#d4af37"
+backgroundColor = "#0d0c0a"
+secondaryBackgroundColor = "#16140f"
+textColor = "#efe8d8"
+borderColor = "#2e2a23"
+linkColor = "#d4af37"
+baseRadius = "2px"
+buttonRadius = "2px"
+font = "Newsreader:https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap"
+headingFont = "Fraunces:https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,900;1,9..144,600&display=swap"
+codeFont = "IBM Plex Mono:https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+chartCategoricalColors = ["#d4af37", "#c4532f", "#9a917f"]
+
+[client]
+toolbarMode = "minimal"
+showSidebarNavigation = false
+
+[browser]
+gatherUsageStats = false
