@@ -1,0 +1,7 @@
+pymongo>=4.6
+pandas>=2.0
+numpy
+python-dotenv>=1.0
+# tests only
+pytest>=8.0
+mongomock>=4.1
