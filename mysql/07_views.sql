@@ -15,42 +15,49 @@ CREATE VIEW v_movie_review_stats AS
 SELECT r.movie_id,
        COUNT(*) AS review_count,
        ROUND(AVG(r.rating), 2) AS average_rating,
+       AVG(r.rating) AS avg_rating, -- full precision for the Python/UI adapter
        MIN(r.rating) AS lowest_rating,
        MAX(r.rating) AS highest_rating,
        MAX(r.updated_at) AS latest_review_at
 FROM reviews r
 GROUP BY r.movie_id;
 
--- One discovery-ready row per movie, including genres and engagement.
+-- Aggregate child tables separately to avoid a genres x watchlists product.
+-- Keep average_rating for existing consumers; avg_rating is the UI name.
 CREATE VIEW v_movie_catalog AS
 SELECT m.movie_id, m.title, m.release_year, m.certificate, m.duration,
        m.description, m.director, m.`cast`, m.imdb_votes, m.poster_url,
-       GROUP_CONCAT(DISTINCT g.genre_name
-                    ORDER BY g.genre_name SEPARATOR ', ') AS genres,
+       COALESCE(gs.genres, '') AS genres,
        COALESCE(rs.review_count, 0) AS review_count,
-       rs.average_rating,
-       COUNT(DISTINCT w.watchlist_id) AS watchlist_count
+       rs.average_rating, rs.avg_rating,
+       COALESCE(ws.watchlist_count, 0) AS watchlist_count
 FROM movies m
-JOIN movie_genres mg ON mg.movie_id = m.movie_id
-JOIN genres g        ON g.genre_id = mg.genre_id
+LEFT JOIN (
+    SELECT mg.movie_id, GROUP_CONCAT(g.genre_name ORDER BY g.genre_name SEPARATOR ', ') AS genres
+    FROM movie_genres mg JOIN genres g ON g.genre_id = mg.genre_id GROUP BY mg.movie_id
+) gs ON gs.movie_id = m.movie_id
 LEFT JOIN v_movie_review_stats rs ON rs.movie_id = m.movie_id
-LEFT JOIN watchlists w            ON w.movie_id = m.movie_id
-GROUP BY m.movie_id, m.title, m.release_year, m.certificate, m.duration,
-         m.description, m.director, m.`cast`, m.imdb_votes, m.poster_url,
-         rs.review_count, rs.average_rating;
+LEFT JOIN (
+    SELECT movie_id, COUNT(*) AS watchlist_count FROM watchlists GROUP BY movie_id
+) ws ON ws.movie_id = m.movie_id;
 
 -- One row per user for profile/dashboard reporting.
 CREATE VIEW v_user_activity_summary AS
 SELECT u.user_id, u.username, u.created_at,
-       COUNT(DISTINCT r.review_id) AS review_count,
-       ROUND(AVG(r.rating), 2) AS average_rating_given,
-       COUNT(DISTINCT w.watchlist_id) AS watchlist_count,
-       MAX(r.updated_at) AS latest_review_at,
-       MAX(w.added_at) AS latest_watchlist_addition
+       COALESCE(r.review_count, 0) AS review_count,
+       r.average_rating_given,
+       COALESCE(w.watchlist_count, 0) AS watchlist_count,
+       r.latest_review_at,
+       w.latest_watchlist_addition
 FROM users u
-LEFT JOIN reviews r    ON r.user_id = u.user_id
-LEFT JOIN watchlists w ON w.user_id = u.user_id
-GROUP BY u.user_id, u.username, u.created_at;
+LEFT JOIN (
+    SELECT user_id, COUNT(*) AS review_count, ROUND(AVG(rating), 2) AS average_rating_given,
+           MAX(updated_at) AS latest_review_at FROM reviews GROUP BY user_id
+) r ON r.user_id = u.user_id
+LEFT JOIN (
+    SELECT user_id, COUNT(*) AS watchlist_count, MAX(added_at) AS latest_watchlist_addition
+    FROM watchlists GROUP BY user_id
+) w ON w.user_id = u.user_id;
 
 -- Quick verification after creation.
 SELECT * FROM v_movie_catalog

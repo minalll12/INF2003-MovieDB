@@ -4,6 +4,10 @@
 --           Operations 1-3 match the benchmark methods in app/backends.py.
 -- Guidance: Use the same parameters, result fields and dataset for both
 --           databases; run each operation repeatedly after a warm-up.
+-- Python entrypoints: mysql/analytics.py (same operation names as MongoDB).
+-- Python maps movie_id (Mongo _id), genres -> list, and UI avg_rating.
+-- Op 4: pair with Mongo filtered_discovery_live for live/live work.
+-- Op 5: Mongo top_in_genre uses stored statistics; label that trade-off.
 -- =====================================================================
 
 USE movie_platform;
@@ -76,8 +80,7 @@ LIMIT 25;
 
 -- ---------------------------------------------------------------------
 -- OPERATION 5: Top-rated movies in one genre (minimum two reviews)
--- MongoDB equivalent: $match genre, $lookup reviews, $unwind, $group,
---                     $match review_count and $sort.
+-- MongoDB implementation: top_in_genre() filters stored avg_rating/review_count.
 -- Measures: filtered join plus grouped ranking.
 -- ---------------------------------------------------------------------
 SELECT m.movie_id, m.title,

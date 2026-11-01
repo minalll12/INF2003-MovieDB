@@ -34,7 +34,7 @@ GROUP BY m.movie_id, m.title, m.release_year,
          rs.average_rating, rs.review_count, ws.watchlist_count
 ORDER BY COALESCE(rs.average_rating, 0) DESC,
          COALESCE(rs.review_count, 0) DESC,
-         COALESCE(ws.watchlist_count, 0) DESC
+         COALESCE(ws.watchlist_count, 0) DESC, m.title, m.movie_id
 LIMIT 20;
 
 -- ---------------------------------------------------------------------
@@ -136,7 +136,7 @@ GROUP BY m.movie_id, m.title, m.release_year,
          rs.average_rating, rs.review_count
 ORDER BY matching_genres DESC,
          COALESCE(rs.average_rating, 0) DESC,
-         COALESCE(rs.review_count, 0) DESC
+         COALESCE(rs.review_count, 0) DESC, m.movie_id
 LIMIT 20;
 
 -- ---------------------------------------------------------------------

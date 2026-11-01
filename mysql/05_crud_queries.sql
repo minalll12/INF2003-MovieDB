@@ -76,45 +76,62 @@ WHERE watchlist_id = @demo_watchlist_id
   AND user_id = @demo_user_id; -- ownership check used by the application
 
 -- ---------------------------------------------------------------------
--- D. MOVIE SEARCH: optional title, genre, year and minimum-rating filters
--- Set an optional filter to NULL to disable it.
+-- D. MOVIE SEARCH: literal title, ALL selected genres, year/rating ranges
+-- Current sort modes match app/backends.py. Callable search_movies() binds
+-- inputs and settles one-decimal rounding ties with pandas/NumPy.
+-- The @variables below are only convenient Workbench demo inputs.
 -- ---------------------------------------------------------------------
 SET @title_text    = 'godfather';
-SET @genre_filter = 'Crime';
+SET @selected_genres = JSON_ARRAY('Crime', 'Drama'); -- JSON_ARRAY() disables
 SET @year_from     = 1970;
 SET @year_to       = 2000;
-SET @minimum_rating = NULL;
+SET @rating_from   = 0.0; -- full 0-10 range includes films without reviews
+SET @rating_to     = 10.0;
+SET @sort_mode     = 'Highest rated';
 
+WITH selected_genres AS (
+    SELECT DISTINCT genre_name
+    FROM JSON_TABLE(@selected_genres, '$[*]'
+        COLUMNS (genre_name VARCHAR(50) PATH '$')) selected
+), review_stats AS (
+    SELECT movie_id, AVG(rating) AS avg_rating, COUNT(*) AS review_count
+    FROM reviews GROUP BY movie_id
+)
 SELECT m.movie_id, m.title, m.release_year, m.duration, m.poster_url,
        GROUP_CONCAT(g.genre_name ORDER BY g.genre_name SEPARATOR ', ') AS genres,
-       ROUND(rs.average_rating, 2) AS average_rating,
+       ROUND(CAST(rs.avg_rating AS DOUBLE), 1) AS avg_rating,
        COALESCE(rs.review_count, 0) AS review_count
 FROM movies m
-JOIN movie_genres mg ON mg.movie_id = m.movie_id
-JOIN genres g        ON g.genre_id = mg.genre_id
-LEFT JOIN (
-    SELECT movie_id, AVG(rating) AS average_rating, COUNT(*) AS review_count
-    FROM reviews
-    GROUP BY movie_id
-) rs ON rs.movie_id = m.movie_id
+LEFT JOIN movie_genres mg ON mg.movie_id = m.movie_id
+LEFT JOIN genres g        ON g.genre_id = mg.genre_id
+LEFT JOIN review_stats rs ON rs.movie_id = m.movie_id
 WHERE (@title_text IS NULL
-       OR m.title LIKE CONCAT('%', @title_text, '%'))
+       OR LOCATE(@title_text COLLATE utf8mb4_0900_as_ci,
+                 m.title COLLATE utf8mb4_0900_as_ci) > 0)
   AND (@year_from IS NULL OR m.release_year >= @year_from)
   AND (@year_to IS NULL OR m.release_year <= @year_to)
-  AND (@minimum_rating IS NULL
-       OR rs.average_rating >= @minimum_rating)
-  AND (@genre_filter IS NULL OR EXISTS (
-      SELECT 1
-      FROM movie_genres mg_filter
-      JOIN genres g_filter ON g_filter.genre_id = mg_filter.genre_id
-      WHERE mg_filter.movie_id = m.movie_id
-        AND g_filter.genre_name = @genre_filter
-  ))
+  AND ((@rating_from = 0 AND @rating_to = 10)
+       OR ((@rating_from IS NULL OR ROUND(CAST(rs.avg_rating AS DOUBLE), 1) >= @rating_from)
+           AND (@rating_to IS NULL OR ROUND(CAST(rs.avg_rating AS DOUBLE), 1) <= @rating_to)))
+  AND NOT EXISTS (
+      SELECT 1 FROM selected_genres selected
+      WHERE NOT EXISTS (
+          SELECT 1 FROM movie_genres mg_filter
+          JOIN genres g_filter ON g_filter.genre_id = mg_filter.genre_id
+          WHERE mg_filter.movie_id = m.movie_id
+            AND g_filter.genre_name = selected.genre_name
+      )
+  )
 GROUP BY m.movie_id, m.title, m.release_year, m.duration, m.poster_url,
-         rs.average_rating, rs.review_count
-ORDER BY COALESCE(rs.average_rating, 0) DESC,
-         COALESCE(rs.review_count, 0) DESC,
-         m.title;
+         rs.avg_rating, rs.review_count
+ORDER BY CASE WHEN @sort_mode = 'Highest rated' THEN avg_rating END DESC,
+         CASE WHEN @sort_mode IN ('Highest rated', 'Most reviewed') THEN review_count END DESC,
+         CASE WHEN @sort_mode = 'Most reviewed' THEN avg_rating END DESC,
+         CASE WHEN @sort_mode = 'Highest rated' THEN m.imdb_votes END DESC,
+         CASE WHEN @sort_mode = 'Newest' THEN m.release_year END DESC,
+         CASE WHEN @sort_mode = 'Oldest' THEN m.release_year END ASC,
+         CASE WHEN @sort_mode IN ('Newest', 'Oldest', 'Title A–Z') THEN m.title END COLLATE utf8mb4_bin ASC,
+         m.movie_id;
 
 -- A. USERS: delete (after child rows have been removed above)
 DELETE FROM users

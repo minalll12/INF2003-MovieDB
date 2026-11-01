@@ -35,7 +35,8 @@ BEGIN
 END//
 DELIMITER ;
 
--- Supports release-year filtering followed by title ordering/prefix search.
+-- Supports release-year filtering/order. A leading-wildcard literal title
+-- search cannot use a title B-tree for a seek.
 CALL add_index_if_missing(
     'movies', 'idx_movies_release_year_title', 'release_year, title'
 );
@@ -48,6 +49,14 @@ CALL add_index_if_missing(
 -- Supports the latest-review feed used by the Streamlit discovery page.
 CALL add_index_if_missing(
     'reviews', 'idx_reviews_created_at', 'created_at'
+);
+
+-- Equality on the parent ID, then newest-updated review ordering.
+CALL add_index_if_missing(
+    'reviews', 'idx_reviews_movie_updated', 'movie_id, updated_at'
+);
+CALL add_index_if_missing(
+    'reviews', 'idx_reviews_user_updated', 'user_id, updated_at'
 );
 
 -- Supports a user's watchlist ordered by most recently added.
@@ -85,3 +94,34 @@ SELECT watchlist_id, movie_id, added_at
 FROM watchlists
 WHERE user_id = 'U001'
 ORDER BY added_at DESC;
+
+EXPLAIN
+SELECT review_id, user_id, rating, review_text, updated_at
+FROM reviews WHERE movie_id = 'M0001'
+ORDER BY updated_at DESC, review_id DESC;
+
+EXPLAIN
+SELECT review_id, movie_id, rating, updated_at
+FROM reviews WHERE user_id = 'U001'
+ORDER BY updated_at DESC, review_id DESC;
+
+-- Core comparison op 1: the genre FK index on movie_genres already exists.
+EXPLAIN
+SELECT m.movie_id, m.title, m.release_year
+FROM genres g JOIN movie_genres mg ON mg.genre_id = g.genre_id
+JOIN movies m ON m.movie_id = mg.movie_id
+WHERE g.genre_name = 'Drama';
+
+-- Multi-genre intersection, grouped rating statistics and literal title filter.
+EXPLAIN
+SELECT m.movie_id, m.title, rs.avg_rating, COALESCE(rs.review_count, 0) AS review_count
+FROM movies m
+LEFT JOIN (SELECT movie_id, AVG(rating) AS avg_rating, COUNT(*) AS review_count
+           FROM reviews GROUP BY movie_id) rs ON rs.movie_id = m.movie_id
+WHERE m.release_year BETWEEN 1990 AND 2020
+  AND LOCATE('the', m.title) > 0
+  AND m.movie_id IN (
+      SELECT mg.movie_id FROM movie_genres mg JOIN genres g ON g.genre_id = mg.genre_id
+      WHERE g.genre_name IN ('Drama', 'Crime') GROUP BY mg.movie_id HAVING COUNT(*) = 2
+  )
+ORDER BY rs.avg_rating DESC, review_count DESC;
