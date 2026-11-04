@@ -1,9 +1,27 @@
 import re
+import sys
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 
 from auth import hash_password, verify_password
+
+# Wire in the real database backends. Both accept store=None and ignore it.
+# If a package is missing or the database is unreachable, we fall back to the CSV classes below.
+try:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from mysql.backend import MySQLBackend
+    _mysql_ok = True
+except Exception:
+    _mysql_ok = False
+
+try:
+    from mongodb.backend import MongoBackend
+    _mongo_ok = True
+except Exception:
+    _mongo_ok = False
+
 
 SORT_OPTIONS = {
     "Highest rated": (["avg_rating", "review_count", "imdb_votes"], [False, False, False]),
@@ -307,6 +325,6 @@ class DocumentBackend(CsvBackend):
 
 
 ENGINES = {
-    "MySQL (Relational)": RelationalBackend,
-    "MongoDB (Document)": DocumentBackend,
+    "MySQL (Relational)": MySQLBackend if _mysql_ok else RelationalBackend,
+    "MongoDB (Document)": MongoBackend if _mongo_ok else DocumentBackend,
 }
