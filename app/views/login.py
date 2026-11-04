@@ -9,13 +9,27 @@ from session import backend, log_in
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9_.]{3,30}$")
 EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 MIN_PASSWORD_LENGTH = 8
-WALL_SIZE = 24
+WALL_SIZE = 48
 
 
 def _poster_wall():
-    posters = backend().most_voted(WALL_SIZE)["poster_large"]
+    # Pull a larger pool than we need, drop any movie without a poster, then
+    # cycle the remaining ones to fill every tile — otherwise a missing
+    # poster_large leaves a bare black rectangle in the grid.
+    pool = backend().most_voted(WALL_SIZE * 5)["poster_large"]
+    _skip = {"", "none", "nan", "null", "n/a"}
+    urls = [s for url in pool if (s := str(url).strip()) and s.lower() not in _skip]
+    if not urls:
+        html('<div class="wall"><div class="wall-veil"></div></div>')
+        return
+    while len(urls) < WALL_SIZE * 2:
+        urls += urls
+    primary = urls[:WALL_SIZE]
+    # Offset backup by WALL_SIZE so each tile has a different movie as its fallback.
+    backup = urls[WALL_SIZE: WALL_SIZE * 2]
     art = "".join(
-        f'<div class="art" style="background-image:url(\'{escape(str(url))}\')"></div>' for url in posters
+        f'<div class="art" style="background-image:url(\'{escape(p)}\'),url(\'{escape(b)}\'),linear-gradient(135deg,#3d2d1a,#291d10)"></div>'
+        for p, b in zip(primary, backup)
     )
     html(f'<div class="wall"><div class="wall-grid">{art}</div><div class="wall-veil"></div></div>')
 
