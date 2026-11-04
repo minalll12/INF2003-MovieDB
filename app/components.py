@@ -33,14 +33,15 @@ def page_title(text):
 
 
 def section_head(title, action_label=None, action_key=None, on_action=None):
-    # Newsprint heading: label left, optional link right, double rule beneath.
+    # Newsprint heading: label left, optional link right-aligned, double rule beneath.
     if action_label:
         head, link = st.columns([4, 1], vertical_alignment="bottom")
         with head:
             html(f'<div class="section-head"><span class="title">{escape(title)}</span></div>')
         with link:
-            if st.button(action_label, key=action_key, type="tertiary"):
-                on_action()
+            with st.container(key=f"see_all_{action_key}"):
+                if st.button(action_label, key=action_key, type="tertiary"):
+                    on_action()
     else:
         html(f'<div class="section-head"><span class="title">{escape(title)}</span></div>')
     html('<div class="double-rule"></div>')
@@ -94,26 +95,25 @@ def genre_tags(names):
 
 def poster_card(movie, saved, prefix):
     movie_id = movie["movie_id"]
+    rating_text = score_text(movie["avg_rating"])
     with st.container(key=f"card_{prefix}_{movie_id}"):
-        html(poster_frame(movie))
-        if st.button(movie["title"], key=f"title_{prefix}_{movie_id}", type="tertiary"):
-            open_movie(movie_id)
-        meta, toggle = st.columns([3, 1], vertical_alignment="center")
-        with meta:
-            html(
-                '<div class="card-meta">'
-                f'<span>{movie["release_year"]}</span>'
-                f'<span class="score">{score_text(movie["avg_rating"])}</span></div>'
-            )
-        with toggle:
-            with st.container(key=f"save_{prefix}_{movie_id}"):
-                st.button(
-                    "♥" if saved else "♡",
-                    key=f"savebtn_{prefix}_{movie_id}",
-                    help="Remove from watchlist" if saved else "Save to watchlist",
-                    on_click=toggle_watchlist,
-                    args=(movie_id,),
-                )
+        html('<div class="card-poster-wrap">' + poster_frame(movie) + '</div>')
+        title_col, right_col = st.columns([3, 1], vertical_alignment="top")
+        with title_col:
+            if st.button(movie["title"], key=f"title_{prefix}_{movie_id}", type="tertiary"):
+                open_movie(movie_id)
+            html(f'<div class="card-year">{movie["release_year"]}</div>')
+        with right_col:
+            with st.container(key=f"right_{prefix}_{movie_id}"):
+                html(f'<div class="card-score">{escape(rating_text)}</div>')
+                with st.container(key=f"save_{prefix}_{movie_id}"):
+                    st.button(
+                        "♥" if saved else "♡",
+                        key=f"savebtn_{prefix}_{movie_id}",
+                        help="Remove from watchlist" if saved else "Save to watchlist",
+                        on_click=toggle_watchlist,
+                        args=(movie_id,),
+                    )
 
 
 def poster_grid(movies, prefix, columns=GRID_COLUMNS):
