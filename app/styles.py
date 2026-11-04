@@ -16,27 +16,40 @@ CSS = """
     --muted: #9a917f;
     --gold: #d4af37;
     --rust: #c4532f;
-    --display: 'Fraunces', Georgia, serif;
-    --read: 'Newsreader', Georgia, serif;
-    --label: 'IBM Plex Mono', monospace;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'DM Mono', 'Courier New', monospace;
+    --display: var(--font-display);
+    --read: var(--font-body);
+    --label: var(--font-mono);
     --gutter: 48px;
 }
 
 /* ── Font enforcement ──────────────────────────────────────────────────────── */
-/* Base: Newsreader on everything, then narrow overrides below win via specificity */
-* { font-family: 'Newsreader', Georgia, serif !important; }
+/* Base: Inter on text elements only — never a bare `*`, which would also
+   repaint Streamlit's icon-font glyphs (e.g. the chevron/arrow spans) as
+   literal text like "arrow_down" instead of rendering the icon. */
+p,
+span:not([class*="icon" i]):not([data-testid*="icon" i]):not([class*="material" i]):not([class*="symbol" i]):not([class*="chevron" i]):not([class*="arrow" i]):not([data-testid*="arrow" i]),
+div.stMarkdown,
+div[data-testid="stText"], label, .stTextInput label, .stSelectbox label,
+button[kind="secondary"],
+[data-testid="stAppViewContainer"] h1, [data-testid="stAppViewContainer"] h2,
+[data-testid="stAppViewContainer"] h3 {
+    font-family: 'Inter', system-ui, sans-serif !important;
+}
 
-/* Fraunces on all headings and display elements */
+/* DM Serif Display on all headings and display elements */
 h1, h2, h3, h4, h5, h6,
 [data-testid="stHeading"],
 [data-testid="stHeading"] *,
 [data-testid="stMarkdown"] h1,
 [data-testid="stMarkdown"] h2,
 [data-testid="stMarkdown"] h3 {
-    font-family: 'Fraunces', Georgia, serif !important;
+    font-family: 'DM Serif Display', Georgia, serif !important;
 }
 
-/* IBM Plex Mono on all interactive / label / nav elements */
+/* DM Mono only on nav links, filter labels, pill tags, counts, buttons */
 button, label, input, select, textarea, option,
 [data-testid="stSelectbox"] *,
 [data-testid="stMultiSelect"] *,
@@ -47,13 +60,13 @@ button, label, input, select, textarea, option,
 [data-baseweb="tab"] *,
 [data-baseweb="select"] *,
 nav *, .stButton button, .stFormSubmitButton button {
-    font-family: 'IBM Plex Mono', 'Courier New', monospace !important;
+    font-family: 'DM Mono', 'Courier New', monospace !important;
 }
 
-/* Poster card titles always Fraunces — override mono rule above */
+/* Poster card titles always DM Serif Display — override mono rule above */
 [class*="st-key-card_"] [data-testid="stBaseButton-tertiary"],
 [class*="st-key-card_"] [data-testid="stBaseButton-tertiary"] * {
-    font-family: 'Fraunces', Georgia, serif !important;
+    font-family: 'DM Serif Display', Georgia, serif !important;
 }
 
 /* Streamlit resolves most widget type through these theme variables. */
@@ -75,15 +88,21 @@ html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
     font-family: var(--read);
 }
 
-/* Streamlit's icon spans carry their glyph as text, so they must keep the icon font. */
+/* Streamlit's icon spans carry their glyph as a ligature on their text
+   content, so they must keep the icon font no matter what. Scoped under
+   .stApp and duplicated with case-insensitive attribute matches so this
+   always outranks the plain-text font-enforcement rule above, regardless
+   of how Streamlit capitalizes its internal data-testid/class names. */
 [data-testid="stIconMaterial"], [data-testid="stExpanderIcon"],
-span[class*="material-symbols"], span[class*="material-icons"] {
+span[class*="material-symbols"], span[class*="material-icons"],
+.stApp [data-testid*="icon" i], .stApp [data-testid*="Icon" i],
+.stApp [class*="icon" i], .stApp [class*="material" i], .stApp [class*="symbol" i] {
     font-family: 'Material Symbols Rounded', 'Material Symbols Outlined', 'Material Icons' !important;
 }
 
 h1, h2, h3, h4, h5, h6, .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
     font-family: var(--display) !important;
-    font-weight: 900;
+    font-weight: 400;
     letter-spacing: -0.015em;
     color: var(--paper);
 }
@@ -147,15 +166,16 @@ footer,
 [data-testid="stTopNav"] > *:first-child a,
 [data-testid="stTopNav"] > *:first-child button { border-left: none; }
 [data-testid="stTopNav"] a *, [data-testid="stTopNav"] button * {
-    font-family: var(--label) !important;
+    font-family: 'Inter', system-ui, sans-serif !important;
     font-size: 11px !important;
-    letter-spacing: 0.16em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted) !important;
 }
 [data-testid="stTopNav"] a:hover *, [data-testid="stTopNav"] button:hover * { color: var(--paper) !important; }
 [data-testid="stTopNav"] a[aria-current="page"] *,
-[data-testid="stTopNav"] [aria-selected="true"] * { color: var(--gold) !important; }
+[data-testid="stTopNav"] [aria-selected="true"] * { color: var(--gold) !important; font-weight: 500; }
 [data-testid="stTopNav"] svg { display: none; }
 
 /* Wordmark and account menu are lifted into the header band. */
@@ -168,14 +188,14 @@ footer,
 
 .wordmark {
     font-family: var(--display);
-    font-weight: 900;
+    font-weight: 400;
     font-size: 26px;
     letter-spacing: -0.02em;
     line-height: 1;
     color: var(--paper);
     white-space: nowrap;
 }
-.wordmark em { color: var(--gold); font-style: italic; font-weight: 900; }
+.wordmark em { color: var(--gold); font-style: italic; font-weight: 400; }
 
 /* The account popover is deliberately quiet. */
 [data-testid="stPopover"] button {
@@ -219,25 +239,69 @@ footer,
 .mono { font-family: var(--label); font-size: 12px; letter-spacing: 0.1em; color: var(--muted); }
 .read { font-family: var(--read); font-size: 17px; line-height: 1.6; color: var(--paper); }
 
-.page-title { font-family: var(--display); font-weight: 900; font-size: 48px; line-height: 1; margin: 16px 0 8px; }
+.page-title { font-family: var(--display); font-weight: 400; font-size: 48px; line-height: 1.1; margin: 16px 0 4px; }
 @media (max-width: 640px) { .page-title { font-size: 32px; } }
+
+.page-subtitle { font-family: var(--read); font-size: 13px; color: var(--muted); margin-bottom: 20px; }
 
 .section-head {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: 16px;
-    margin: 48px 0 0;
+    margin: 64px 0 0;
 }
 .section-head .title {
     font-family: var(--label);
-    font-size: 13px;
-    letter-spacing: 0.18em;
+    font-size: 11px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: #9a917f;
+    margin-bottom: 12px;
 }
-.double-rule { border-top: 2px solid var(--gold); margin-top: 8px; margin-bottom: 24px; }
+.double-rule { border-top: 2px solid var(--gold); margin-top: 12px; margin-bottom: 32px; }
 .double-rule::after { content: ""; display: block; border-top: 1px solid var(--rule); margin-top: 4px; }
+
+/* Discover section headers */
+.section-gap { height: 48px; }
+.section-head-label {
+    font-family: var(--label);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+/* Zero Streamlit's default flex gap inside section header containers so
+   section-gap / label row / double-rule stack without extra spacing.
+   margin-top ensures the block clears any preceding text content. */
+[class*="st-key-section_hdr_"] {
+    gap: 0 !important;
+    margin-top: 32px !important;
+}
+/* Bring the double-rule flush to the label row; global margin-top: 12px is
+   correct elsewhere but makes the rule feel detached inside section headers */
+[class*="st-key-section_hdr_"] .double-rule {
+    margin-top: 4px !important;
+}
+
+/* Editorial card metadata — year left, score + heart grouped right */
+.meta-year {
+    font-family: var(--label);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding-left: 4px;
+    line-height: 1.2;
+}
+.meta-score {
+    font-family: var(--label);
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    text-align: right;
+    padding-right: 4px;
+    line-height: 1.2;
+}
 
 .footer { margin: 64px 0 24px; }
 .footer-row {
@@ -382,16 +446,16 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     background: var(--surface);
 }
 .poster-frame .fallback-icon { font-size: 48px; opacity: 0.3; line-height: 1; }
-.poster-frame .fallback .name { font-family: var(--display); font-weight: 600; font-size: 18px; color: var(--paper); }
+.poster-frame .fallback .name { font-family: var(--display); font-weight: 400; font-size: 18px; color: var(--paper); }
 .poster-frame.no-image { outline: 1px solid var(--rule); }
 .poster-frame .fallback .year { font-family: var(--label); font-size: 13px; letter-spacing: 0.12em; color: var(--muted); }
-[class*="st-key-card_"]:hover .poster-frame { transform: translateY(-4px); outline-color: var(--gold); }
+/* Hover handled via .card-poster-wrap and .editorial-poster-wrap wrappers */
 [class*="st-key-card_"]:hover .poster-frame .art { transform: scale(1.03); }
 
-/* Poster grid — 20px column gap, 32px row gap */
+/* Poster grid — 24px column gap, 40px row gap */
 [data-testid="stHorizontalBlock"]:has([class*="st-key-card_"]) {
-    gap: 20px !important;
-    row-gap: 32px !important;
+    gap: 24px !important;
+    row-gap: 40px !important;
 }
 /* Text area under each poster — slight horizontal padding */
 [class*="st-key-card_"] [data-testid="stBaseButton-tertiary"],
@@ -401,38 +465,171 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     padding-right: 4px !important;
 }
 
-.card-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+/* Card metadata elements */
+.card-score {
     font-family: var(--label);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.06em;
     white-space: nowrap;
+    text-align: right;
+    padding-right: 2px;
+    line-height: 1.2;
+    margin: 0;
+    display: block;
 }
-.card-meta .score { color: var(--gold); }
+/* Strip default spacing from every Streamlit wrapper element inside the right_
+   container so the score text has zero surrounding padding/margin. */
+[class*="st-key-right_"] [data-testid="stElementContainer"],
+[class*="st-key-right_"] [data-testid="stMarkdownContainer"] {
+    margin: 0 !important;
+    padding: 0px !important;
+    line-height: 1 !important;
+}
+[class*="st-key-right_"] [data-testid="stMarkdownContainer"] p {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+}
+.card-year {
+    font-family: var(--label);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding-left: 4px;
+    margin: 2px 0 4px;
+    line-height: 1.2;
+    display: block;
+}
 
-/* The title button and save toggle are Streamlit widgets, so they are
-   pulled tight under the poster to read as one card. */
-[class*="st-key-card_"] { gap: 0; }
+/* Right column (score top-aligned with title, heart bottom-aligned with year):
+   st-key-right_* IS the stVerticalBlock — use column layout with space-between
+   so score sits at the top (row 1) and ♡ at the bottom (row 2). */
+[class*="st-key-right_"] {
+    width: 100% !important;
+    height: 100% !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: space-between !important;
+    gap: 4px !important;
+}
+/* Prevent Streamlit's stVerticalBlockBorderWrapper from expanding to 100% and
+   breaking the right-align: every direct child must be auto-width. */
+[class*="st-key-right_"] > * {
+    width: auto !important;
+    min-width: 0 !important;
+}
+/* Always pin the save/heart container to the bottom, even when the score is
+   absent — margin-top:auto consumes all remaining space above it. */
+[class*="st-key-right_"] > [data-testid="stLayoutWrapper"]:has([class*="st-key-save_"]) {
+    margin-top: auto !important;
+}
+
+/* Inner title|right columns horizontal block: stretch so both columns share
+   the same height — title+year on the left, score+heart on the right. */
+[class*="st-key-card_"]:not([class*="st-key-card_editorial_"]) [data-testid="stHorizontalBlock"] {
+    gap: 0 !important;
+    align-items: stretch !important;
+    margin-top: 24px !important;
+    margin-bottom: 0 !important;
+}
+/* Reduce the per-column padding so the title gets maximum horizontal space. */
+[class*="st-key-card_"]:not([class*="st-key-card_editorial_"]) [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+}
+/* Ensure every wrapper between the column and st-key-right_ stretches to full
+   height so space-between on st-key-right_ actually pins score top / heart bottom. */
+[class*="st-key-card_"]:not([class*="st-key-card_editorial_"]) [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] > [data-testid="stVerticalBlock"],
+[class*="st-key-card_"]:not([class*="st-key-card_editorial_"]) [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] [data-testid="stLayoutWrapper"] {
+    height: 100% !important;
+}
+
+/* Card containers: no vertical gap between children (poster, title, meta, blurb).
+   Editorial cards were previously excluded but never given their own gap:0 rule —
+   that omission caused Streamlit's default ~16px gap to push the meta row away
+   from the title, breaking the intended year / score+heart alignment. */
+[class*="st-key-card_"]:not([class*="st-key-card_editorial_"]),
+[class*="st-key-card_editorial_"] {
+    gap: 0 !important;
+}
 [class*="st-key-card_"] [data-testid="stBaseButton-tertiary"] {
     font-family: var(--display) !important;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 16px !important;
-    line-height: 1.3;
+    line-height: 1.35;
     text-align: left;
     letter-spacing: 0;
     text-transform: none;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    /* Fixed height = 2 lines × 1.3 line-height × 16px ≈ 42px — keeps all cards aligned */
-    height: 42px;
-    min-height: 42px;
-    margin-top: 8px;
+    min-height: 56px;
+    margin-top: 0;
+    margin-bottom: 0;
     white-space: normal;
+    padding-top: 0 !important;
+}
+
+/* See-all link: right-aligned flush with the section rule.
+   st-key-see_all_* is the stVerticalBlock. Vertical position is handled by
+   vertical_alignment="bottom" on the st.columns call — no height:100% needed. */
+[class*="st-key-see_all_"] {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    width: 100% !important;
+}
+/* Cover both the old stButton wrapper and any plain div child */
+[class*="st-key-see_all_"] > div,
+[class*="st-key-see_all_"] [data-testid="stButton"] {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+}
+[class*="st-key-see_all_"] [data-testid="stBaseButton-tertiary"] {
+    font-family: var(--label) !important;
+    font-size: 11px !important;
+    letter-spacing: 0.10em !important;
+    text-transform: uppercase !important;
+    padding-right: 0 !important;
+    margin-left: auto !important;
+}
+[data-testid="stColumn"]:has([class*="st-key-see_all_"]) {
+    padding-right: 0 !important;
+}
+
+/* Grid card poster: padding-bottom trick gives guaranteed 2:3 height so the
+   title button always renders BELOW the poster, never overlapping it. */
+.card-poster-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 150%;
+    overflow: hidden;
+    border-radius: 4px;
+    outline: 1px solid var(--rule);
+    outline-offset: -1px;
+    margin-top: 12px;
+    transition: transform 0.2s ease-out, outline-color 0.2s ease-out;
+}
+.card-poster-wrap .poster-frame {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
+    outline: none !important;
+    border-radius: 0 !important;
+    transform: none !important;
+}
+[class*="st-key-card_"]:not([class*="st-key-card_editorial_"]):hover .card-poster-wrap {
+    transform: translateY(-4px);
+    outline-color: var(--gold);
+}
+[class*="st-key-save_"] [data-testid="stButton"] {
+    display: flex;
+    justify-content: flex-end;
 }
 [class*="st-key-save_"] button {
     border: none !important;
@@ -442,8 +639,14 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     padding: 0 !important;
     min-height: 0 !important;
     letter-spacing: 0;
+    margin-top: 16.2px;
 }
 [class*="st-key-save_"] button:hover { color: #e2c159 !important; }
+/* Editorial save: left-align so ♡ sits at the LEFT edge of its narrow column,
+   directly adjacent to the right-aligned score text — creating a score+heart cluster */
+[class*="st-key-save_editorial_"] [data-testid="stButton"] {
+    justify-content: flex-start !important;
+}
 
 .genre-tag {
     display: inline-block;
@@ -456,6 +659,39 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     border-radius: 2px;
     padding: 3px 9px;
 }
+
+/* Genre strip scroll arrows (injected via JS into parent DOM) */
+.genre-arrow-wrap {
+    position: relative;
+    padding: 0 36px;
+}
+.genre-scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(22, 20, 15, 0.9);
+    border: 1px solid #3d3a32;
+    color: #9a917f;
+    font-size: 20px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.genre-scroll-btn:hover {
+    color: #d4af37;
+    border-color: #d4af37;
+    background: rgba(22, 20, 15, 1);
+}
+.genre-scroll-left  { left:  4px; }
+.genre-scroll-right { right: 4px; }
 
 /* ---------- hero ---------- */
 
@@ -489,7 +725,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
 .hero-body { position: relative; max-width: 620px; }
 .hero-title {
     font-family: var(--display);
-    font-weight: 900;
+    font-weight: 400;
     font-size: 88px;
     line-height: 0.95;
     letter-spacing: -0.025em;
@@ -560,7 +796,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     outline: 1px solid var(--rule);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
 }
-.detail-title { font-family: var(--display); font-weight: 900; font-size: 64px; line-height: 1; margin: 8px 0 16px; }
+.detail-title { font-family: var(--display); font-weight: 400; font-size: 64px; line-height: 1; margin: 8px 0 16px; }
 @media (max-width: 900px) { .detail-title { font-size: 40px; } .detail-block { margin-top: -160px; } }
 .detail-rating { display: flex; align-items: baseline; gap: 8px; margin: 16px 0; }
 .detail-rating .score { font-family: var(--label); font-size: 40px; color: var(--gold); line-height: 1; }
@@ -604,14 +840,14 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     align-items: center;
     justify-content: center;
     font-family: var(--display);
-    font-weight: 900;
+    font-weight: 400;
     font-size: 34px;
     color: var(--gold);
 }
 .stat { padding: 0 24px; border-left: 1px solid var(--rule); }
 .stat:first-child { border-left: none; padding-left: 0; }
-.stat .figure { font-family: var(--display); font-weight: 900; font-size: 48px; line-height: 1.1; color: var(--paper); }
-.stat .name { font-family: var(--label); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.stat .figure { font-family: var(--display); font-weight: 400; font-size: 52px; line-height: 1.1; color: var(--paper); }
+.stat .name { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
 /* ---------- sign in ---------- */
 
@@ -634,7 +870,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     transform: rotate(-8deg);
     animation: drift 90s linear infinite;
 }
-.wall-grid .art { aspect-ratio: 2 / 3; background-size: cover; background-position: center; border-radius: 4px; }
+.wall-grid .art { aspect-ratio: 2 / 3; background-size: cover; background-position: center; border-radius: 4px; background-color: #3d2d1a; }
 .wall-veil {
     position: absolute;
     inset: 0;
@@ -642,11 +878,11 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
 }
 [data-testid="stMain"] > div { position: relative; z-index: 1; }
 
-.masthead-plate { text-align: center; padding: 24px 0 0; }
+.masthead-plate { text-align: center; padding: 24px 0 40px; }
 .masthead-plate .rule { border-top: 1px solid var(--rule); max-width: 560px; margin: 0 auto; }
 .masthead-plate .name {
     font-family: var(--display);
-    font-weight: 900;
+    font-weight: 400;
     font-size: 112px;
     line-height: 1;
     letter-spacing: -0.03em;
@@ -654,7 +890,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
 }
 .masthead-plate .name em { color: var(--gold); font-style: italic; }
 .masthead-plate .vol { font-family: var(--label); font-size: 11px; letter-spacing: 0.3em; color: var(--muted); padding-top: 8px; }
-.masthead-plate .tagline { font-family: var(--read); font-style: italic; font-size: 20px; color: rgba(239,232,216,0.8); padding-top: 8px; }
+.masthead-plate .tagline { font-family: var(--read); font-style: italic; font-size: 20px; color: rgba(239,232,216,0.8); padding-top: 8px; margin-bottom: 0; }
 @media (max-width: 640px) { .masthead-plate .name { font-size: 56px; } .masthead-plate .tagline { font-size: 17px; } }
 
 /* Login input fields get a subtle gold border to feel premium. */
@@ -672,7 +908,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     border: none;
 }
 [class*="st-key-demo_entry"] summary { justify-content: center; }
-[class*="st-key-demo_entry"] summary p { font-size: 10px !important; color: var(--muted) !important; }
+[class*="st-key-demo_entry"] summary p { font-size: 13px !important; color: var(--muted) !important; }
 [class*="st-key-demo_entry"] summary svg { display: none; }
 
 [class*="st-key-auth_panel"] {
@@ -687,36 +923,160 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
 .editorial-label {
     font-family: var(--label);
     font-size: 11px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--gold);
-    margin-top: 16px;
+    margin-top: 24px;
 }
 .editorial-title {
     font-family: var(--display);
-    font-weight: 900;
+    font-weight: 400;
     font-size: 56px;
     line-height: 1;
     letter-spacing: -0.02em;
     color: var(--paper);
-    margin: 8px 0 24px;
+    margin: 12px 0 32px;
 }
 @media (max-width: 640px) { .editorial-title { font-size: 36px; } }
 .editorial-blurb {
     font-family: var(--read) !important;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.7;
     color: var(--muted);
-    margin: 8px 0 4px;
+    margin: 16px 0 32px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(14px * 1.7 * 3); /* ~72px: equalises card heights when description is absent */
+}
+
+/* Editorial metadata row: year + score on the same line */
+.editorial-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 4px;
+}
+.card-year-inline {
+    font-family: var(--label);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    line-height: 1.2;
+}
+.card-score-inline {
+    font-family: var(--label);
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+/* Editorial cards: equal-width flex row so the 3 cards never overlap or
+   collide, regardless of poster size or blurb length. */
+[data-testid="stHorizontalBlock"]:has([class*="st-key-card_editorial_"]) {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 24px !important;
+    overflow: hidden !important;
+    width: 100% !important;
+}
+[data-testid="stHorizontalBlock"]:has([class*="st-key-card_editorial_"]) > [data-testid="stColumn"] {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: calc(33.33% - 12px) !important;
+}
+/* Editorial poster: padding-bottom trick guarantees 2:3 height regardless of
+   absolutely-positioned children (aspect-ratio alone is unreliable here). */
+.editorial-poster-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 150%;
+    overflow: hidden;
+    border-radius: 4px;
+    outline: 1px solid var(--rule);
+    outline-offset: -1px;
+    transition: transform 0.2s ease-out, outline-color 0.2s ease-out;
+}
+.editorial-poster-wrap .poster-frame {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
+    outline: none !important;
+    border-radius: 0 !important;
+    transform: none !important;
+}
+[class*="st-key-card_editorial_"]:hover .editorial-poster-wrap {
+    transform: translateY(-4px);
+    outline-color: var(--gold);
+}
+[class*="st-key-card_editorial_"] [data-testid="stBaseButton-tertiary"] {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    min-height: auto !important;
+    margin-top: 24px !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Editorial meta|save row: no CSS gap, vertically centred */
+[class*="st-key-card_editorial_"] [data-testid="stHorizontalBlock"] {
+    gap: 0 !important;
+    align-items: center !important;
+    margin-top: 8px !important;
+    margin-bottom: 0 !important;
+}
+[class*="st-key-card_editorial_"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+}
+
+/* ---------- fresh review cards (No. 03) ---------- */
+
+/* Title button — match grid card (serif, normal case, 2-line clamp) */
+[class*="st-key-fresh_"] [data-testid="stBaseButton-tertiary"] {
+    font-family: var(--display) !important;
+    font-weight: 400;
+    font-size: 14px !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    line-height: 1.3;
+    text-align: left;
+    padding: 0 !important;
+    color: var(--paper) !important;
+    white-space: normal;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    min-height: 38px;
+    margin-top: 10px;
+    margin-bottom: 4px;
 }
-/* Editorial cards: consistent column gaps */
-[data-testid="stHorizontalBlock"]:has([class*="st-key-card_editorial_"]) {
-    gap: 32px !important;
+
+/* Username — quiet mono label, muted */
+[class*="st-key-fresh_"] .review-who {
+    font-size: 10px !important;
+    letter-spacing: 0.12em;
+    color: var(--muted) !important;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
+
+/* Star rating row — compact */
+[class*="st-key-fresh_"] .stars { font-size: 11px; display: block; margin-top: 2px; }
+[class*="st-key-fresh_"] .stars .exact { font-size: 10px; }
+
+/* Poster fallback: hide duplicate title/year in all no-image frames — the
+   info is already shown in the label/button below the poster. */
+.poster-frame.no-image .fallback .name,
+.poster-frame.no-image .fallback .year { display: none; }
+.poster-frame.no-image .fallback-icon { font-size: 36px; opacity: 0.18; }
 
 /* ---------- benchmarks ---------- */
 
@@ -770,7 +1130,11 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     color: var(--gold);
 }
 
-/* Browse clear button — keep it compact */
+/* Browse clear button — keep it compact, align vertically with adjacent dropdowns */
+[class*="st-key-browse_clear"] {
+    margin-top: -8px !important;
+    margin-bottom: 8px !important;
+}
 [class*="st-key-browse_clear"] button {
     font-size: 11px !important;
     letter-spacing: 0.1em !important;
@@ -795,7 +1159,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
 /* ---------- pagination ---------- */
 
 /* Add breathing room around pagination rows */
-[data-testid="stElementContainer"]:has(> [data-testid="stHorizontalBlock"] [data-testid="stBaseButton-tertiary"]):not(:has([class*="st-key-card_"])):not(:has([class*="st-key-genre_strip"])) {
+[data-testid="stElementContainer"]:has(> [data-testid="stHorizontalBlock"] [data-testid="stBaseButton-tertiary"]):not(:has([class*="st-key-card_"])):not(:has([class*="st-key-genre_strip"])):not(:has([class*="st-key-see_all_"])) {
     margin-top: 16px;
     margin-bottom: 16px;
 }
@@ -874,13 +1238,44 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
 FONT_LINKS = (
     '<link rel="preconnect" href="https://fonts.googleapis.com">'
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-    '<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600'
-    ';0,9..144,900;1,9..144,600;1,9..144,900&family=Newsreader:ital,opsz,wght@0,6..72,400'
-    ';0,6..72,500;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap"'
+    '<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1'
+    '&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"'
     ' rel="stylesheet">'
 )
+
+# Belt-and-suspenders font overrides, injected as a separate st.markdown call
+# after the main CSS, in case a widget's own stylesheet loads after ours and
+# would otherwise win the cascade.
+FONT_OVERRIDES = """
+<style>
+[data-testid="stMarkdown"] h1, [data-testid="stMarkdown"] h2, [data-testid="stMarkdown"] h3,
+.main h1, .main h2, .main h3, h1, h2, h3 {
+    font-family: 'DM Serif Display', Georgia, serif !important;
+}
+.main p, .main label, .main button, p, label, button {
+    font-family: 'Inter', system-ui, sans-serif !important;
+}
+[class*="mono"], code {
+    font-family: 'DM Mono', monospace !important;
+}
+
+p,
+span:not([class*="icon" i]):not([data-testid*="icon" i]):not([class*="material" i]):not([class*="symbol" i]):not([class*="chevron" i]):not([class*="arrow" i]):not([data-testid*="arrow" i]),
+div.stMarkdown,
+div[data-testid="stText"], label, .stTextInput label, .stSelectbox label,
+button[kind="secondary"] {
+    font-family: var(--font-body) !important;
+}
+h1, h2, h3 { font-family: var(--font-display) !important; font-weight: 400 !important; }
+.stApp [data-testid*="icon" i], .stApp [class*="icon" i],
+.stApp [class*="material" i], .stApp [class*="symbol" i] {
+    font-family: 'Material Symbols Rounded', 'Material Symbols Outlined', 'Material Icons' !important;
+}
+</style>
+"""
 
 
 def apply_theme():
     st.markdown(FONT_LINKS, unsafe_allow_html=True)
     st.markdown(CSS.replace("__GRAIN__", GRAIN), unsafe_allow_html=True)
+    st.markdown(FONT_OVERRIDES, unsafe_allow_html=True)
