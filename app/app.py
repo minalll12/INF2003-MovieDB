@@ -2,17 +2,14 @@ from html import escape
 
 import streamlit as st
 
-from backends import ENGINES
 from components import html
 from session import (
     backend,
     current_user,
-    engine_name,
     get_store,
     log_in,
     log_out,
     pages,
-    set_engine,
 )
 from styles import apply_theme
 from views import benchmarks, browse, details, discover, login, profile, watchlist
@@ -53,13 +50,6 @@ def account_menu(user):
         st.session_state["switch_user"] = user["username"]
         st.selectbox("Switch user", usernames, key="switch_user", on_change=switch_user)
 
-        html('<div class="double-rule" style="margin:8px 0 16px"></div>')
-        st.session_state.setdefault("menu_engine", engine_name())
-        st.segmented_control(
-            "Data source", list(ENGINES), key="menu_engine",
-            format_func=lambda name: name.split(" ")[0].upper(),
-            on_change=set_engine, args=("menu_engine",),
-        )
         st.page_link(pages["benchmarks"], label="Performance comparison")
         st.button("Reset demo data", type="tertiary", on_click=reset_demo_data)
         if st.button("Log out", type="tertiary"):
