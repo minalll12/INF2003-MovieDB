@@ -141,20 +141,21 @@ def paginate(frame, key):
 def pagination(key, page, total_pages):
     if total_pages <= 1:
         return
-    html('<div style="margin-top:32px"></div>')
-    _, prev, label, following, _ = st.columns([3, 1, 1.4, 1, 3], vertical_alignment="center")
-    with prev:
-        st.button(
-            "← PREV", key=f"{key}_prev", type="tertiary", disabled=page <= 1,
-            on_click=_set_page, args=(key, page - 1),
-        )
-    with label:
-        html(f'<div class="mono" style="text-align:center">PAGE {page} OF {total_pages}</div>')
-    with following:
-        st.button(
-            "NEXT →", key=f"{key}_next", type="tertiary", disabled=page >= total_pages,
-            on_click=_set_page, args=(key, page + 1),
-        )
+    with st.container(key=f"pagination_{key}"):
+        html('<div style="margin-top:32px"></div>')
+        _, prev, label, following, _ = st.columns([3, 1, 1.4, 1, 3], vertical_alignment="center")
+        with prev:
+            st.button(
+                "← PREV", key=f"{key}_prev", type="tertiary", disabled=page <= 1,
+                on_click=_set_page, args=(key, page - 1),
+            )
+        with label:
+            html(f'<div class="mono" style="text-align:center">PAGE {page} OF {total_pages}</div>')
+        with following:
+            st.button(
+                "NEXT →", key=f"{key}_next", type="tertiary", disabled=page >= total_pages,
+                on_click=_set_page, args=(key, page + 1),
+            )
 
 
 def paged_grid(movies, key, columns=GRID_COLUMNS):

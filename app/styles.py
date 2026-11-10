@@ -236,7 +236,7 @@ footer,
 .eyebrow.plain::before { display: none; }
 
 .label { font-family: var(--label); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
-.mono { font-family: var(--label); font-size: 12px; letter-spacing: 0.1em; color: var(--muted); }
+.mono { font-family: var(--label); font-size: 12px; letter-spacing: 0.1em; color: var(--muted); margin-right: 4px; padding-bottom: 2px; }
 .read { font-family: var(--read); font-size: 17px; line-height: 1.6; color: var(--paper); }
 
 .page-title { font-family: var(--display); font-weight: 400; font-size: 48px; line-height: 1.1; margin: 16px 0 4px; }
@@ -266,10 +266,12 @@ footer,
 .section-gap { height: 48px; }
 .section-head-label {
     font-family: var(--label);
-    font-size: 11px;
+    font-size: 15px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--muted);
+    line-height: 1.2 !important;
+    margin-bottom: 14px;
 }
 /* Zero Streamlit's default flex gap inside section header containers so
    section-gap / label row / double-rule stack without extra spacing.
@@ -278,10 +280,21 @@ footer,
     gap: 0 !important;
     margin-top: 32px !important;
 }
+/* Ensure the horizontal block in section headers aligns both columns to the bottom */
+[class*="st-key-section_hdr_"] [data-testid="stHorizontalBlock"] {
+    align-items: flex-end !important;
+}
+[class*="st-key-section_hdr_"] [data-testid="stColumn"] {
+    justify-content: flex-end !important;
+}
+[class*="st-key-section_hdr_"] [data-testid="stColumn"]:first-child [data-testid="stElementContainer"] {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
 /* Bring the double-rule flush to the label row; global margin-top: 12px is
    correct elsewhere but makes the rule feel detached inside section headers */
 [class*="st-key-section_hdr_"] .double-rule {
-    margin-top: 4px !important;
+    margin-top: 6px !important;
 }
 
 /* Editorial card metadata — year left, score + heart grouped right */
@@ -301,6 +314,8 @@ footer,
     text-align: right;
     padding-right: 4px;
     line-height: 1.2;
+    margin-left: 8px !important;
+    padding-left:5px;
 }
 
 .footer { margin: 64px 0 24px; }
@@ -477,6 +492,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     line-height: 1.2;
     margin: 0;
     display: block;
+    margin-top: 2.5px;
 }
 /* Strip default spacing from every Streamlit wrapper element inside the right_
    container so the score text has zero surrounding padding/margin. */
@@ -579,22 +595,38 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-end !important;
+    justify-content: flex-end !important;
     width: 100% !important;
+    margin: 0 !important;
 }
 /* Cover both the old stButton wrapper and any plain div child */
 [class*="st-key-see_all_"] > div,
 [class*="st-key-see_all_"] [data-testid="stButton"] {
     display: flex !important;
     justify-content: flex-end !important;
+    align-items: flex-end !important;
     width: 100% !important;
+    margin: 0 !important;
 }
 [class*="st-key-see_all_"] [data-testid="stBaseButton-tertiary"] {
     font-family: var(--label) !important;
     font-size: 11px !important;
     letter-spacing: 0.10em !important;
     text-transform: uppercase !important;
-    padding-right: 0 !important;
+    border: 1px solid var(--gold) !important;
+    border-radius: 10px !important;
+    padding: 8px 10px !important;
     margin-left: auto !important;
+    margin-bottom: 0 !important;
+    line-height: 1.2 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    transition: all 0.15s ease-in-out !important;
+}
+[class*="st-key-see_all_"] [data-testid="stBaseButton-tertiary"]:hover {
+    border-color: var(--gold) !important;
+    color: var(--gold) !important;
+    background: rgba(212, 175, 55, 0.1) !important;
 }
 [data-testid="stColumn"]:has([class*="st-key-see_all_"]) {
     padding-right: 0 !important;
@@ -611,6 +643,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     outline: 1px solid var(--rule);
     outline-offset: -1px;
     margin-top: 12px;
+    margin-bottom: 5px;
     transition: transform 0.2s ease-out, outline-color 0.2s ease-out;
 }
 .card-poster-wrap .poster-frame {
@@ -646,6 +679,30 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
    directly adjacent to the right-aligned score text — creating a score+heart cluster */
 [class*="st-key-save_editorial_"] [data-testid="stButton"] {
     justify-content: flex-start !important;
+}
+
+/* Editorial heart wrapper: moves heart with margin-left */
+.editorial-heart-wrap,
+[class*="st-key-editorial_heart_wrap"],
+[class*="st-key-save_editorial_"] {
+    margin-left: 3px !important;
+}
+.editorial-heart-wrap button,
+[class*="st-key-editorial_heart_wrap"] button,
+[class*="st-key-save_editorial_"] button {
+    margin-left: 3px !important;
+}
+
+/* Profile heart wrapper: moves heart slightly to the left */
+.profile-heart-wrap [class*="st-key-save_"],
+[class*="st-key-profile_heart_wrap"] [class*="st-key-save_"],
+[class*="st-key-save_fav"] {
+    margin-right: 6px !important;
+}
+.profile-heart-wrap [class*="st-key-save_"] button,
+[class*="st-key-profile_heart_wrap"] [class*="st-key-save_"] button,
+[class*="st-key-save_fav"] button {
+    margin-right: 2px !important;
 }
 
 .genre-tag {
@@ -935,7 +992,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     line-height: 1;
     letter-spacing: -0.02em;
     color: var(--paper);
-    margin: 12px 0 32px;
+    margin: 20px 0 32px;
 }
 @media (max-width: 640px) { .editorial-title { font-size: 36px; } }
 .editorial-blurb {
@@ -972,6 +1029,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     letter-spacing: 0.06em;
     white-space: nowrap;
     line-height: 1.2;
+    
 }
 /* Editorial cards: equal-width flex row so the 3 cards never overlap or
    collide, regardless of poster size or blurb length. */
@@ -1017,7 +1075,7 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     font-size: 18px !important;
     line-height: 1.3 !important;
     min-height: auto !important;
-    margin-top: 24px !important;
+    margin-top: 32px !important;
     margin-bottom: 0 !important;
     padding-top: 0 !important;
 }
@@ -1164,10 +1222,106 @@ hr, [data-testid="stDivider"] hr { border-color: var(--rule) !important; }
     margin-bottom: 16px;
 }
 
+/* Ensure PREV, NEXT and page number text are on the exact same horizontal level */
+[class*="st-key-pagination_"] [data-testid="stHorizontalBlock"],
+[data-testid="stHorizontalBlock"]:has([class*="_prev"]) {
+    align-items: center !important;
+}
+
+[class*="st-key-pagination_"] [data-testid="stColumn"],
+[data-testid="stHorizontalBlock"]:has([class*="_prev"]) [data-testid="stColumn"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+[class*="st-key-pagination_"] [data-testid="stVerticalBlock"],
+[data-testid="stHorizontalBlock"]:has([class*="_prev"]) [data-testid="stVerticalBlock"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+}
+
+[class*="st-key-pagination_"] [data-testid="stElementContainer"],
+[data-testid="stHorizontalBlock"]:has([class*="_prev"]) [data-testid="stElementContainer"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+[class*="st-key-pagination_"] [data-testid="stButton"],
+[data-testid="stHorizontalBlock"]:has([class*="_prev"]) [data-testid="stButton"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+[class*="st-key-pagination_"] [data-testid="stBaseButton-tertiary"],
+[data-testid="stHorizontalBlock"]:has([class*="_prev"]) [data-testid="stBaseButton-tertiary"] {
+    font-family: var(--label) !important;
+    font-size: 11px !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    padding: 0 8px !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+}
+
+[class*="st-key-pagination_"] [data-testid="stBaseButton-tertiary"]:disabled,
+[data-testid="stHorizontalBlock"]:has([class*="_prev"]) [data-testid="stBaseButton-tertiary"]:disabled {
+    opacity: 0.3 !important;
+    cursor: default !important;
+}
+
+[class*="st-key-pagination_"] [data-testid="stMarkdownContainer"],
+[data-testid="stHorizontalBlock"]:has([class*="_prev"]) [data-testid="stMarkdownContainer"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+[class*="st-key-pagination_"] .mono,
+[data-testid="stHorizontalBlock"]:has([class*="_prev"]) .mono {
+    font-family: var(--label) !important;
+    font-size: 11px !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+}
+
 /* ---------- empty states ---------- */
 
 .empty { text-align: center; padding: 96px 24px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 .empty .line { font-family: var(--read); font-style: italic; font-size: 20px; color: var(--muted); max-width: 440px; margin: 0 auto; }
+
+.profile-empty-wrap,
+[class*="st-key-profile_empty_wrap"] {
+    margin-top: 5px !important;
+}
+
+[class*="st-key-profile_empty_wrap"] [data-testid="stHorizontalBlock"],
+[class*="st-key-profile_empty"] {
+    margin-top: 5px !important;
+}
 
 /* ---------- mobile responsive ---------- */
 

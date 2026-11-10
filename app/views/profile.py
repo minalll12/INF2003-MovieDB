@@ -73,13 +73,15 @@ def _favourites(favourites):
     if favourites.empty:
         empty_state("Rate a few films and your favourites will gather here.")
         return
-    poster_grid(favourites.head(FAVOURITE_COUNT), "fav", columns=FAVOURITE_COUNT)
+    with st.container(key="profile_heart_wrap"):
+        poster_grid(favourites.head(FAVOURITE_COUNT), "fav", columns=FAVOURITE_COUNT)
 
 
 def _reviews(reviews_with_titles):
     section_head("YOUR REVIEWS")
     if reviews_with_titles.empty:
-        empty_state("You haven't written anything yet.", "BROWSE FILMS →", open_browse, key="profile_empty")
+        with st.container(key="profile_empty_wrap"):
+            empty_state("You haven't written anything yet.", "BROWSE FILMS →", open_browse, key="profile_empty")
         return
     visible, page, total_pages = paginate(reviews_with_titles, "profile_page")
     for _, review in visible.iterrows():

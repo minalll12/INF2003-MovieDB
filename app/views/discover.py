@@ -119,21 +119,22 @@ def _editorial_section(movies):
                 with score_col:
                     html(f'<div class="meta-score">{escape(rating_text)}</div>')
                 with heart_col:
-                    with st.container(key=f"save_editorial_{movie_id}"):
-                        st.button(
-                            "♥" if saved else "♡",
-                            key=f"savebtn_editorial_{movie_id}",
-                            help="Remove from watchlist" if saved else "Save to watchlist",
-                            on_click=toggle_watchlist,
-                            args=(movie_id,),
-                        )
+                    with st.container(key=f"editorial_heart_wrap_{movie_id}"):
+                        with st.container(key=f"save_editorial_{movie_id}"):
+                            st.button(
+                                "♥" if saved else "♡",
+                                key=f"savebtn_editorial_{movie_id}",
+                                help="Remove from watchlist" if saved else "Save to watchlist",
+                                on_click=toggle_watchlist,
+                                args=(movie_id,),
+                            )
                 html(f'<p class="editorial-blurb">{escape(desc)}</p>')
 
 
 def _section_header(title, action_key, on_action):
     with st.container(key=f"section_hdr_{action_key}"):
         html('<div class="section-gap"></div>')
-        label_col, action_col = st.columns([4, 1], vertical_alignment="center")
+        label_col, action_col = st.columns([4, 1], vertical_alignment="bottom")
         with label_col:
             html(f'<div class="section-head-label">{escape(title)}</div>')
         with action_col:
