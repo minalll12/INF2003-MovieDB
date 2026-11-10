@@ -4,15 +4,39 @@ This folder contains the MySQL 8 implementation for the INF2003 Group 28 Movie R
 
 ## Connection settings
 
-Copy the repository-root `.env.example` to `.env` and replace the placeholders locally. `.env` is ignored by Git; never commit passwords or other credentials.
+If the repository-root `.env` does not exist, copy `.env.example` to `.env` and replace the placeholders locally. If it already exists, edit only the relevant entries without overwriting it. `.env` is ignored by Git; never commit passwords or other credentials.
 
-The example port is the MySQL default, `3306`. If your local server listens on `3307`, set `DB_PORT=3307` in `.env` and use port `3307` in Workbench or the CLI, for example:
+The local defaults and example use `localhost:3307`. Set `DB_PORT` explicitly if your server uses another port (for example, the standard MySQL port `3306`). Use the same port in Workbench or the CLI, for example:
 
 ```powershell
 mysql -h localhost -P 3307 -u root -p --local-infile=1
 ```
 
 Changing the client port does not require any SQL script changes.
+
+### Railway Cloud MySQL
+
+The existing PyMySQL connection also supports Railway through the same `.env` variables:
+
+```dotenv
+DB_HOST=your-railway-public-hostname
+DB_PORT=your-railway-public-port
+DB_USER=moviedb_app
+DB_PASSWORD='replace_with_your_app_user_password'
+DB_NAME=movie_platform
+```
+
+Replace the hostname and port placeholders with Railway's public TCP endpoint, and use the restricted app user's password. The port must be an integer. For a backend running on your computer, use the public hostname rather than a Railway private hostname. Keep credentials only in your ignored `.env` or process environment. Existing process environment variables take precedence over `.env`; restart the backend after changing settings. To switch back to local MySQL, restore `DB_HOST=localhost`, `DB_PORT=3307` and your local user's credentials.
+
+From the repository root, verify the configured connection safely:
+
+```powershell
+python -m mysql.verify_connection
+```
+
+This starts a read-only transaction, runs `SELECT DATABASE()` and `SELECT COUNT(*) FROM movies`, then rolls back and closes the connection. It prints only the selected database and movie count on success, or a generic configuration error on failure (exit code 1). It does not print credentials or create/change database objects or data.
+
+The existing Railway schema is already imported. Do not run the setup/import scripts or the opt-in real database tests against the shared Railway service. Use only this read-only check for Railway verification.
 
 ## Streamlit integration status
 

@@ -13,9 +13,13 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 
 def connect(**overrides):
-    """Return an independent connection, never a connection shared between Streamlit threads."""
+    """Connect using DB_* environment variables (Railway public endpoint or local MySQL).
+
+    Process environment variables take precedence over the repository-root .env.
+    Return an independent connection, never shared between Streamlit threads.
+    """
     options = dict(
-        host=os.getenv("DB_HOST", "localhost"), port=int(os.getenv("DB_PORT", "3306")),
+        host=os.getenv("DB_HOST", "localhost"), port=int(os.getenv("DB_PORT", "3307")),
         user=os.getenv("DB_USER", "root"), password=os.getenv("DB_PASSWORD", ""),
         database=os.getenv("DB_NAME", "movie_platform"), charset="utf8mb4",
         cursorclass=pymysql.cursors.DictCursor, autocommit=False,
