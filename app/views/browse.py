@@ -51,8 +51,7 @@ def render():
     results = backend().search_movies(*criteria)
     if state.get("browse_sort", "Highest rated") == "Highest rated":
         results = results[results["review_count"] >= MIN_REVIEWS_FOR_RATING_SORT]
-    html('<div class="double-rule"></div>')
-    html(f'<div class="label" style="padding:8px 0 16px">{len(results)} FILM{"S" if len(results) != 1 else ""}</div>')
+    html(f'<div class="mono" style="padding:4px 0 16px">{len(results)} FILM{"S" if len(results) != 1 else ""}</div>')
     if results.empty:
         empty_state(
             "Nothing in the archive matches that combination.",
