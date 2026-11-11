@@ -40,7 +40,7 @@ The existing Railway schema is already imported. Do not run the setup/import scr
 
 ## Streamlit integration status
 
-The current `app/` still uses CSV-backed stand-ins. Xue's callable database layer is now in `crud.py`, `analytics.py` and `backend.py`. It does not import Streamlit or change the frontend. Minal owns registering `MySQLBackend` in `app/backends.py` and the application's session, switching, error handling and reset behaviour.
+The current `app/backends.py` registers `MySQLBackend` under `"MySQL (Relational)"`. The callable database layer is in `crud.py`, `analytics.py` and `backend.py`; it does not import Streamlit. Read connection pooling is internal to `db.py` and requires no changes to Minal's adapter registration, cached engine or page calls.
 
 Install from the repository root:
 
@@ -62,7 +62,21 @@ db = MySQLBackend()  # also accepts store=None for the existing engine construct
 frame = db.search_movies(genres=("Drama",))
 ```
 
-`crud` / `analytics` return `list[dict]`, a single `dict` / `None`, booleans, IDs or scalar values as documented below. `MySQLBackend` supplies the DataFrames/dicts/sets expected by every current `CsvBackend` public method; Minal can import it once the repository root is on the application import path. No frontend registration is performed by this folder.
+`crud` / `analytics` return `list[dict]`, a single `dict` / `None`, booleans, IDs or scalar values as documented below. `MySQLBackend` supplies the DataFrames/dicts/sets expected by every current `CsvBackend` public method. Existing method signatures and result formats are unchanged.
+
+### Read connection pool
+
+`db.fetch()` without `connection=` uses a lazy, process-local pool of at most **3 read connections**, with a **5-second wait** when all slots are occupied. A slot includes a connection being opened, borrowed or closed. Connections are leased exclusively under thread-safe synchronization; network operations run outside the pool lock. Sequential reads normally reuse one connection, while concurrent calls can grow the pool to three. No results are cached.
+
+Each reused connection is checked with `ping(reconnect=False)` before SQL starts. A stale connection is closed and replaced once; failed creation releases its slot. After fetching and normalising all rows, the cursor is closed and the read transaction is committed before the connection becomes available again. A query, cursor, normalisation or commit failure triggers a rollback attempt and discards the connection, including on cancellation. Rollback/close failures do not hide the original failure or retain a pool slot. SQL is never automatically replayed after execution starts. Pool/driver errors use generic messages without connection details or SQL parameters; integrity errors retain their numeric code.
+
+`connect()` remains a fresh-connection factory. `execute()`, inserts and explicit `session()` transactions retain their existing commit/rollback/close behaviour and do not use the pool. A supplied `connection=` bypasses pooling completely: the caller owns its transaction and lifecycle, including after an error. Do not share caller-owned connections across threads.
+
+The three-connection limit applies only to pooled reads in each Python process; independent writes, explicit connections and additional worker processes have separate connections. The five seconds limits waiting for a pool slot, not total request time. Existing driver connection/read/write timeouts still apply to connection creation, health checks, queries and cleanup. Health checks and transaction completion each add network work, so pooling removes repeated connection setup but does not eliminate database latency or guarantee a particular speedup.
+
+`db.close_read_pool()` disposes idle connections immediately, wakes blocked waiters with an error and closes borrowed connections when they return. It is idempotent and registered for normal process-exit cleanup. A new pool is created on a subsequent read only after the disposed pool has fully drained; reads during that draining interval fail rather than exceed the bound. Call disposal while the application is quiescent when deliberately replacing the connection factory (for example, in isolated tests). Initialise the pool within each worker process; do not fork a process with an active pool. Abrupt process termination cannot run Python cleanup.
+
+This is a pool for the backend's existing read queries, not enforcement of database read-only permissions. Do not use implicit pooled `fetch()` calls for writes, temporary tables, session settings, user variables or long-lived transactions: commit ends a transaction but does not reset arbitrary session state. Use an explicit caller-owned connection for such work. No new packages, environment settings or Streamlit resource caches are needed.
 
 ### Callable API and data contract
 
@@ -93,7 +107,7 @@ Every input value is bound with `%s`; user input never supplies an identifier or
 
 ### Handoff to Minal
 
-Register `from mysql.backend import MySQLBackend` under the existing `"MySQL (Relational)"` engine key, install `mysql/requirements.txt` and configure `.env`. The class implements the current public backend methods and ignores the CSV-store constructor argument.
+The existing `"MySQL (Relational)"` registration remains compatible with the read pool. The class implements the current public backend methods and ignores the CSV-store constructor argument; no frontend changes are needed for pooling.
 
 Pass the signed-in user ID to `update_review(..., user_id=...)` and `delete_review(..., user_id=...)` when enforcing ownership. The existing UI passes only the review ID, so the optional argument preserves that signature but cannot independently identify the actor. Handle `ValueError` for validation/duplicate conflicts in addition to the current `OSError` handling. These functions provide database operations; authorization/session decisions remain in the application layer.
 
@@ -163,7 +177,8 @@ SOURCE mysql/09_comparison_queries.sql;
 
 ```powershell
 python -m pip install -r mysql/requirements-test.txt
-python -m pytest tests/test_mysql.py -q
+# Offline run: leave MYSQL_TEST_REAL unset. Disable bytecode and pytest's cache.
+python -B -m pytest tests/test_mysql.py -q -p no:cacheprovider
 
 # Opt in to the real server tests. Use your local test server/account settings.
 $env:MYSQL_TEST_REAL = '1'
@@ -174,11 +189,13 @@ $env:MYSQL_TEST_USER = 'root'
 python -m pytest tests/test_mysql.py -q
 ```
 
-The default tests need no server. Run from the repository root. The real suite requires MySQL 8.0.17+ (enforced CHECKs and the SQL demo's `CAST AS DOUBLE`), `local_infile=ON`, and an account permitted to create/drop a database. It creates a unique `movie_platform_test_<random>` database, runs the shipped CSV importer/schema/views/indexes, and drops only its own database in teardown. It never targets `DB_NAME`. Real tests check all filters/sorts against `CsvBackend`, complete CRUD, constraints, injection literals, rounding boundaries, empty frames, timestamps, all comparison/advanced functions, and rerun the SQL demos/index script. The standard CSV import routes above remain available for submission screenshots.
+The default tests need no server and block accidental PyMySQL connections. Run from the repository root with `MYSQL_TEST_REAL` unset. Offline tests cover reuse, exclusive concurrent leases, capacity during connection creation, bounded waiting, stale connections, errors, cancellations, disposal and unchanged caller-owned/write lifecycles. Each test disposes its pool to prevent connections leaking between cases.
+
+The opt-in real suite must use a disposable local test server, never the shared Railway service. It requires MySQL 8.0.17+ (enforced CHECKs and the SQL demo's `CAST AS DOUBLE`), `local_infile=ON`, and an account permitted to create/drop a database. It creates a unique `movie_platform_test_<random>` database, runs the shipped CSV importer/schema/views/indexes, and drops only its own database in teardown. It never targets `DB_NAME`; pooled test connections are disposed before restoring the app factory and dropping the test schema. Real tests check all filters/sorts against `CsvBackend`, complete CRUD, constraints, injection literals, rounding boundaries, empty frames, timestamps, all comparison/advanced functions, and rerun the SQL demos/index script. The standard CSV import routes above remain available for submission screenshots.
 
 `analytics.py` exposes the same names as MongoDB: `movies_by_genre`, `average_rating`, `watchlist_with_genres`, `filtered_discovery` / `filtered_discovery_live`, `top_in_genre`, `discovery_ranking`, `top_per_genre`, `genre_health`, `recommend_movies`, `engagement_leaderboard`, `director_stats`, `genre_trends_by_decade`, `latest_review_feed`. It uses `movie_id` / `user_id` instead of MongoDB's raw `_id`, and `genre` for grouped genre names; normalize IDs before comparison. Genre lists are sorted. Analytics ratings are rounded to two decimal places; tolerate 0.01 when comparing MongoDB floating-point aggregates. Unrated averages are `None`, not zero.
 
-For fair timing, use identical CSV snapshots/parameters and consume all returned rows. These simple functions open/close a connection per call by default, whereas MongoDB uses a shared client. Exclude connection setup by reusing a caller-owned connection for the timed SQL calls:
+For fair timing, use identical CSV snapshots/parameters and consume all returned rows. Default reads now use the pool: the first call includes connection setup, while later calls normally include a health check, query and commit. Measure cold and warm calls separately. To exclude pool health checks and per-call transaction completion as well as connection setup, reuse a caller-owned connection for the timed calls:
 
 ```python
 from mysql import db, analytics
@@ -190,7 +207,9 @@ with db.session() as connection:
     watchlist = analytics.watchlist_with_genres("U001", connection=connection)
 ```
 
-Supplied connections stay open and the caller controls commit/rollback. Do not share a PyMySQL connection across threads. All backend reads are fresh; benchmark methods do not cache results. The existing Streamlit timing screen will include per-call MySQL connection overhead unless Minal adopts a connection/pool policy; use the functions above for database-query timings.
+Supplied connections stay open and the caller controls commit/rollback. Do not share a PyMySQL connection across threads. Every backend read still executes SQL; benchmark methods do not cache results. The existing Streamlit timing screen automatically benefits from warm pooled reads, but still includes adapter processing, pool waiting, health checks and transaction completion. The example above also includes result conversion, so it is not pure server execution time.
+
+Before rollout, validate CRUD and transaction isolation against the disposable test database. Separately approved, bounded read-only Railway measurements can compare fresh `connect()` setup with cold/warm `fetch("SELECT 1")` and representative page reads. Record connection setup, health checks, query/row consumption and transaction completion separately; local-machine timings may differ from the deployed Streamlit server. Offline mocks establish lifecycle behaviour, not real-server speed or isolation guarantees.
 
 Operations 1–3 do equivalent live work in both engines. Pair MySQL `filtered_discovery_live` with MongoDB `filtered_discovery_live` for operation 4. MongoDB `filtered_discovery` and `top_in_genre` read precomputed statistics; MySQL aggregates reviews live. Label those as design trade-off comparisons and include review-write costs rather than treating the work as identical. Full-text search is outside the shared app contract and has not been added.
 

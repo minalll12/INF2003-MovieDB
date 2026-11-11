@@ -9,10 +9,13 @@ CSVs, test the shipped SQL, and DROP only that database in teardown.
 import os
 import re
 import sys
+import traceback
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
+from threading import Event, Lock
 from unittest.mock import MagicMock
 
 import pandas as pd
@@ -25,6 +28,393 @@ from mysql import analytics, crud, db, security  # noqa: E402
 from mysql.backend import MOVIE_COLUMNS, REVIEW_COLUMNS, MySQLBackend, movie_frame  # noqa: E402
 
 REAL = pytest.mark.skipif(os.getenv("MYSQL_TEST_REAL") != "1", reason="set MYSQL_TEST_REAL=1 for an isolated real MySQL database")
+
+
+@pytest.fixture(autouse=True)
+def isolated_read_pool(monkeypatch):
+    db.close_read_pool()
+    if os.getenv("MYSQL_TEST_REAL") != "1":
+        def no_database_connection(*args, **kwargs):
+            pytest.fail("Offline tests must not open a database connection")
+        monkeypatch.setattr(pymysql, "connect", no_database_connection)
+    yield
+    db.close_read_pool()
+
+
+def read_connection(rows=None):
+    connection = MagicMock()
+    cursor = connection.cursor.return_value
+    cursor.__enter__.return_value = cursor
+    cursor.fetchall.return_value = [{"value": 1}] if rows is None else rows
+    return connection
+
+
+@pytest.fixture
+def install_pool(monkeypatch):
+    pools = []
+
+    def install(factory, **options):
+        pool = db._ReadPool(factory, **options)
+        pools.append(pool)
+        monkeypatch.setattr(db, "_read_pool", pool)
+        return pool
+
+    yield install
+    for pool in pools:
+        pool.close()
+
+
+class ReadCancelled(BaseException):
+    pass
+
+
+def test_read_pool_is_lazy_and_reuses_normalised_reads(install_pool):
+    connection = read_connection([{"rating": Decimal("8.5"), "created_at": datetime(2026, 1, 2)}])
+    factory = MagicMock(return_value=connection)
+    install_pool(factory)
+    factory.assert_not_called()
+    for _ in range(10):
+        assert db.fetch("SELECT rating, created_at WHERE movie_id = %s", ("M0001",)) == [
+            {"rating": 8.5, "created_at": "2026-01-02 00:00:00"}]
+    factory.assert_called_once_with()
+    assert connection.commit.call_count == 10
+    assert connection.ping.call_count == 9
+    connection.ping.assert_called_with(reconnect=False)
+    connection.rollback.assert_not_called()
+    connection.close.assert_not_called()
+    assert connection.cursor.return_value.__exit__.call_count == 10
+
+
+def test_read_pool_default_bounds():
+    assert db.READ_POOL_SIZE == 3
+    assert db.READ_POOL_WAIT_TIMEOUT == 5.0
+
+
+@pytest.mark.parametrize("failure", [None, pymysql.OperationalError(2006, "offline failure")])
+def test_fetch_supplied_connection_bypasses_pool(monkeypatch, failure):
+    connection = read_connection()
+    forbidden = MagicMock(side_effect=AssertionError("Pool must not be used"))
+    monkeypatch.setattr(db, "_get_read_pool", forbidden)
+    if failure:
+        connection.cursor.return_value.execute.side_effect = failure
+        with pytest.raises(OSError):
+            db.fetch("SELECT 1", connection=connection)
+    else:
+        assert db.fetch("SELECT 1", connection=connection) == [{"value": 1}]
+    forbidden.assert_not_called()
+    for name in ("commit", "rollback", "close", "ping"):
+        getattr(connection, name).assert_not_called()
+
+
+def test_writes_and_explicit_sessions_keep_fresh_connections(monkeypatch, install_pool):
+    reader = read_connection()
+    read_factory = MagicMock(return_value=reader)
+    install_pool(read_factory)
+    db.fetch("SELECT 1")
+    writers = [read_connection() for _ in range(3)]
+    writers[0].cursor.return_value.rowcount = 1
+    fresh = MagicMock(side_effect=writers)
+    monkeypatch.setattr(db, "connect", fresh)
+    assert db.execute("UPDATE reviews SET rating = %s WHERE review_id = %s", (8, "R0001")) == 1
+    assert crud.add_review("U001", "M0001", 8, "offline").startswith("R")
+    with db.session() as explicit:
+        db.fetch("SELECT 1", connection=explicit)
+    assert fresh.call_count == 3
+    for writer in writers:
+        writer.commit.assert_called_once_with()
+        writer.close.assert_called_once_with()
+        writer.ping.assert_not_called()
+    db.fetch("SELECT 1")
+    read_factory.assert_called_once_with()
+    reader.close.assert_not_called()
+
+
+@pytest.mark.parametrize("phase", ["cursor", "execute", "fetchall", "cursor_exit", "commit"])
+def test_read_failure_rolls_back_discards_and_never_replays(install_pool, phase):
+    failed, healthy = read_connection(), read_connection()
+    cursor = failed.cursor.return_value
+    target = {"cursor": failed.cursor, "execute": cursor.execute, "fetchall": cursor.fetchall,
+              "cursor_exit": cursor.__exit__, "commit": failed.commit}[phase]
+    target.side_effect = pymysql.OperationalError(2013, "private-driver-detail")
+    factory = MagicMock(side_effect=[failed, healthy])
+    install_pool(factory, max_size=1, wait_timeout=0)
+    with pytest.raises(OSError) as caught:
+        db.fetch("SELECT 1")
+    assert "private-driver-detail" not in "".join(traceback.format_exception(caught.value))
+    failed.rollback.assert_called_once_with()
+    failed.close.assert_called_once_with()
+    assert cursor.execute.call_count <= 1
+    factory.assert_called_once_with()  # No replay on a replacement connection.
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+    assert factory.call_count == 2
+
+
+def test_read_integrity_error_preserves_type_and_code_without_private_details(install_pool):
+    connection = read_connection()
+    connection.cursor.return_value.execute.side_effect = pymysql.IntegrityError(1062, "private-driver-detail")
+    install_pool(lambda: connection)
+    with pytest.raises(pymysql.IntegrityError) as caught:
+        db.fetch("SELECT 1")
+    assert caught.value.args[0] == 1062
+    assert "private-driver-detail" not in "".join(traceback.format_exception(caught.value))
+    connection.rollback.assert_called_once_with()
+    connection.close.assert_called_once_with()
+
+
+@pytest.mark.parametrize("phase", ["execute", "fetchall", "commit"])
+def test_read_cancellation_releases_capacity(install_pool, phase):
+    failed, healthy = read_connection(), read_connection()
+    cancelled = ReadCancelled()
+    target = failed.commit if phase == "commit" else getattr(failed.cursor.return_value, phase)
+    target.side_effect = cancelled
+    factory = MagicMock(side_effect=[failed, healthy])
+    install_pool(factory, max_size=1, wait_timeout=0)
+    with pytest.raises(ReadCancelled) as caught:
+        db.fetch("SELECT 1")
+    assert caught.value is cancelled
+    failed.rollback.assert_called_once_with()
+    failed.close.assert_called_once_with()
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+
+
+def test_cleanup_failures_do_not_mask_original_error_or_leak_capacity(install_pool):
+    failed, healthy = read_connection(), read_connection()
+    original = ValueError("invalid result")
+    failed.cursor.return_value.fetchall.side_effect = original
+    failed.rollback.side_effect = ReadCancelled()
+    failed.close.side_effect = pymysql.OperationalError(2006, "private-close-detail")
+    install_pool(MagicMock(side_effect=[failed, healthy]), max_size=1, wait_timeout=0)
+    with pytest.raises(ValueError) as caught:
+        db.fetch("SELECT 1")
+    assert caught.value is original
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+
+
+@pytest.mark.parametrize("error", [pymysql.OperationalError(1045, "private-driver-detail"),
+                                  ValueError("private-config-detail"), ReadCancelled()])
+def test_failed_or_cancelled_creation_releases_reservation(install_pool, error):
+    healthy = read_connection()
+    factory = MagicMock(side_effect=[error, healthy])
+    install_pool(factory, max_size=1, wait_timeout=0)
+    expected = ReadCancelled if isinstance(error, ReadCancelled) else OSError
+    with pytest.raises(expected) as caught:
+        db.fetch("SELECT 1")
+    assert "private-" not in "".join(traceback.format_exception(caught.value))
+    factory.assert_called_once_with()
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+
+
+def test_stale_connection_is_replaced_before_query(install_pool):
+    stale, healthy = read_connection(), read_connection()
+    factory = MagicMock(side_effect=[stale, healthy])
+    install_pool(factory, max_size=1)
+    db.fetch("SELECT 1")
+    stale.ping.side_effect = pymysql.OperationalError(2006, "expired")
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+    stale.ping.assert_called_once_with(reconnect=False)
+    stale.close.assert_called_once_with()
+    assert stale.cursor.return_value.execute.call_count == 1
+    healthy.ping.assert_not_called()
+    assert factory.call_count == 2
+
+
+def test_stale_replacement_failure_is_not_retried(install_pool):
+    stale, healthy = read_connection(), read_connection()
+    factory = MagicMock(side_effect=[stale, pymysql.OperationalError(1045, "private-driver-detail"), healthy])
+    install_pool(factory, max_size=1, wait_timeout=0)
+    db.fetch("SELECT 1")
+    stale.ping.side_effect = pymysql.OperationalError(2006, "expired")
+    with pytest.raises(OSError):
+        db.fetch("SELECT 1")
+    assert factory.call_count == 2
+    assert stale.cursor.return_value.execute.call_count == 1
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+
+
+def test_cancelled_ping_discards_without_replacement(install_pool):
+    stale, healthy = read_connection(), read_connection()
+    factory = MagicMock(side_effect=[stale, healthy])
+    install_pool(factory, max_size=1, wait_timeout=0)
+    db.fetch("SELECT 1")
+    stale.ping.side_effect = ReadCancelled()
+    with pytest.raises(ReadCancelled):
+        db.fetch("SELECT 1")
+    factory.assert_called_once_with()
+    stale.close.assert_called_once_with()
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+
+
+def test_wait_uses_one_deadline_despite_spurious_wakeups(monkeypatch, install_pool):
+    factory = MagicMock(side_effect=read_connection)
+    pool = install_pool(factory, max_size=1)
+    borrowed = pool.acquire()
+    clock = iter([0.0, 1.0, 3.0, 5.1])
+    monkeypatch.setattr(db, "monotonic", lambda: next(clock))
+    wait = MagicMock()
+    monkeypatch.setattr(pool._condition, "wait", wait)
+    with pytest.raises(OSError, match="Timed out"):
+        pool.acquire()
+    assert [call.args[0] for call in wait.call_args_list] == [4.0, 2.0]
+    factory.assert_called_once_with()
+    pool.release(borrowed, reusable=True)
+
+
+def test_cancelled_wait_does_not_release_another_borrowers_slot(monkeypatch, install_pool):
+    pool = install_pool(read_connection, max_size=1)
+    borrowed = pool.acquire()
+    monkeypatch.setattr(pool._condition, "wait", MagicMock(side_effect=ReadCancelled()))
+    with pytest.raises(ReadCancelled):
+        pool.acquire()
+    borrowed.close.assert_not_called()
+    pool.release(borrowed, reusable=True)
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+
+
+def test_limit_includes_connections_still_being_created(install_pool):
+    all_opening, finish_opening = Event(), Event()
+    lock, created = Lock(), []
+
+    def factory():
+        connection = read_connection()
+        with lock:
+            created.append(connection)
+            if len(created) == 3:
+                all_opening.set()
+        assert finish_opening.wait(5)
+        return connection
+
+    pool = install_pool(factory, wait_timeout=0.01)
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        futures = [executor.submit(pool.acquire) for _ in range(3)]
+        try:
+            assert all_opening.wait(5)  # Creation must not hold the pool lock.
+            with pytest.raises(OSError, match="Timed out"):
+                pool.acquire()
+            assert len(created) == 3
+        finally:
+            finish_opening.set()
+        for future in futures:
+            pool.release(future.result(timeout=5), reusable=True)
+
+
+def test_concurrent_fetches_have_exclusive_bounded_leases(install_pool):
+    all_reading, finish_reading = Event(), Event()
+    lock, connections, active = Lock(), [], set()
+
+    def factory():
+        connection = read_connection()
+        cursor = connection.cursor.return_value
+        with lock:
+            index = len(connections)
+            connections.append(connection)
+        value = {}
+
+        def execute(sql, params):
+            with lock:
+                assert index not in active, "Connection was shared concurrently"
+                active.add(index)
+                if len(active) == 3:
+                    all_reading.set()
+            value["result"] = params[0]
+            assert finish_reading.wait(5)
+
+        def finish():
+            with lock:
+                active.remove(index)
+
+        cursor.execute.side_effect = execute
+        cursor.fetchall.side_effect = lambda: [{"value": value["result"]}]
+        connection.commit.side_effect = finish
+        return connection
+
+    install_pool(factory)
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        futures = [executor.submit(db.fetch, "SELECT %s", (i,)) for i in range(6)]
+        try:
+            assert all_reading.wait(5)
+            assert len(connections) == 3
+        finally:
+            finish_reading.set()
+        assert [future.result(timeout=5) for future in futures] == [[{"value": i}] for i in range(6)]
+    assert not active
+    assert len(connections) == 3
+    assert sum(connection.commit.call_count for connection in connections) == 6
+
+
+def test_disposal_wakes_waiters_and_closes_borrowers_on_return(monkeypatch, install_pool):
+    pool = install_pool(read_connection, max_size=1)
+    borrowed = pool.acquire()
+    waiting = Event()
+    original_wait = pool._condition.wait
+
+    def observed_wait(timeout):
+        waiting.set()
+        return original_wait(timeout)
+
+    monkeypatch.setattr(pool._condition, "wait", observed_wait)
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(pool.acquire)
+        try:
+            assert waiting.wait(5)
+        finally:
+            pool.close()
+        with pytest.raises(OSError, match="closed"):
+            future.result(timeout=5)
+    borrowed.close.assert_not_called()
+    assert not pool.drained
+    pool.release(borrowed, reusable=True)
+    borrowed.close.assert_called_once_with()
+    assert pool.drained
+
+
+def test_disposal_during_creation_closes_new_connection(install_pool):
+    opening, finish = Event(), Event()
+    connection = read_connection()
+
+    def factory():
+        opening.set()
+        assert finish.wait(5)
+        return connection
+
+    pool = install_pool(factory)
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(pool.acquire)
+        try:
+            assert opening.wait(5)
+            pool.close()
+        finally:
+            finish.set()
+        with pytest.raises(OSError, match="closed"):
+            future.result(timeout=5)
+    connection.close.assert_called_once_with()
+    assert pool.drained
+
+
+def test_global_disposal_drains_before_creating_another_pool(monkeypatch, install_pool):
+    pool = install_pool(read_connection)
+    borrowed = pool.acquire()
+    fresh = MagicMock(side_effect=read_connection)
+    monkeypatch.setattr(db, "connect", fresh)
+    db.close_read_pool()
+    with pytest.raises(OSError, match="closed"):
+        db.fetch("SELECT 1")
+    fresh.assert_not_called()
+    pool.release(borrowed, reusable=True)
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+    fresh.assert_called_once_with()
+    db.close_read_pool()
+    db.close_read_pool()  # Repeated disposal is safe.
+
+
+def test_close_failure_after_successful_commit_does_not_fail_read(install_pool):
+    connection = read_connection()
+    pool = install_pool(lambda: connection)
+    connection.commit.side_effect = pool.close
+    connection.close.side_effect = OSError("private-close-detail")
+    assert db.fetch("SELECT 1") == [{"value": 1}]
+    connection.commit.assert_called_once_with()
+    connection.rollback.assert_not_called()
+    assert pool.drained
 
 
 def test_password_format_matches_app():
@@ -144,6 +534,7 @@ def source():
 def database():
     if os.getenv("MYSQL_TEST_REAL") != "1":
         pytest.skip("real MySQL tests are opt-in")
+    db.close_read_pool()
     original_connect = db.connect
     options = dict(host=os.getenv("MYSQL_TEST_HOST", "127.0.0.1"), port=int(os.getenv("MYSQL_TEST_PORT", "3306")),
                    user=os.getenv("MYSQL_TEST_USER", "root"), password=os.getenv("MYSQL_TEST_PASSWORD", ""))
@@ -162,6 +553,7 @@ def database():
             run_script(conn, "08_indexes.sql")
         yield name
     finally:
+        db.close_read_pool()  # Dispose test-schema reads before restoring the app factory.
         patch.undo()
         with admin.cursor() as cursor:
             cursor.execute(f"DROP DATABASE `{name}`")
