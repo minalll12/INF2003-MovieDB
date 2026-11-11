@@ -11,7 +11,12 @@ from components import (
     score_text,
     stars,
 )
+from cache import latest_reviews as _get_latest_reviews
+from cache import most_reviewed as _get_most_reviewed
+from cache import well_rated as _get_well_rated
 from session import backend, current_user, open_browse, open_movie, toggle_watchlist
+
+
 
 MIN_REVIEWS = 3
 ROW_SIZE = 5
@@ -97,11 +102,10 @@ def _genre_strip():
     stcomp.html(_GENRE_ARROWS_JS, height=0)
 
 
-def _editorial_section(movies):
+def _editorial_section(movies, saved_ids):
     html('<div class="double-rule" style="margin:12px 0 0"></div>')
     html('<div class="editorial-label">EDITOR\'S PICKS</div>')
     html('<div class="editorial-title">This Week on Reelhouse</div>')
-    saved_ids = backend().watchlist_ids(current_user()["user_id"])
     slots = st.columns([1, 1, 1], gap="medium")
     for slot, (_, movie) in zip(slots, movies.iterrows()):
         with slot:
@@ -144,9 +148,9 @@ def _section_header(title, action_key, on_action):
         html('<div class="double-rule"></div>')
 
 
-def _poster_row(movies, prefix, title, sort_by):
+def _poster_row(movies, prefix, title, sort_by, saved_ids=None):
     _section_header(title, f"all_{prefix}", lambda: open_browse(sort_by=sort_by))
-    poster_grid(movies.head(ROW_SIZE), prefix, columns=ROW_SIZE)
+    poster_grid(movies.head(ROW_SIZE), prefix, columns=ROW_SIZE, saved_ids=saved_ids)
 
 
 def _fresh_reviews():
@@ -180,7 +184,7 @@ def _fresh_reviews():
         '</style>'
     )
     _section_header("FRESH REVIEWS", "all_fresh", lambda: open_browse(sort_by="Newest"))
-    reviews = backend().latest_reviews(ROW_SIZE)
+    reviews = _get_latest_reviews(ROW_SIZE)
     slots = st.columns(ROW_SIZE, gap="medium")
     for slot, (_, review) in zip(slots, reviews.iterrows()):
         with slot:
@@ -202,10 +206,10 @@ def _fresh_reviews():
 
 
 def render():
-    db = backend()
-    top_picks = db.well_rated(MIN_REVIEWS).head(3)
+    top_movies = _get_well_rated(MIN_REVIEWS)
+    saved_ids = backend().watchlist_ids(current_user()["user_id"])
     _genre_strip()
-    _editorial_section(top_picks)
-    _poster_row(db.well_rated(MIN_REVIEWS), "top", "TOP RATED", "Highest rated")
-    _poster_row(db.most_reviewed(), "disc", "MOST DISCUSSED", "Most reviewed")
+    _editorial_section(top_movies.head(3), saved_ids)
+    _poster_row(top_movies, "top", "TOP RATED", "Highest rated", saved_ids)
+    _poster_row(_get_most_reviewed(), "disc", "MOST DISCUSSED", "Most reviewed", saved_ids)
     _fresh_reviews()

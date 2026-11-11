@@ -156,3 +156,24 @@ def genre_trends_by_decade(min_movies=3, *, connection=None):
 def latest_review_feed(limit=25, *, connection=None):
     return _rows(crud.REVIEW_SELECT + " ORDER BY r.created_at DESC, r.review_id LIMIT %s",
                  (crud.integer(limit, "limit"),), connection=connection)
+
+
+def latest_review_feed_with_posters(limit=25, *, connection=None):
+    """Single-query version that includes poster_url and genres, avoiding a second catalogue fetch."""
+    return _rows("""
+        SELECT r.review_id, r.user_id, r.movie_id, r.rating,
+               COALESCE(r.review_text, '') AS review_text,
+               r.created_at, r.updated_at, u.username, m.title, m.release_year,
+               COALESCE(m.poster_url, '') AS poster_url,
+               COALESCE(gs.genres, '') AS genres
+        FROM reviews r
+        JOIN users u ON u.user_id = r.user_id
+        JOIN movies m ON m.movie_id = r.movie_id
+        LEFT JOIN (
+            SELECT mg.movie_id,
+                   GROUP_CONCAT(g.genre_name ORDER BY g.genre_name SEPARATOR ', ') AS genres
+            FROM movie_genres mg JOIN genres g ON g.genre_id = mg.genre_id
+            GROUP BY mg.movie_id
+        ) gs ON gs.movie_id = m.movie_id
+        ORDER BY r.created_at DESC, r.review_id LIMIT %s
+    """, (crud.integer(limit, "limit"),), connection=connection)
