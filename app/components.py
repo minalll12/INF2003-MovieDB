@@ -116,8 +116,9 @@ def poster_card(movie, saved, prefix):
                     )
 
 
-def poster_grid(movies, prefix, columns=GRID_COLUMNS):
-    saved_ids = backend().watchlist_ids(current_user()["user_id"])
+def poster_grid(movies, prefix, columns=GRID_COLUMNS, saved_ids=None):
+    if saved_ids is None:
+        saved_ids = backend().watchlist_ids(current_user()["user_id"])
     rows = [movies.iloc[i:i + columns] for i in range(0, len(movies), columns)]
     for index, row in enumerate(rows):
         slots = st.columns(columns, gap="medium")
@@ -158,9 +159,9 @@ def pagination(key, page, total_pages):
             )
 
 
-def paged_grid(movies, key, columns=GRID_COLUMNS):
+def paged_grid(movies, key, columns=GRID_COLUMNS, saved_ids=None):
     visible, page, total_pages = paginate(movies, key)
-    poster_grid(visible, key, columns)
+    poster_grid(visible, key, columns, saved_ids=saved_ids)
     pagination(key, page, total_pages)
 
 

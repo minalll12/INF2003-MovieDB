@@ -67,14 +67,14 @@ def _stats(reviews, watchlist_count):
     html('<div class="double-rule" style="margin:24px 0 40px"></div>')
 
 
-def _favourites(favourites):
+def _favourites(favourites, saved_ids):
     section_head("FAVOURITES")
     st.write("")
     if favourites.empty:
         empty_state("Rate a few films and your favourites will gather here.")
         return
     with st.container(key="profile_heart_wrap"):
-        poster_grid(favourites.head(FAVOURITE_COUNT), "fav", columns=FAVOURITE_COUNT)
+        poster_grid(favourites.head(FAVOURITE_COUNT), "fav", columns=FAVOURITE_COUNT, saved_ids=saved_ids)
 
 
 def _reviews(reviews_with_titles):
@@ -95,9 +95,9 @@ def render():
     db = backend()
     rated = db.reviewed_movies(user["user_id"]).rename(columns={"rating_mine": "rating"})
     written = db.user_reviews(user["user_id"])
-    watchlist_count = len(db.watchlist_ids(user["user_id"]))
+    saved_ids = db.watchlist_ids(user["user_id"])
     _banner(user, rated)
-    _stats(rated, watchlist_count)
-    _favourites(rated)
+    _stats(rated, len(saved_ids))
+    _favourites(rated, saved_ids)
     st.write("")
     _reviews(written)
