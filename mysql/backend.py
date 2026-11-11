@@ -31,7 +31,8 @@ class MySQLBackend:
 
     def __init__(self, store=None):
         # Existing get_engine(name) passes a CSV store. MySQL ignores it.
-        pass
+        self._genre_cache = None
+        self._year_cache = None
 
     def catalogue(self):
         return movie_frame(crud.search_movies())
@@ -48,10 +49,14 @@ class MySQLBackend:
     get_movie_details = get_movie
 
     def genre_names(self):
-        return crud.genre_names()
+        if self._genre_cache is None:
+            self._genre_cache = crud.genre_names()
+        return self._genre_cache
 
     def year_bounds(self):
-        return crud.year_bounds()
+        if self._year_cache is None:
+            self._year_cache = crud.year_bounds()
+        return self._year_cache
 
     def top_rated(self):
         return self.search_movies()
@@ -79,8 +84,15 @@ class MySQLBackend:
         return crud.user_review_for(user_id, movie_id)
 
     def latest_reviews(self, limit):
-        reviews = pd.DataFrame(analytics.latest_review_feed(limit), columns=REVIEW_COLUMNS)
-        return reviews.merge(self.catalogue()[["movie_id", "poster_large", "genres"]], on="movie_id", how="left")
+        import re as _re
+        rows = analytics.latest_review_feed_with_posters(limit)
+        if not rows:
+            return pd.DataFrame(columns=[*REVIEW_COLUMNS, "poster_large", "genres"])
+        frame = pd.DataFrame(rows)
+        frame["poster_large"] = frame["poster_url"].apply(
+            lambda u: _re.sub(r"\._V1_.*\.jpg$", "._V1_SX400.jpg", u) if isinstance(u, str) and u else ""
+        )
+        return frame[REVIEW_COLUMNS + ["poster_large", "genres"]]
 
     def reviewed_movies(self, user_id):
         rows = crud.movie_rows(db.fetch(crud.MOVIE_SELECT.replace("SELECT m.movie_id", "SELECT r.rating AS rating_mine, m.movie_id", 1) +

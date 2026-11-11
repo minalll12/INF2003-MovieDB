@@ -14,4 +14,5 @@ def render():
         return
     html(f'<div class="label">{len(movies)} FILM{"S" if len(movies) != 1 else ""} SAVED</div>')
     html('<div class="double-rule" style="margin-bottom:32px"></div>')
-    paged_grid(movies, "watchlist_page")
+    saved_ids = set(movies["movie_id"])
+    paged_grid(movies, "watchlist_page", saved_ids=saved_ids)
