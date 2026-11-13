@@ -2,8 +2,6 @@ from html import escape
 
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as stcomp
-
 from components import (
     html,
     poster_frame,
@@ -99,7 +97,7 @@ def _genre_strip():
             with st.container(key=f"genre_pill_{i}"):
                 if st.button(genre, key=f"gpill_{i}", type="tertiary"):
                     open_browse(genre=genre)
-    stcomp.html(_GENRE_ARROWS_JS, height=0)
+    st.html(_GENRE_ARROWS_JS)
 
 
 def _editorial_section(movies, saved_ids):

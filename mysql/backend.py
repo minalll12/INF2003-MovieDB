@@ -2,12 +2,35 @@
 
 No Streamlit imports, frontend writes, application session logic or result cache.
 """
+import re
 import pandas as pd
 
 from . import analytics, crud, db
 
 MOVIE_COLUMNS = ["movie_id", "poster_url", "title", "release_year", "certificate", "duration", "description",
                  "director", "cast", "imdb_votes", "genres", "avg_rating", "review_count", "poster_large"]
+
+# Dedicated query for a user's reviewed movies — avoids string-replacing MOVIE_SELECT.
+_REVIEWED_MOVIES_SELECT = """
+SELECT r.rating AS rating_mine, m.movie_id, m.poster_url, m.title, m.release_year,
+       m.certificate, m.duration,
+       COALESCE(m.description, '') AS description, COALESCE(m.director, '') AS director,
+       COALESCE(m.`cast`, '') AS `cast`, m.imdb_votes,
+       COALESCE(gs.genres, '') AS genres,
+       rs.avg_rating, COALESCE(rs.review_count, 0) AS review_count
+FROM movies m
+LEFT JOIN (
+    SELECT mg.movie_id, GROUP_CONCAT(g.genre_name ORDER BY g.genre_name SEPARATOR ', ') AS genres
+    FROM movie_genres mg JOIN genres g ON g.genre_id = mg.genre_id GROUP BY mg.movie_id
+) gs ON gs.movie_id = m.movie_id
+LEFT JOIN (
+    SELECT movie_id, AVG(rating) AS avg_rating, COUNT(*) AS review_count
+    FROM reviews GROUP BY movie_id
+) rs ON rs.movie_id = m.movie_id
+JOIN reviews r ON r.movie_id = m.movie_id
+WHERE r.user_id = %s
+ORDER BY r.rating DESC, m.movie_id
+"""
 REVIEW_COLUMNS = ["review_id", "user_id", "movie_id", "rating", "review_text", "created_at", "updated_at",
                   "username", "title", "release_year"]
 SORTS = {
@@ -84,19 +107,17 @@ class MySQLBackend:
         return crud.user_review_for(user_id, movie_id)
 
     def latest_reviews(self, limit):
-        import re as _re
         rows = analytics.latest_review_feed_with_posters(limit)
         if not rows:
             return pd.DataFrame(columns=[*REVIEW_COLUMNS, "poster_large", "genres"])
         frame = pd.DataFrame(rows)
         frame["poster_large"] = frame["poster_url"].apply(
-            lambda u: _re.sub(r"\._V1_.*\.jpg$", "._V1_SX400.jpg", u) if isinstance(u, str) and u else ""
+            lambda u: re.sub(r"\._V1_.*\.jpg$", "._V1_SX400.jpg", u) if isinstance(u, str) and u else ""
         )
         return frame[REVIEW_COLUMNS + ["poster_large", "genres"]]
 
     def reviewed_movies(self, user_id):
-        rows = crud.movie_rows(db.fetch(crud.MOVIE_SELECT.replace("SELECT m.movie_id", "SELECT r.rating AS rating_mine, m.movie_id", 1) +
-            " JOIN reviews r ON r.movie_id = m.movie_id WHERE r.user_id = %s ORDER BY r.rating DESC, m.movie_id",
+        rows = crud.movie_rows(db.fetch(_REVIEWED_MOVIES_SELECT,
             (crud.string(user_id, "user_id", 10),)))
         return movie_frame(rows, ("rating_mine",))
 
