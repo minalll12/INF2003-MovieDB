@@ -87,6 +87,13 @@ def render():
     if movie is None:
         empty_state("Pick a film to read about it.", "BROWSE FILMS →", open_browse, key="no_film")
         return
+    html(
+        '<script>try{'
+        'var c=window.parent.document.querySelector("[data-testid=stAppViewBlockWrapper]")'
+        '||window.parent.document.documentElement;'
+        'c.scrollTop=0;'
+        '}catch(e){}</script>'
+    )
     _backdrop(movie)
     _header(movie)
     st.write("")

@@ -96,8 +96,18 @@ def genre_tags(names):
 def poster_card(movie, saved, prefix):
     movie_id = movie["movie_id"]
     rating_text = score_text(movie["avg_rating"])
+    btn_key = f"title_{prefix}_{movie_id}"
     with st.container(key=f"card_{prefix}_{movie_id}"):
-        html('<div class="card-poster-wrap">' + poster_frame(movie) + '</div>')
+        _js = (
+            f"(function(){{try{{var b=window.parent.document"
+            f".querySelector('[class*=\"st-key-{btn_key}\"] button');"
+            f"if(b)b.click();}}catch(e){{}}}})()"
+        )
+        html(
+            f'<div class="card-poster-wrap" onclick="{_js}" style="cursor:pointer">'
+            + poster_frame(movie)
+            + '</div>'
+        )
         title_col, right_col = st.columns([3, 1], vertical_alignment="top")
         with title_col:
             if st.button(movie["title"], key=f"title_{prefix}_{movie_id}", type="tertiary"):

@@ -16,7 +16,12 @@ from views import benchmarks, browse, details, discover, login, profile, watchli
 
 APP_NAME = "Reelhouse"
 WORDMARK = 'Reel<em>house</em>'
-NAV_LINKS = "DISCOVER<span>·</span>BROWSE<span>·</span>WATCHLIST<span>·</span>PROFILE"
+NAV_LINKS = (
+    '<a href="/discover" class="footer-nav-link">DISCOVER</a><span>·</span>'
+    '<a href="/browse" class="footer-nav-link">BROWSE</a><span>·</span>'
+    '<a href="/watchlist" class="footer-nav-link">WATCHLIST</a><span>·</span>'
+    '<a href="/profile" class="footer-nav-link">PROFILE</a>'
+)
 
 
 def build_pages():

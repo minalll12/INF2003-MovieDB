@@ -95,31 +95,6 @@ def _create_account():
     st.rerun()
 
 
-def _demo_entry():
-    with st.container(key="demo_entry"):
-        with st.expander("Browse as a demo user"):
-            users = backend().list_users()
-            with st.form("demo_form"):
-                choice = st.selectbox("Account", users["username"], index=None,
-                                      placeholder="Choose an account")
-                submitted = st.form_submit_button("ENTER →", type="primary",
-                                                  use_container_width=True)
-            if submitted:
-                if choice is None:
-                    st.error("Please select an account first.")
-                    return
-                try:
-                    user_id = users.loc[users["username"] == choice, "user_id"].iloc[0]
-                    user = backend().get_user(user_id)
-                    if user is None:
-                        st.error("Could not load that account. Please try another.")
-                        return
-                    log_in(user)
-                    st.rerun()
-                except OSError:
-                    st.error("Database connection error. Please try again.")
-
-
 def render():
     _poster_wall()
     _masthead()
@@ -131,4 +106,3 @@ def render():
                 _sign_in()
             with create:
                 _create_account()
-        _demo_entry()

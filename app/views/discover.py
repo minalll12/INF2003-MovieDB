@@ -112,7 +112,17 @@ def _editorial_section(movies, saved_ids):
             rating_text = score_text(movie["avg_rating"])
             saved = movie_id in saved_ids
             with st.container(key=f"card_editorial_{movie_id}"):
-                html('<div class="editorial-poster-wrap">' + poster_frame(movie) + '</div>')
+                _btn_key = f"editorial_open_{movie_id}"
+                _js = (
+                    f"(function(){{try{{var b=window.parent.document"
+                    f".querySelector('[class*=\"st-key-{_btn_key}\"] button');"
+                    f"if(b)b.click();}}catch(e){{}}}})()"
+                )
+                html(
+                    f'<div class="editorial-poster-wrap" onclick="{_js}" style="cursor:pointer">'
+                    + poster_frame(movie)
+                    + '</div>'
+                )
                 if st.button(movie["title"], key=f"editorial_open_{movie_id}", type="tertiary"):
                     open_movie(movie_id)
                 year_col, score_col, heart_col = st.columns([4, 1, 1], vertical_alignment="center")

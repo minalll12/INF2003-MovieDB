@@ -329,6 +329,8 @@ footer,
 }
 .footer-row .links { font-family: var(--label); font-size: 11px; letter-spacing: 0.16em; color: var(--muted); }
 .footer-row .links span { margin: 0 10px; }
+a.footer-nav-link { color: var(--muted); text-decoration: none; font-family: var(--label); font-size: 11px; letter-spacing: 0.16em; }
+a.footer-nav-link:hover { color: var(--gold); }
 .footer-row .wordmark { font-size: 18px; }
 
 /* ---------- buttons ---------- */
