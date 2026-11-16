@@ -45,8 +45,33 @@ def log_in(user):
 
 
 def log_out():
-    for key in ("user", "selected_movie"):
+    for key in ("user", "selected_movie", "switch_user", "page_history"):
         st.session_state.pop(key, None)
+
+
+def record_page(page_name):
+    history = st.session_state.setdefault("page_history", [])
+    entry = (page_name, st.session_state.get("selected_movie")) if page_name == "details" else (page_name, None)
+    if not history or history[-1] != entry:
+        history.append(entry)
+        if len(history) > 50:
+            history.pop(0)
+
+
+def go_back():
+    history = st.session_state.get("page_history", [])
+    if len(history) > 1:
+        history.pop()  # remove current active page
+        prev_name, prev_movie = history[-1]
+        if prev_movie is not None:
+            st.session_state["selected_movie"] = prev_movie
+        else:
+            st.session_state.pop("selected_movie", None)
+        st.switch_page(pages[prev_name])
+    else:
+        history.clear()
+        st.session_state.pop("selected_movie", None)
+        st.switch_page(pages["discover"])
 
 
 def open_movie(movie_id):
@@ -60,6 +85,14 @@ def open_browse(genre=None, sort_by=None):
     if sort_by:
         st.session_state["browse_sort"] = sort_by
     st.switch_page(pages["browse"])
+
+
+def open_profile():
+    st.switch_page(pages["profile"])
+
+
+def open_benchmarks():
+    st.switch_page(pages["benchmarks"])
 
 
 def toggle_watchlist(movie_id):

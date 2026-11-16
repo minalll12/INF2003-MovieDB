@@ -324,7 +324,12 @@ class DocumentBackend(CsvBackend):
         return [docs["movies_by_id"][movie_id] for movie_id in movie_ids if movie_id in docs["movies_by_id"]]
 
 
-ENGINES = {
+'''ENGINES = {
     "MySQL (Relational)": MySQLBackend if _mysql_ok else RelationalBackend,
     "MongoDB (Document)": MongoBackend if _mongo_ok else DocumentBackend,
+}
+'''
+ENGINES = {
+    "MySQL (Relational)": RelationalBackend,
+    "MongoDB (Document)": DocumentBackend,
 }

@@ -1,37 +1,43 @@
 from html import escape
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from components import html
 from session import (
     backend,
     current_user,
     get_store,
+    go_back,
     log_in,
     log_out,
+    open_benchmarks,
+    open_profile,
     pages,
+    record_page,
 )
 from styles import apply_theme
 from views import benchmarks, browse, details, discover, login, profile, watchlist
 
 APP_NAME = "Reelhouse"
 WORDMARK = 'Reel<em>house</em>'
-NAV_LINKS = (
-    '<a href="/discover" class="footer-nav-link">DISCOVER</a><span>·</span>'
-    '<a href="/browse" class="footer-nav-link">BROWSE</a><span>·</span>'
-    '<a href="/watchlist" class="footer-nav-link">WATCHLIST</a><span>·</span>'
-    '<a href="/profile" class="footer-nav-link">PROFILE</a>'
-)
+
+
+def _wrap_page(name, render_fn):
+    def wrapped():
+        record_page(name)
+        render_fn()
+    return wrapped
 
 
 def build_pages():
     pages.update({
-        "discover": st.Page(discover.render, title="Discover", url_path="discover", default=True),
-        "browse": st.Page(browse.render, title="Browse", url_path="browse"),
-        "watchlist": st.Page(watchlist.render, title="Watchlist", url_path="watchlist"),
-        "profile": st.Page(profile.render, title="Profile", url_path="profile"),
-        "details": st.Page(details.render, title="Film", url_path="film", visibility="hidden"),
-        "benchmarks": st.Page(benchmarks.render, title="Performance", url_path="performance", visibility="hidden"),
+        "discover": st.Page(_wrap_page("discover", discover.render), title="Discover", url_path="discover", default=True),
+        "browse": st.Page(_wrap_page("browse", browse.render), title="Browse", url_path="browse"),
+        "watchlist": st.Page(_wrap_page("watchlist", watchlist.render), title="Watchlist", url_path="watchlist"),
+        "profile": st.Page(_wrap_page("profile", profile.render), title="Profile", url_path="profile", visibility="hidden"),
+        "details": st.Page(_wrap_page("details", details.render), title="Film", url_path="film", visibility="hidden"),
+        "benchmarks": st.Page(_wrap_page("benchmarks", benchmarks.render), title="Performance", url_path="performance", visibility="hidden"),
     })
 
 
@@ -49,33 +55,81 @@ def reset_demo_data():
 
 
 def account_menu(user):
-    with st.popover(user["username"], icon=":material/person:"):
-        html(f'<div class="mono">{escape(user["email"])}</div>')
-        usernames = backend().list_users()["username"].tolist()
-        st.session_state["switch_user"] = user["username"]
-        st.selectbox("Switch user", usernames, key="switch_user", on_change=switch_user)
-
-        st.page_link(pages["benchmarks"], label="Performance comparison")
-        st.button("Reset demo data", type="tertiary", on_click=reset_demo_data)
-        if st.button("Log out", type="tertiary"):
+    with st.popover("Account", icon=":material/account_circle:"):
+        if st.button("Profile", key="header_profile", type="tertiary", icon=":material/person:", use_container_width=True):
+            open_profile()
+        if st.button("Performance", key="header_benchmarks", type="tertiary", icon=":material/speed:", use_container_width=True):
+            open_benchmarks()
+        if st.button("Log out", key="header_logout", type="tertiary", icon=":material/logout:", use_container_width=True):
             log_out()
             st.rerun()
 
 
-def masthead(user):
+def header(user):
+    with st.container(key="nav_back"):
+        st.button("← Back", key="nav_back_btn", type="tertiary", on_click=go_back)
     with st.container(key="wordmark"):
         html(f'<span class="wordmark">{WORDMARK}</span>')
     with st.container(key="account"):
         account_menu(user)
 
+    components.html(
+        """
+        <script>
+        (function() {
+            function setupNavItems() {
+                try {
+                    var doc = window.parent.document;
+                    if (!doc) return;
+                    var nav = doc.querySelector('[data-testid="stTopNav"]');
+                    if (!nav) return;
+                    var back = doc.querySelector('[class*="st-key-nav_back"]');
+                    var wm = doc.querySelector('[class*="st-key-wordmark"]');
+                    var acc = doc.querySelector('[class*="st-key-account"]');
+                    if (back && nav.firstChild !== back) {
+                        nav.insertBefore(back, nav.firstChild);
+                    }
+                    if (wm && back && back.nextSibling !== wm) {
+                        nav.insertBefore(wm, back.nextSibling);
+                    }
+                    if (acc && !nav.contains(acc)) {
+                        nav.appendChild(acc);
+                    }
+                } catch(e) {}
+            }
+            setupNavItems();
+            if (window.parent && !window.parent._navItemsObserver) {
+                try {
+                    var doc = window.parent.document;
+                    window.parent._navItemsObserver = new MutationObserver(setupNavItems);
+                    window.parent._navItemsObserver.observe(doc.body, { childList: true, subtree: true });
+                } catch(e) {}
+            }
+            setInterval(setupNavItems, 200);
+        })();
+        </script>
+        """,
+        height=0,
+        width=0,
+    )
+
+
+masthead = header
+
 
 def footer():
-    html(
-        '<div class="footer"><div class="double-rule"></div>'
-        f'<div class="footer-row"><span class="wordmark">{WORDMARK}</span>'
-        f'<span class="links">{NAV_LINKS}</span>'
-        '<span class="links">© 2026 Reelhouse</span></div></div>'
-    )
+    html('<div class="footer"><div class="double-rule"></div></div>')
+    with st.container(key="site_footer"):
+        col_left, col_mid, col_right = st.columns([1, 2, 1], vertical_alignment="center")
+        with col_left:
+            html(f'<span class="wordmark">{WORDMARK}</span>')
+        with col_mid:
+            with st.container(key="footer_nav"):
+                st.page_link(pages["discover"], label="DISCOVER")
+                st.page_link(pages["browse"], label="BROWSE")
+                st.page_link(pages["watchlist"], label="WATCHLIST")
+        with col_right:
+            html('<div class="footer-copy">© 2026 Reelhouse</div>')
 
 
 def main():
