@@ -71,13 +71,17 @@ def score_text(avg_rating):
 
 
 def poster_frame(movie, class_name="poster-frame"):
-    art = escape(str(movie.get("poster_large") or ""))
+    raw_art = movie.get("poster_large")
+    if raw_art is None or pd.isna(raw_art) or str(raw_art).strip().lower() in ("", "none", "nan"):
+        art = ""
+    else:
+        art = escape(str(raw_art).strip())
     extra = " no-image" if not art else ""
     fallback = (
         '<div class="fallback">'
         '<div class="fallback-icon">🎬</div>'
-        f'<div class="name">{escape(str(movie["title"]))}</div>'
-        f'<div class="year">{movie["release_year"]}</div>'
+        f'<div class="name">{escape(str(movie.get("title", "")))}</div>'
+        f'<div class="year">{movie.get("release_year", "")}</div>'
         '</div>'
     )
     return (

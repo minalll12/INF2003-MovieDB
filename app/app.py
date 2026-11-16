@@ -74,7 +74,7 @@ def header(user):
         account_menu(user)
 
     components.html(
-        """
+        r"""
         <script>
         (function() {
             function setupNavItems() {
@@ -134,6 +134,29 @@ def header(user):
                             }
                         }
                     }
+
+                    // Check broken background images and trigger fallback
+                    var artEls = doc.querySelectorAll('.poster-frame .art, .detail-poster .art');
+                    artEls.forEach(function(el) {
+                        if (el._checked) return;
+                        el._checked = true;
+                        var style = el.style.backgroundImage || '';
+                        var match = style.match(/url\(["']?([^"']+)["']?\)/);
+                        if (!match || !match[1]) return;
+                        var url = match[1];
+                        var img = new Image();
+                        img.onerror = function() {
+                            el.style.display = 'none';
+                            if (el.parentElement) {
+                                el.parentElement.classList.add('no-image');
+                            }
+                            var backdropArt = doc.querySelector('.backdrop .art');
+                            if (backdropArt && backdropArt.style.backgroundImage && backdropArt.style.backgroundImage.indexOf(url) !== -1) {
+                                backdropArt.style.display = 'none';
+                            }
+                        };
+                        img.src = url;
+                    });
                 } catch(e) {}
             }
             setupNavItems();

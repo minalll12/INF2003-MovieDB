@@ -173,9 +173,17 @@ footer,
 [data-testid="stTopNav"] > *:has(a[href*="discover"]) a {
     border-left: none !important;
 }
+/* Watchlist option */
 [data-testid="stTopNav"] > *:has(a[href*="watchlist"]),
 [data-testid="stTopNav"] > *:nth-child(5) {
     margin-right: 15% !important;
+}
+[data-testid="stTopNav"] > *:has(a[href*="watchlist"]) a,
+[data-testid="stTopNav"] > *:has(a[href*="watchlist"]) button,
+[data-testid="stTopNav"] a[href*="watchlist"],
+[data-testid="stTopNav"] > *:nth-child(5) a,
+[data-testid="stTopNav"] > *:nth-child(5) button {
+    border-right: 1px solid var(--rule) !important;
 }
 
 [data-testid="stTopNav"] a *, [data-testid="stTopNav"] button * {
@@ -1380,12 +1388,50 @@ div[class*="st-key-genre_strip_wrap"],
     z-index: 2 !important;
 }
 .detail-poster {
+    position: relative;
     aspect-ratio: 2 / 3;
-    background-size: cover;
-    background-position: center;
+    overflow: hidden;
+    background: var(--surface);
     border-radius: 4px;
     outline: 1px solid var(--rule);
+    outline-offset: -1px;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+}
+.detail-poster .art {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+}
+.detail-poster .fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+    text-align: center;
+    background: var(--surface);
+}
+.detail-poster .fallback-icon {
+    font-size: 56px;
+    opacity: 0.35;
+    line-height: 1;
+}
+.detail-poster .fallback .name {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--paper);
+    line-height: 1.25;
+}
+.detail-poster .fallback .year {
+    font-family: var(--label);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
 }
 .detail-title { font-family: var(--display); font-weight: 400; font-size: 64px; line-height: 1; margin: 8px 0 16px; }
 @media (max-width: 900px) {
@@ -1912,6 +1958,11 @@ div[class*="st-key-genre_strip_wrap"],
 [class*="st-key-profile_empty_wrap"] [data-testid="stHorizontalBlock"],
 [class*="st-key-profile_empty"] {
     margin-top: 5px !important;
+}
+
+[class*="st-key-watchlist_empty"] [data-testid="stBaseButton-primary"],
+[class*="st-key-watchlist_empty"] button {
+    margin-top: 24px !important;
 }
 
 /* ---------- mobile responsive ---------- */
