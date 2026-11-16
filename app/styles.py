@@ -175,7 +175,7 @@ footer,
 }
 [data-testid="stTopNav"] > *:has(a[href*="watchlist"]),
 [data-testid="stTopNav"] > *:nth-child(5) {
-    margin-right: 30% !important;
+    margin-right: 15% !important;
 }
 
 [data-testid="stTopNav"] a *, [data-testid="stTopNav"] button * {
@@ -1152,38 +1152,132 @@ div[class*="st-key-poster_btn_"],
     padding: 3px 9px;
 }
 
-/* Genre strip scroll arrows (injected via JS into parent DOM) */
-.genre-arrow-wrap {
-    position: relative;
-    padding: 0 36px;
+/* Genre strip wrapper & scroll chevrons */
+[class*="st-key-genre_strip_wrap"],
+div[class*="st-key-genre_strip_wrap"],
+[data-testid="stVerticalBlock"][class*="st-key-genre_strip_wrap"] {
+    position: relative !important;
+    width: 100% !important;
+    margin: 32px 0 16px !important;
+    overflow: visible !important;
 }
-.genre-scroll-btn {
+
+[class*="st-key-genre_strip_wrap"] [data-testid="stHorizontalBlock"] {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    scrollbar-width: none !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 4px 44px 8px 44px !important;
+    scroll-behavior: smooth !important;
+}
+
+[class*="st-key-genre_strip_wrap"] [data-testid="stHorizontalBlock"]::-webkit-scrollbar {
+    display: none !important;
+}
+
+[class*="st-key-genre_strip_wrap"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    padding: 0 !important;
+}
+
+[class*="st-key-genre_strip_wrap"] button[data-testid="stBaseButton-tertiary"] {
+    font-family: "DM Mono", monospace !important;
+    font-size: 11px !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    padding: 5px 14px !important;
+    border: 1px solid #2e2a23 !important;
+    border-radius: 20px !important;
+    background: transparent !important;
+    color: #9a917f !important;
+    white-space: nowrap !important;
+    min-height: 0 !important;
+    line-height: 1 !important;
+    transition: all 0.15s ease !important;
+}
+
+[class*="st-key-genre_strip_wrap"] button[data-testid="stBaseButton-tertiary"]:hover {
+    border-color: #d4af37 !important;
+    color: #d4af37 !important;
+    background: transparent !important;
+}
+
+/* Subtle gradient edge fades */
+[class*="st-key-genre_strip_wrap"]::before {
+    content: '';
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(22, 20, 15, 0.9);
-    border: 1px solid #3d3a32;
-    color: #9a917f;
-    font-size: 20px;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    line-height: 1;
-    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 48px;
+    background: linear-gradient(to right, #0d0c0a 20%, transparent 100%);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 1;
+}
+[class*="st-key-genre_strip_wrap"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 48px;
+    background: linear-gradient(to left, #0d0c0a 20%, transparent 100%);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 1;
+}
+
+/* Prev and Next Chevron Buttons — always visible */
+.genre-scroll-btn {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: rgba(20, 18, 14, 0.94) !important;
+    backdrop-filter: blur(4px) !important;
+    border: 1px solid #3d362a !important;
+    color: #9a917f !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    z-index: 20 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.18s ease !important;
+}
+.genre-scroll-btn svg {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    pointer-events: none !important;
+    transition: transform 0.18s ease !important;
 }
 .genre-scroll-btn:hover {
-    color: #d4af37;
-    border-color: #d4af37;
-    background: rgba(22, 20, 15, 1);
+    color: #d4af37 !important;
+    border-color: #d4af37 !important;
+    background: rgba(30, 26, 20, 0.98) !important;
+    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25) !important;
+    transform: translateY(-50%) scale(1.08) !important;
 }
-.genre-scroll-left  { left:  4px; }
-.genre-scroll-right { right: 4px; }
+.genre-scroll-btn:hover svg {
+    stroke: #d4af37 !important;
+}
+.genre-scroll-btn:active {
+    transform: translateY(-50%) scale(0.94) !important;
+}
+.genre-scroll-left  { left: 6px !important; }
+.genre-scroll-right { right: 6px !important; }
 
 /* ---------- hero ---------- */
 

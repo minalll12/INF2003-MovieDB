@@ -82,18 +82,57 @@ def header(user):
                     var doc = window.parent.document;
                     if (!doc) return;
                     var nav = doc.querySelector('[data-testid="stTopNav"]');
-                    if (!nav) return;
-                    var back = doc.querySelector('[class*="st-key-nav_back"]');
-                    var wm = doc.querySelector('[class*="st-key-wordmark"]');
-                    var acc = doc.querySelector('[class*="st-key-account"]');
-                    if (back && nav.firstChild !== back) {
-                        nav.insertBefore(back, nav.firstChild);
+                    if (nav) {
+                        var back = doc.querySelector('[class*="st-key-nav_back"]');
+                        var wm = doc.querySelector('[class*="st-key-wordmark"]');
+                        var acc = doc.querySelector('[class*="st-key-account"]');
+                        if (back && nav.firstChild !== back) {
+                            nav.insertBefore(back, nav.firstChild);
+                        }
+                        if (wm && back && back.nextSibling !== wm) {
+                            nav.insertBefore(wm, back.nextSibling);
+                        }
+                        if (acc && !nav.contains(acc)) {
+                            nav.appendChild(acc);
+                        }
                     }
-                    if (wm && back && back.nextSibling !== wm) {
-                        nav.insertBefore(wm, back.nextSibling);
-                    }
-                    if (acc && !nav.contains(acc)) {
-                        nav.appendChild(acc);
+
+                    // Setup genre chevrons if on Discover page
+                    var wrap = doc.querySelector('[class*="st-key-genre_strip_wrap"]');
+                    if (wrap) {
+                        var strip = wrap.querySelector('[data-testid="stHorizontalBlock"]');
+                        if (strip) {
+                            var prevBtn = wrap.querySelector('.genre-scroll-left');
+                            var nextBtn = wrap.querySelector('.genre-scroll-right');
+
+                            if (!prevBtn) {
+                                prevBtn = doc.createElement('button');
+                                prevBtn.className = 'genre-scroll-btn genre-scroll-left';
+                                prevBtn.setAttribute('aria-label', 'Previous genres');
+                                prevBtn.setAttribute('type', 'button');
+                                prevBtn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+                                prevBtn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    strip.scrollBy({ left: -280, behavior: 'smooth' });
+                                });
+                                wrap.appendChild(prevBtn);
+                            }
+
+                            if (!nextBtn) {
+                                nextBtn = doc.createElement('button');
+                                nextBtn.className = 'genre-scroll-btn genre-scroll-right';
+                                nextBtn.setAttribute('aria-label', 'Next genres');
+                                nextBtn.setAttribute('type', 'button');
+                                nextBtn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+                                nextBtn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    strip.scrollBy({ left: 280, behavior: 'smooth' });
+                                });
+                                wrap.appendChild(nextBtn);
+                            }
+                        }
                     }
                 } catch(e) {}
             }
