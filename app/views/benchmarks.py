@@ -101,8 +101,11 @@ def _comparison(genre, movie_id, user_id):
         })
     _comparison_table(rows)
     st.write("")
-    chart = pd.DataFrame(rows).set_index("Query")[["MySQL time (ms)", "MongoDB time (ms)"]]
-    st.bar_chart(chart, stack=False, horizontal=True, color=["#d4af37", "#c4532f"])
+    try:
+        chart = pd.DataFrame(rows).set_index("Query")[["MySQL time (ms)", "MongoDB time (ms)"]]
+        st.bar_chart(chart, stack=False, horizontal=True, color=["#d4af37", "#c4532f"])
+    except Exception:
+        pass  # pyarrow native DLL may be blocked on some machines; results still shown above
     for row in rows:
         fast, slow = sorted([row["MySQL time (ms)"], row["MongoDB time (ms)"]])
         gain = (slow - fast) / slow * 100 if slow else 0
