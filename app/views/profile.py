@@ -68,7 +68,7 @@ def _stats(reviews, watchlist_count):
 
 
 def _favourites(favourites, saved_ids):
-    section_head("FAVOURITES")
+    section_head("YOUR MOVIE JOURNAL")
     st.write("")
     if favourites.empty:
         empty_state("Rate a few films and your favourites will gather here.")
