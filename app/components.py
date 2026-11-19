@@ -71,13 +71,17 @@ def score_text(avg_rating):
 
 
 def poster_frame(movie, class_name="poster-frame"):
-    art = escape(str(movie.get("poster_large") or ""))
+    raw_art = movie.get("poster_large")
+    if raw_art is None or pd.isna(raw_art) or str(raw_art).strip().lower() in ("", "none", "nan"):
+        art = ""
+    else:
+        art = escape(str(raw_art).strip())
     extra = " no-image" if not art else ""
     fallback = (
         '<div class="fallback">'
         '<div class="fallback-icon">🎬</div>'
-        f'<div class="name">{escape(str(movie["title"]))}</div>'
-        f'<div class="year">{movie["release_year"]}</div>'
+        f'<div class="name">{escape(str(movie.get("title", "")))}</div>'
+        f'<div class="year">{movie.get("release_year", "")}</div>'
         '</div>'
     )
     return (
@@ -97,7 +101,15 @@ def poster_card(movie, saved, prefix):
     movie_id = movie["movie_id"]
     rating_text = score_text(movie["avg_rating"])
     with st.container(key=f"card_{prefix}_{movie_id}"):
-        html('<div class="card-poster-wrap">' + poster_frame(movie) + '</div>')
+        with st.container(key=f"poster_btn_{prefix}_{movie_id}"):
+            if st.button(
+                f"poster_{movie_id}",
+                key=f"pbtn_{prefix}_{movie_id}",
+                on_click=open_movie,
+                args=(movie_id,),
+            ):
+                pass
+            html(f'<div class="card-poster-wrap">{poster_frame(movie)}</div>')
         title_col, right_col = st.columns([3, 1], vertical_alignment="top")
         with title_col:
             if st.button(movie["title"], key=f"title_{prefix}_{movie_id}", type="tertiary"):

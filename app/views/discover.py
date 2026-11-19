@@ -2,6 +2,7 @@ from html import escape
 
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 from components import (
     html,
     poster_frame,
@@ -21,13 +22,23 @@ ROW_SIZE = 5
 
 _GENRE_STRIP_CSS = (
     '<style>'
-    '[data-testid="stHorizontalBlock"]:has([class*="st-key-genre_pill_"]) {'
-    '  overflow-x: auto !important; flex-wrap: nowrap !important;'
-    '  scrollbar-width: none; gap: 8px !important;'
-    '  margin: 32px 0 16px !important; padding-bottom: 4px;'
+    '[class*="st-key-genre_strip_wrap"],'
+    'div[class*="st-key-genre_strip_wrap"],'
+    '[data-testid="stVerticalBlock"][class*="st-key-genre_strip_wrap"] {'
+    '  position: relative !important;'
+    '  width: 100% !important;'
+    '  margin: 32px 0 16px !important;'
+    '  overflow: visible !important;'
     '}'
-    '[data-testid="stHorizontalBlock"]:has([class*="st-key-genre_pill_"])::-webkit-scrollbar { display: none; }'
-    '[data-testid="stHorizontalBlock"]:has([class*="st-key-genre_pill_"]) > [data-testid="stColumn"] {'
+    '[class*="st-key-genre_strip_wrap"] [data-testid="stHorizontalBlock"] {'
+    '  overflow-x: auto !important; flex-wrap: nowrap !important;'
+    '  scrollbar-width: none !important; gap: 8px !important;'
+    '  margin: 0 !important;'
+    '  padding: 4px 44px 8px 44px !important;'
+    '  scroll-behavior: smooth !important;'
+    '}'
+    '[class*="st-key-genre_strip_wrap"] [data-testid="stHorizontalBlock"]::-webkit-scrollbar { display: none !important; }'
+    '[class*="st-key-genre_strip_wrap"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {'
     '  flex: 0 0 auto !important; min-width: 0 !important; width: auto !important; padding: 0 !important;'
     '}'
     '[class*="st-key-genre_pill_"] button {'
@@ -46,42 +57,59 @@ _GENRE_STRIP_CSS = (
 _GENRE_ARROWS_JS = """
 <script>
 (function() {
-  var DONE = 'rhArrowsDone';
-  function setup() {
+  function setupGenreChevrons() {
     try {
-      var p = window.parent.document;
-      var strip = p.querySelector('[data-testid="stHorizontalBlock"]:has([class*="st-key-genre_pill_"])');
-      if (!strip || strip[DONE]) return;
-      strip[DONE] = true;
+      var doc = window.parent.document;
+      if (!doc) return;
+      var wrap = doc.querySelector('[class*="st-key-genre_strip_wrap"]');
+      if (!wrap) return;
+      var strip = wrap.querySelector('[data-testid="stHorizontalBlock"]');
+      if (!strip) return;
 
-      var wrap = p.createElement('div');
-      wrap.className = 'genre-arrow-wrap';
-      strip.parentNode.insertBefore(wrap, strip);
-      wrap.appendChild(strip);
+      var prevBtn = wrap.querySelector('.genre-scroll-left');
+      var nextBtn = wrap.querySelector('.genre-scroll-right');
 
-      function makeArrow(cls, html, delta) {
-        var b = p.createElement('button');
-        b.className = 'genre-scroll-btn ' + cls;
-        b.innerHTML = html;
-        b.addEventListener('click', function(e) {
+      if (!prevBtn) {
+        prevBtn = doc.createElement('button');
+        prevBtn.className = 'genre-scroll-btn genre-scroll-left';
+        prevBtn.setAttribute('aria-label', 'Previous genres');
+        prevBtn.setAttribute('type', 'button');
+        prevBtn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+        prevBtn.addEventListener('click', function(e) {
           e.preventDefault();
-          strip.scrollBy({left: delta, behavior: 'smooth'});
+          e.stopPropagation();
+          strip.scrollBy({left: -280, behavior: 'smooth'});
         });
-        return b;
+        wrap.appendChild(prevBtn);
       }
 
-      wrap.insertBefore(makeArrow('genre-scroll-left',  '&#8249;', -240), strip);
-      wrap.appendChild(makeArrow('genre-scroll-right', '&#8250;',  240));
+      if (!nextBtn) {
+        nextBtn = doc.createElement('button');
+        nextBtn.className = 'genre-scroll-btn genre-scroll-right';
+        nextBtn.setAttribute('aria-label', 'Next genres');
+        nextBtn.setAttribute('type', 'button');
+        nextBtn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+        nextBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          strip.scrollBy({left: 280, behavior: 'smooth'});
+        });
+        wrap.appendChild(nextBtn);
+      }
     } catch(e) {}
   }
 
-  setTimeout(setup, 250);
+  setupGenreChevrons();
+  setTimeout(setupGenreChevrons, 80);
+  setTimeout(setupGenreChevrons, 200);
+  setTimeout(setupGenreChevrons, 500);
+
   try {
-    new window.parent.MutationObserver(function(m) {
-      for (var i = 0; i < m.length; i++) {
-        if (m[i].addedNodes.length) { setup(); break; }
-      }
-    }).observe(window.parent.document.body, {childList: true, subtree: true});
+    var doc = window.parent.document;
+    if (doc && !window.parent._genreChevronsObserver) {
+      window.parent._genreChevronsObserver = new MutationObserver(setupGenreChevrons);
+      window.parent._genreChevronsObserver.observe(doc.body, {childList: true, subtree: true});
+    }
   } catch(e) {}
 })();
 </script>
@@ -91,13 +119,14 @@ _GENRE_ARROWS_JS = """
 def _genre_strip():
     genres = backend().genre_names()
     html(_GENRE_STRIP_CSS)
-    cols = st.columns(len(genres), gap="small")
-    for i, (col, genre) in enumerate(zip(cols, genres)):
-        with col:
-            with st.container(key=f"genre_pill_{i}"):
-                if st.button(genre, key=f"gpill_{i}", type="tertiary"):
-                    open_browse(genre=genre)
-    st.html(_GENRE_ARROWS_JS)
+    with st.container(key="genre_strip_wrap"):
+        cols = st.columns(len(genres), gap="small")
+        for i, (col, genre) in enumerate(zip(cols, genres)):
+            with col:
+                with st.container(key=f"genre_pill_{i}"):
+                    if st.button(genre, key=f"gpill_{i}", type="tertiary"):
+                        open_browse(genre=genre)
+    components.html(_GENRE_ARROWS_JS, height=0, width=0)
 
 
 def _editorial_section(movies, saved_ids):
@@ -112,7 +141,15 @@ def _editorial_section(movies, saved_ids):
             rating_text = score_text(movie["avg_rating"])
             saved = movie_id in saved_ids
             with st.container(key=f"card_editorial_{movie_id}"):
-                html('<div class="editorial-poster-wrap">' + poster_frame(movie) + '</div>')
+                with st.container(key=f"poster_btn_editorial_{movie_id}"):
+                    if st.button(
+                        f"poster_editorial_{movie_id}",
+                        key=f"pbtn_editorial_{movie_id}",
+                        on_click=open_movie,
+                        args=(movie_id,),
+                    ):
+                        pass
+                    html(f'<div class="editorial-poster-wrap">{poster_frame(movie)}</div>')
                 if st.button(movie["title"], key=f"editorial_open_{movie_id}", type="tertiary"):
                     open_movie(movie_id)
                 year_col, score_col, heart_col = st.columns([4, 1, 1], vertical_alignment="center")
@@ -152,55 +189,42 @@ def _poster_row(movies, prefix, title, sort_by, saved_ids=None):
 
 
 def _fresh_reviews():
-    html(
-        '<style>'
-        '.fresh-card { display: block; }'
-        '.fresh-top-row {'
-        ' display: flex; align-items: flex-start; gap: 8px; margin-top: 16px;'
-        '}'
-        '.fresh-card-title {'
-        ' flex: 1;'
-        ' font-family: "DM Serif Display", Georgia, serif !important;'
-        ' font-size: 15px; font-weight: 400; color: #efe8d8; line-height: 1.35;'
-        ' display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;'
-        ' overflow: hidden;'
-        '}'
-        '.fresh-rating {'
-        ' flex-shrink: 0;'
-        ' font-family: "DM Mono", monospace; font-size: 11px;'
-        ' color: #d4af37; letter-spacing: 0.06em; white-space: nowrap;'
-        ' margin-top: 2px;'
-        '}'
-        '.fresh-who {'
-        ' font-family: "DM Mono", monospace; font-size: 10px;'
-        ' letter-spacing: 0.12em; text-transform: uppercase; color: #9a917f;'
-        ' margin-top: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'
-        '}'
-        '.poster-frame.no-image .fallback .name,'
-        '.poster-frame.no-image .fallback .year { display: none !important; }'
-        '.poster-frame.no-image .fallback-icon { font-size: 36px !important; opacity: 0.18 !important; }'
-        '</style>'
-    )
     _section_header("FRESH REVIEWS", "all_fresh", lambda: open_browse(sort_by="Newest"))
     reviews = _get_latest_reviews(ROW_SIZE)
     slots = st.columns(ROW_SIZE, gap="medium")
-    for slot, (_, review) in zip(slots, reviews.iterrows()):
+    for index, (slot, (_, review)) in enumerate(zip(slots, reviews.iterrows())):
         with slot:
+            movie_id = review["movie_id"]
             r = review.get("rating", None)
             try:
                 rating_str = f"★ {float(r):.1f}" if r is not None and not pd.isna(r) else ""
             except (ValueError, TypeError):
                 rating_str = ""
-            html(
-                '<div class="fresh-card">'
-                + poster_frame(review)
-                + '<div class="fresh-top-row">'
-                + f'<div class="fresh-card-title">{escape(str(review["title"]))}</div>'
-                + f'<div class="fresh-rating">{escape(rating_str)}</div>'
-                + '</div>'
-                + f'<div class="fresh-who">{escape(str(review["username"]))}</div>'
-                + '</div>'
-            )
+            with st.container(key=f"card_fresh_{movie_id}_{index}"):
+                with st.container(key=f"poster_btn_fresh_{movie_id}_{index}"):
+                    if st.button(
+                        f"poster_fresh_{movie_id}_{index}",
+                        key=f"pbtn_fresh_{movie_id}_{index}",
+                        on_click=open_movie,
+                        args=(movie_id,),
+                    ):
+                        pass
+                    html(f'<div class="card-poster-wrap">{poster_frame(review)}</div>')
+                title_col, rating_col = st.columns([3, 1], vertical_alignment="top")
+                with title_col:
+                    if st.button(
+                        review["title"],
+                        key=f"title_fresh_{movie_id}_{index}",
+                        type="tertiary",
+                        on_click=open_movie,
+                        args=(movie_id,),
+                    ):
+                        pass
+                with rating_col:
+                    with st.container(key=f"fresh_rating_{movie_id}_{index}"):
+                        if rating_str:
+                            html(f'<div class="fresh-rating">{escape(rating_str)}</div>')
+                html(f'<div class="fresh-who">{escape(str(review["username"]))}</div>')
 
 
 def render():

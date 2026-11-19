@@ -325,6 +325,6 @@ class DocumentBackend(CsvBackend):
 
 
 ENGINES = {
-    "MySQL (Relational)": MySQLBackend if _mysql_ok else RelationalBackend,
-    "MongoDB (Document)": MongoBackend if _mongo_ok else DocumentBackend,
+    "MySQL (Relational)": MySQLBackend,
+    "MongoDB (Document)": MongoBackend,
 }
