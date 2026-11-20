@@ -36,17 +36,45 @@ def backend():
     return get_engine(engine_name())
 
 
+def rehydrate_session():
+    if not st.session_state.get("user") and "user" in st.query_params:
+        db = backend()
+        ident = str(st.query_params["user"]).strip()
+        user = getattr(db, "get_user_by_username", lambda u: None)(ident)
+        if not user:
+            try:
+                user = db.get_user(ident)
+            except Exception:
+                user = None
+        if user:
+            st.session_state["user"] = user
+        else:
+            st.query_params.pop("user", None)
+
+    if not st.session_state.get("selected_movie") and "film" in st.query_params:
+        film_id = str(st.query_params["film"]).strip()
+        if film_id:
+            st.session_state["selected_movie"] = film_id
+
+
 def current_user():
-    return st.session_state.get("user")
+    user = st.session_state.get("user")
+    if user is None:
+        rehydrate_session()
+        user = st.session_state.get("user")
+    return user
 
 
 def log_in(user):
     st.session_state["user"] = user
+    if user and isinstance(user, dict) and "username" in user:
+        st.query_params["user"] = user["username"]
 
 
 def log_out():
     for key in ("user", "selected_movie", "switch_user", "page_history"):
         st.session_state.pop(key, None)
+    st.query_params.clear()
 
 
 def record_page(page_name):
@@ -56,26 +84,53 @@ def record_page(page_name):
         history.append(entry)
         if len(history) > 50:
             history.pop(0)
+    if page_name != "details":
+        st.query_params.pop("film", None)
+    else:
+        movie_id = st.session_state.get("selected_movie")
+        if movie_id:
+            st.query_params["film"] = str(movie_id)
 
 
 def go_back():
+    user = current_user()
     history = st.session_state.get("page_history", [])
     if len(history) > 1:
         history.pop()  # remove current active page
         prev_name, prev_movie = history[-1]
         if prev_movie is not None:
             st.session_state["selected_movie"] = prev_movie
+            st.query_params["film"] = str(prev_movie)
         else:
             st.session_state.pop("selected_movie", None)
-        st.switch_page(pages[prev_name])
-    else:
-        history.clear()
-        st.session_state.pop("selected_movie", None)
-        st.switch_page(pages["discover"])
+            st.query_params.pop("film", None)
+        target = pages.get(prev_name)
+        if target:
+            try:
+                st.switch_page(target)
+                return
+            except Exception:
+                pass
+    history.clear()
+    st.session_state.pop("selected_movie", None)
+    st.query_params.pop("film", None)
+    if user and "discover" in pages:
+        try:
+            st.switch_page(pages["discover"])
+            return
+        except Exception:
+            pass
+    st.query_params.clear()
+    st.rerun()
+
+
+def open_discover():
+    st.switch_page(pages["discover"])
 
 
 def open_movie(movie_id):
     st.session_state["selected_movie"] = movie_id
+    st.query_params["film"] = str(movie_id)
     st.switch_page(pages["details"])
 
 
