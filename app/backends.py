@@ -207,7 +207,12 @@ class CsvBackend:
 
     def get_user(self, user_id):
         users = self.store["users"]
-        match = users[users["user_id"] == user_id]
+        match = users[users["user_id"].astype(str) == str(user_id)]
+        return None if match.empty else match.iloc[0][["user_id", "username", "email"]].to_dict()
+
+    def get_user_by_username(self, username):
+        users = self.store["users"]
+        match = users[users["username"].astype(str).str.lower() == str(username).strip().lower()]
         return None if match.empty else match.iloc[0][["user_id", "username", "email"]].to_dict()
 
     def member_since(self, user_id):
@@ -325,6 +330,6 @@ class DocumentBackend(CsvBackend):
 
 
 ENGINES = {
-    "MySQL (Relational)": MySQLBackend,
-    "MongoDB (Document)": MongoBackend,
+    "MySQL (Relational)": RelationalBackend,
+    "MongoDB (Document)": DocumentBackend,
 }

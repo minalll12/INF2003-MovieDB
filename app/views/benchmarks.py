@@ -59,7 +59,8 @@ def _single_engine(genre, movie_id, user_id):
     )
     if not st.button("RUN QUERIES →"):
         return
-    results = _queries(backend(), genre, movie_id, user_id)
+    with st.spinner("Executing benchmark queries..."):
+        results = _queries(backend(), genre, movie_id, user_id)
     captions = ["Rows returned", "Average rating", "Watchlist rows"]
     for slot, caption, (name, (elapsed, value)) in zip(st.columns(3), captions, results.items()):
         with slot:
@@ -87,8 +88,9 @@ def _comparison(genre, movie_id, user_id):
     section_head("No. 02 — HEAD TO HEAD")
     if not st.button("RUN ALL COMPARISONS →", type="primary"):
         return
-    names = list(ENGINES)
-    timings = {name: _queries(get_engine(name), genre, movie_id, user_id) for name in names}
+    with st.spinner("Executing head-to-head comparisons..."):
+        names = list(ENGINES)
+        timings = {name: _queries(get_engine(name), genre, movie_id, user_id) for name in names}
     rows = []
     for query in timings[names[0]]:
         mysql_ms = timings[names[0]][query][0]
@@ -117,6 +119,7 @@ def _comparison(genre, movie_id, user_id):
 
 
 def render():
+    html('<div class="perf-page-marker" style="display:none"></div>')
     page_title("Performance")
     html(
         '<div class="read" style="max-width:640px;margin-bottom:32px">Each query runs against both '
