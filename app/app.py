@@ -1,7 +1,13 @@
+import os
 from html import escape
 
 import streamlit as st
 import streamlit.components.v1 as components
+
+# Streamlit Cloud stores secrets in st.secrets, not os.environ.
+# Sync them so the existing os.getenv() calls in mysql/db.py and mongodb/config.py work.
+for _k, _v in st.secrets.items():
+    os.environ.setdefault(_k, str(_v))
 
 from components import html
 from session import (

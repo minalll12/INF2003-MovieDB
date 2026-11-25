@@ -188,10 +188,13 @@ def open_movie(movie_id):
 
 
 def open_browse(genre=None, sort_by=None):
+    years = backend().year_bounds()
     st.session_state["browse_title"] = ""
     st.session_state["browse_genres"] = [genre] if genre else []
-    if sort_by:
-        st.session_state["browse_sort"] = sort_by
+    st.session_state["browse_years"] = years
+    st.session_state["browse_ratings"] = (0.0, 10.0)
+    st.session_state["browse_sort"] = sort_by or "Highest rated"
+    st.session_state["browse_page"] = 1
     qp = _user_qp()
     target = pages.get("browse")
     if target:

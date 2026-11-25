@@ -10,8 +10,14 @@ FILTER_KEYS = ("browse_title", "browse_genres", "browse_years", "browse_ratings"
 
 
 def _clear_filters():
-    for key in FILTER_KEYS:
-        st.session_state.pop(key, None)
+    years = backend().year_bounds()
+    default_sort = list(SORT_OPTIONS)[0]
+    st.session_state["browse_title"] = ""
+    st.session_state["browse_genres"] = []
+    st.session_state["browse_years"] = years
+    st.session_state["browse_ratings"] = RATING_BOUNDS
+    st.session_state["browse_sort"] = default_sort
+    st.session_state["browse_page"] = 1
 
 
 def _filters():

@@ -52,8 +52,7 @@ def empty_state(line, button_label=None, on_click=None, key=None):
     if button_label:
         _, middle, _ = st.columns([2, 1, 2])
         with middle:
-            if st.button(button_label, key=key, type="primary", width="stretch"):
-                on_click()
+            st.button(button_label, key=key, type="primary", width="stretch", on_click=on_click)
 
 
 def stars(rating):
