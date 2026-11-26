@@ -1821,7 +1821,7 @@ a.film-back-btn:hover,
 }
 .stat { padding: 0 24px; border-left: 1px solid var(--rule); }
 .stat:first-child { border-left: none; padding-left: 0; }
-.stat .figure { font-family: var(--display); font-weight: 400; font-size: 52px; line-height: 1.1; color: var(--paper); }
+.stat .figure { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.1; color: var(--paper); }
 .stat .name { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
 /* ---------- sign in ---------- */
