@@ -199,12 +199,11 @@ footer,
     margin: 0 !important;
 }
 
-/* 3-column layout: left 25% | center 50% | right 25% */
+/* 3-column layout: left and right grow equally so center is always truly centred */
 [data-testid="stTopNav"] .nav-col-left {
     display: flex !important;
     align-items: center !important;
-    flex: 0 0 25% !important;
-    width: 25% !important;
+    flex: 1 1 0 !important;
     min-width: 0 !important;
     gap: 0 !important;
     padding-left: var(--gutter) !important;
@@ -214,8 +213,7 @@ footer,
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    flex: 0 0 50% !important;
-    width: 50% !important;
+    flex: 0 0 auto !important;
     min-width: 0 !important;
     gap: 0 !important;
 }
@@ -223,8 +221,7 @@ footer,
     display: flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    flex: 0 0 25% !important;
-    width: 25% !important;
+    flex: 1 1 0 !important;
     min-width: 0 !important;
     gap: 0 !important;
     padding-right: var(--gutter) !important;
