@@ -516,8 +516,16 @@ def main():
     build_pages()
 
     if user is None:
-        welcome_page = st.Page(login.render, url_path="welcome", default=True, visibility="hidden")
-        navigation = st.navigation([welcome_page, pages["benchmarks"]], position="top")
+        guest_pages = [
+            st.Page(login.render, title="Welcome", url_path="welcome", default=True, visibility="hidden"),
+            pages["benchmarks"],
+            st.Page(login.render, title="Discover", url_path="discover", visibility="hidden"),
+            st.Page(login.render, title="Browse", url_path="browse", visibility="hidden"),
+            st.Page(login.render, title="Watchlist", url_path="watchlist", visibility="hidden"),
+            st.Page(login.render, title="Profile", url_path="profile", visibility="hidden"),
+            st.Page(login.render, title="Film", url_path="film", visibility="hidden"),
+        ]
+        navigation = st.navigation(guest_pages, position="top")
         is_perf = (navigation == pages.get("benchmarks"))
         if is_perf:
             masthead(user, is_performance=True)
