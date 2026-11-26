@@ -151,6 +151,8 @@ footer,
     justify-content: center !important;
     width: 100% !important;
     max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background: transparent !important;
 }
 
@@ -165,12 +167,9 @@ footer,
     box-sizing: border-box !important;
 }
 
-/* Completely remove and hide the empty gx div (e1919x4b5) and sidebar button placeholder */
-[class*="e1919x4b5"],
-[class*="e1919x4b0"],
-[class*="e1919x4b3"],
-.st-emotion-cache-jma0kd,
-[data-testid="stToolbar"] [class*="e1919x4b5"],
+/* Hide any empty Streamlit spacer / sidebar-stub siblings structurally (Streamlit-version-independent) */
+[data-testid="stToolbar"] > *:not([data-testid="stTopNav"]):not(:has([data-testid="stTopNav"])),
+[data-testid="stToolbar"] > div > *:not([data-testid="stTopNav"]):not(:has([data-testid="stTopNav"])),
 [data-testid="stToolbar"] [data-testid="stExpandSidebarButton"],
 [data-testid="stToolbar"] button[aria-label="Expand sidebar"] {
     display: none !important;

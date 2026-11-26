@@ -224,12 +224,30 @@ def header(user, is_performance=False):
                         colCenter.querySelectorAll('[data-testid="stTopNavLink"]').length !== links.length;
 
                     if (needsRebuild) {
-                        // Remove empty Streamlit placeholder wrappers (sidebar expand stub)
-                        var leftHolders = doc.querySelectorAll('[class*="e1919x4b5"], [class*="e1919x4b3"], [class*="e1919x4b0"], [data-testid="stExpandSidebarButton"]');
-                        leftHolders.forEach(function(el) { try { el.remove(); } catch(e) {} });
+                        // Remove empty Streamlit spacer / sidebar-stub siblings structurally (version-independent)
+                        var toolbar = doc.querySelector('[data-testid="stToolbar"]');
+                        if (toolbar) {
+                            toolbar.style.setProperty('padding', '0', 'important');
+                            toolbar.style.setProperty('margin', '0', 'important');
+                            Array.prototype.slice.call(toolbar.children).forEach(function(child) {
+                                if (child !== nav && !child.contains(nav)) {
+                                    try { child.remove(); } catch(e) {}
+                                }
+                            });
+                        }
+                        var p = nav.parentElement;
+                        if (p && p !== toolbar) {
+                            Array.prototype.slice.call(p.children).forEach(function(child) {
+                                if (child !== nav && !child.contains(nav)) {
+                                    try { child.remove(); } catch(e) {}
+                                }
+                            });
+                        }
+                        doc.querySelectorAll('[data-testid="stExpandSidebarButton"]').forEach(function(el) {
+                            try { el.remove(); } catch(e) {}
+                        });
 
                         // Expand toolbar parent to full width
-                        var p = nav.parentElement;
                         if (p) {
                             p.style.setProperty('width', '100%', 'important');
                             p.style.setProperty('max-width', '100%', 'important');
