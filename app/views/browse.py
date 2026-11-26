@@ -60,7 +60,7 @@ def render():
         results = results[results["review_count"] >= MIN_REVIEWS_FOR_RATING_SORT]
     count_line = f'{len(results)} FILM{"S" if len(results) != 1 else ""}'
     if rating_sort_active:
-        count_line += f' · FILMS WITH FEWER THAN {MIN_REVIEWS_FOR_RATING_SORT} REVIEWS HIDDEN'
+        count_line += f' · FILMS WITH AT LEAST {MIN_REVIEWS_FOR_RATING_SORT} REVIEWS'
     html(f'<div class="mono" style="padding:4px 0 16px">{count_line}</div>')
     if results.empty:
         empty_state(
