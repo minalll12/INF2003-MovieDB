@@ -199,7 +199,10 @@ footer,
     margin: 0 !important;
 }
 
-/* 3-column layout: left and right grow equally so center is always truly centred */
+/* 3-column layout: center is absolutely positioned at exactly 50% of navbar width */
+[data-testid="stTopNav"] {
+    position: relative !important;
+}
 [data-testid="stTopNav"] .nav-col-left {
     display: flex !important;
     align-items: center !important;
@@ -213,9 +216,17 @@ footer,
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    flex: 0 0 auto !important;
-    min-width: 0 !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    transform: translateX(-50%) !important;
+    flex: none !important;
     gap: 0 !important;
+    pointer-events: none !important;
+}
+[data-testid="stTopNav"] .nav-col-center > * {
+    pointer-events: auto !important;
 }
 [data-testid="stTopNav"] .nav-col-right {
     display: flex !important;
