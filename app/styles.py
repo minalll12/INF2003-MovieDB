@@ -1912,6 +1912,24 @@ body:has(.wall) [data-testid="stHeader"] {
     padding: 24px;
 }
 
+[class*="st-key-auth_panel"] [data-testid="stForm"] {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+/* Maintain dark luxury aesthetic when browser or password manager autofills inputs */
+[class*="st-key-auth_panel"] input:-webkit-autofill,
+[class*="st-key-auth_panel"] input:-webkit-autofill:hover, 
+[class*="st-key-auth_panel"] input:-webkit-autofill:focus, 
+[class*="st-key-auth_panel"] input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #1a1610 inset !important;
+    -webkit-text-fill-color: var(--paper) !important;
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: var(--paper) !important;
+}
+
 /* ---------- editorial header (Discover page) ---------- */
 
 .editorial-label {
