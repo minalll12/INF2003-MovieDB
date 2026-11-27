@@ -153,6 +153,10 @@ class MongoBackend:
         u = crud.get_user(user_id)
         return None if u is None else {k: u[k] for k in ("user_id", "username", "email")}
 
+    def get_user_by_username(self, username):
+        u = crud.get_user_by_username(username)
+        return None if u is None else {k: u[k] for k in ("user_id", "username", "email")}
+
     def member_since(self, user_id):
         u = crud.get_user(user_id)
         return None if u is None else _ts(u["created_at"])

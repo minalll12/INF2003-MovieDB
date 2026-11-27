@@ -7,19 +7,19 @@ import pandas as pd
 
 from auth import hash_password, verify_password
 
-# Wire in the real database backends. Both accept store=None and ignore it.
-# If a package is missing or the database is unreachable, we fall back to the CSV classes below.
+# Import the real database backends.
+# CSV implementations remain available as a fallback if backend imports fail.
 try:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from mysql.backend import MySQLBackend
     _mysql_ok = True
-except Exception:
+except ImportError:
     _mysql_ok = False
 
 try:
     from mongodb.backend import MongoBackend
     _mongo_ok = True
-except Exception:
+except ImportError:
     _mongo_ok = False
 
 

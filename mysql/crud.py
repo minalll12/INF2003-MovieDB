@@ -245,6 +245,12 @@ def get_user(user_id, *, connection=None):
     return rows[0] if rows else None
 
 
+def get_user_by_username(username, *, connection=None):
+    rows = db.fetch("SELECT user_id, username, email, created_at FROM users WHERE username = %s",
+                    (string(username, "username", 50).strip(),), connection=connection)
+    return rows[0] if rows else None
+
+
 def list_users(*, connection=None):
     return db.fetch("SELECT user_id, username, email FROM users ORDER BY user_id", connection=connection)
 
