@@ -1,5 +1,3 @@
-from html import escape
-
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -72,9 +70,7 @@ def account_menu(user):
 
 def header(user, is_performance=False):
     with st.container(key="wordmark"):
-        user_param = f'?user={escape(user["username"])}' if user and "username" in user else ""
-        # href="." navigates to root — Discover is the default page (url_path="", isDefault=True)
-        html(f'<a href=".{user_param}" target="_self" class="wordmark-link"><span class="wordmark">{WORDMARK}</span></a>')
+        html(f'<a href="." target="_self" class="wordmark-link"><span class="wordmark">{WORDMARK}</span></a>')
     if not is_performance:
         with st.container(key="account"):
             account_menu(user)
@@ -336,10 +332,7 @@ def header(user, is_performance=False):
                                 discNav.click();
                             } else {
                                 // Fallback: navigate to root preserving user query param
-                                var search = window.parent.location.search || '';
-                                var userMatch = search.match(/[?&]user=([^&]*)/);
-                                var userParam = userMatch ? '?user=' + userMatch[1] : '';
-                                window.parent.location.href = '/' + userParam;
+                                window.parent.location.href = '/';
                             }
                         });
                     });
@@ -482,9 +475,7 @@ def footer(is_performance=False):
             if is_performance:
                 html(f'<span class="wordmark">{WORDMARK}</span>')
             else:
-                user = current_user()
-                user_param = f'?user={escape(user["username"])}' if user and "username" in user else ""
-                html(f'<a href=".{user_param}" target="_self" class="wordmark-link"><span class="wordmark">{WORDMARK}</span></a>')
+                html(f'<a href="." target="_self" class="wordmark-link"><span class="wordmark">{WORDMARK}</span></a>')
         with col_mid:
             if not is_performance:
                 user = current_user()
@@ -534,9 +525,6 @@ def main():
         else:
             navigation.run()
         return
-
-    if user and user.get("username") and st.query_params.get("user") != user["username"]:
-        st.query_params["user"] = user["username"]
 
     navigation = st.navigation(list(pages.values()), position="top")
     is_perf = (navigation == pages.get("benchmarks"))

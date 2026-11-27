@@ -230,11 +230,12 @@ def review_dialog(movie_id, existing=None):
     if len(text.strip()) < MIN_REVIEW_CHARS:
         st.error(f"Reviews need at least {MIN_REVIEW_CHARS} characters.")
         return
+    user_id = current_user()["user_id"]
     try:
         if existing:
-            backend().update_review(existing["review_id"], rating, text.strip())
+            backend().update_review(existing["review_id"], rating, text.strip(), user_id=user_id)
         else:
-            backend().add_review(current_user()["user_id"], movie_id, rating, text.strip())
+            backend().add_review(user_id, movie_id, rating, text.strip())
     except OSError:
         st.error("Couldn't save your review. Please try again.")
         return
@@ -254,7 +255,7 @@ def delete_dialog(review):
     with remove:
         if st.button("DELETE", type="primary", width="stretch"):
             try:
-                backend().delete_review(review["review_id"])
+                backend().delete_review(review["review_id"], user_id=current_user()["user_id"])
             except OSError:
                 st.error("Couldn't delete the review. Please try again.")
                 return

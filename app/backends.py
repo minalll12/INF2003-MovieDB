@@ -164,15 +164,26 @@ class CsvBackend:
             "updated_at": timestamp,
         })
 
-    def update_review(self, review_id, rating, text):
+    def update_review(self, review_id, rating, text, user_id=None):
         reviews = self.store["reviews"].copy()
         row = reviews["review_id"] == review_id
+        if user_id is not None:
+            row = row & (reviews["user_id"] == user_id)
+        if not row.any():
+            return False
         reviews.loc[row, ["rating", "review_text", "updated_at"]] = [round(float(rating), 1), text, now()]
         self.store.replace("reviews", reviews)
+        return True
 
-    def delete_review(self, review_id):
+    def delete_review(self, review_id, user_id=None):
         reviews = self.store["reviews"]
-        self.store.replace("reviews", reviews[reviews["review_id"] != review_id])
+        match = reviews["review_id"] == review_id
+        if user_id is not None:
+            match = match & (reviews["user_id"] == user_id)
+        if not match.any():
+            return False
+        self.store.replace("reviews", reviews[~match])
+        return True
 
     # Watchlist
 

@@ -1,5 +1,3 @@
-from html import escape
-
 import streamlit as st
 
 from backends import ENGINES
@@ -39,19 +37,8 @@ def backend():
 
 
 def rehydrate_session():
-    if not st.session_state.get("user") and "user" in st.query_params:
-        db = backend()
-        ident = str(st.query_params["user"]).strip()
-        user = getattr(db, "get_user_by_username", lambda u: None)(ident)
-        if not user:
-            try:
-                user = db.get_user(ident)
-            except Exception:
-                user = None
-        if user:
-            st.session_state["user"] = user
-        else:
-            st.query_params.pop("user", None)
+    # Only restore movie selection from URL — never restore user identity from URL parameters.
+    st.query_params.pop("user", None)
 
     if not st.session_state.get("selected_movie") and "film" in st.query_params:
         film_id = str(st.query_params["film"]).strip()
@@ -69,8 +56,6 @@ def current_user():
 
 def log_in(user):
     st.session_state["user"] = user
-    if user and isinstance(user, dict) and "username" in user:
-        st.query_params["user"] = user["username"]
 
 
 def log_out():
@@ -94,25 +79,7 @@ def record_page(page_name):
             st.query_params["film"] = str(movie_id)
 
 
-def _user_qp():
-    user = current_user()
-    if user and isinstance(user, dict) and "username" in user:
-        return {"user": str(user["username"])}
-    if "user" in st.query_params:
-        return {"user": str(st.query_params["user"])}
-    return {}
-
-
 def get_back_target():
-    user = current_user()
-    if user and isinstance(user, dict) and "username" in user:
-        u_name = user["username"]
-    elif "user" in st.query_params:
-        u_name = st.query_params["user"]
-    else:
-        u_name = None
-    user_param = f"?user={escape(str(u_name))}" if u_name else ""
-
     history = st.session_state.get("page_history", [])
     prev_page = "discover"
     if len(history) > 1:
@@ -122,17 +89,17 @@ def get_back_target():
                 break
 
     if prev_page == "browse":
-        return f"./browse{user_param}", "browse"
+        return "./browse", "browse"
     elif prev_page == "watchlist":
-        return f"./watchlist{user_param}", "watchlist"
+        return "./watchlist", "watchlist"
     else:
-        return f"./{user_param}", "discover"
+        return "./", "discover"
 
 
 def go_back():
     history = st.session_state.get("page_history", [])
     if len(history) > 1:
-        history.pop()  # remove current active page (film details)
+        history.pop()
         prev_name, prev_movie = history[-1]
     else:
         history.clear()
@@ -141,27 +108,18 @@ def go_back():
     if prev_name == "details":
         prev_name = "discover"
 
-    qp = _user_qp()
     st.session_state.pop("selected_movie", None)
-    qp.pop("film", None)
+    st.query_params.pop("film", None)
 
     target = pages.get(prev_name) or pages.get("discover")
     if target:
         try:
-            st.switch_page(target, query_params=qp)
+            st.switch_page(target)
             return
-        except TypeError:
-            try:
-                st.switch_page(target)
-                return
-            except BaseException:
-                pass
         except BaseException:
             pass
 
     st.query_params.clear()
-    for k, v in qp.items():
-        st.query_params[k] = v
     if target:
         try:
             st.switch_page(target)
@@ -172,19 +130,16 @@ def go_back():
 
 
 def open_discover():
-    qp = _user_qp()
     target = pages.get("discover")
     if target:
-        st.switch_page(target, query_params=qp)
+        st.switch_page(target)
 
 
 def open_movie(movie_id):
     st.session_state["selected_movie"] = movie_id
-    qp = _user_qp()
-    qp["film"] = str(movie_id)
     target = pages.get("details")
     if target:
-        st.switch_page(target, query_params=qp)
+        st.switch_page(target, query_params={"film": str(movie_id)})
 
 
 def open_browse(genre=None, sort_by=None):
@@ -195,17 +150,15 @@ def open_browse(genre=None, sort_by=None):
     st.session_state["browse_ratings"] = (0.0, 10.0)
     st.session_state["browse_sort"] = sort_by or "Highest rated"
     st.session_state["browse_page"] = 1
-    qp = _user_qp()
     target = pages.get("browse")
     if target:
-        st.switch_page(target, query_params=qp)
+        st.switch_page(target)
 
 
 def open_profile():
-    qp = _user_qp()
     target = pages.get("profile")
     if target:
-        st.switch_page(target, query_params=qp)
+        st.switch_page(target)
 
 
 def open_benchmarks():

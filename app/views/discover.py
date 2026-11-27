@@ -10,10 +10,10 @@ from components import (
     score_text,
     stars,
 )
-from cache import latest_reviews as _get_latest_reviews
-from cache import most_reviewed as _get_most_reviewed
-from cache import well_rated as _get_well_rated
-from session import backend, current_user, open_browse, open_movie, toggle_watchlist
+from cache import latest_reviews as _cached_latest_reviews
+from cache import most_reviewed as _cached_most_reviewed
+from cache import well_rated as _cached_well_rated
+from session import backend, current_user, engine_name, open_browse, open_movie, toggle_watchlist
 
 
 
@@ -190,7 +190,7 @@ def _poster_row(movies, prefix, title, sort_by, saved_ids=None):
 
 def _fresh_reviews():
     _section_header("FRESH REVIEWS", "all_fresh", lambda: open_browse(sort_by="Newest"))
-    reviews = _get_latest_reviews(ROW_SIZE)
+    reviews = _cached_latest_reviews(engine_name(), ROW_SIZE)
     slots = st.columns(ROW_SIZE, gap="medium")
     for index, (slot, (_, review)) in enumerate(zip(slots, reviews.iterrows())):
         with slot:
@@ -228,10 +228,11 @@ def _fresh_reviews():
 
 
 def render():
-    top_movies = _get_well_rated(MIN_REVIEWS)
+    eng = engine_name()
+    top_movies = _cached_well_rated(eng, MIN_REVIEWS)
     saved_ids = backend().watchlist_ids(current_user()["user_id"])
     _genre_strip()
     _editorial_section(top_movies.head(3), saved_ids)
     _poster_row(top_movies, "top", "TOP RATED", "Highest rated", saved_ids)
-    _poster_row(_get_most_reviewed(), "disc", "MOST DISCUSSED", "Most reviewed", saved_ids)
+    _poster_row(_cached_most_reviewed(eng), "disc", "MOST DISCUSSED", "Most reviewed", saved_ids)
     _fresh_reviews()
