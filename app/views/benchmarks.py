@@ -196,17 +196,24 @@ def render():
         for _eng_name in _be.ENGINES:
             try:
                 _inst = get_engine(_eng_name)
-                _cls = type(_inst)
+                _inst_cls = type(_inst)
                 try:
-                    _inst_src = _inspect.getfile(_cls)
+                    _inst_src = _inspect.getfile(_inst_cls)
                 except Exception:
                     _inst_src = "(unknown)"
-                _is_real = _cls.__name__ in ("MySQLBackend", "MongoBackend")
+                _is_real = _inst_cls.__name__ in ("MySQLBackend", "MongoBackend")
                 st.write(
-                    f"- `{_eng_name}` → `{_cls.__name__}` "
+                    f"- `{_eng_name}` → `{_inst_cls.__name__}` "
                     f"({'✅ real DB' if _is_real else '⚠️ CSV fallback'}) "
                     f"| file `{_inst_src}`"
                 )
+                # Verification: instance class must match the class in ENGINES.
+                _expected_cls = _be.ENGINES[_eng_name]
+                if not isinstance(_inst, _expected_cls):
+                    st.error(
+                        f"MISMATCH: ENGINES[{_eng_name!r}] = `{_expected_cls.__name__}` "
+                        f"but get_engine returned `{_inst_cls.__name__}` — stale cache."
+                    )
             except Exception as _exc:
                 st.error(f"get_engine({_eng_name!r}) raised {type(_exc).__name__}: {_exc}")
 

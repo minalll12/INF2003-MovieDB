@@ -15,8 +15,16 @@ def get_store():
 
 
 @st.cache_resource
-def get_engine(name):
+def _get_engine_cached(name, class_key):
+    # class_key = "<module>.<qualname>" of ENGINES[name] at call time.
+    # Including it in the cache key means a class change (e.g. CSV fallback →
+    # real backend) produces a cache miss and a fresh instance.
     return ENGINES[name](get_store())
+
+
+def get_engine(name):
+    cls = ENGINES[name]
+    return _get_engine_cached(name, f"{cls.__module__}.{cls.__qualname__}")
 
 
 def engine_name():
