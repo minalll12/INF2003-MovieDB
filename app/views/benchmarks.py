@@ -152,6 +152,10 @@ def render():
         f'data models with the same inputs. We discard a warm-up run, time {RUNS_PER_QUERY} executions '
         "and report the median.</div>"
     )
+    # Temporary diagnostic — shows real vs CSV-fallback class for each engine.
+    for eng_name, eng_instance in [(n, get_engine(n)) for n in ENGINES]:
+        st.caption(f"{eng_name}: {type(eng_instance).__name__}")
+
     genre, movie_id, user_id = _inputs()
     st.write("")
     _single_engine(genre, movie_id, user_id)
