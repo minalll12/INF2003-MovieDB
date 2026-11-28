@@ -30,26 +30,41 @@ def _queries(engine, genre, movie_id, user_id):
     }
 
 
+def _on_genre_change():
+    # Runs before the rerun triggered by a Genre change, clearing bench_movie so
+    # the Film dropdown always resets to the first valid film for the new genre.
+    # This fires before Streamlit locks any widget state for the upcoming run,
+    # which is why it is more reliable than setting session_state mid-script.
+    st.session_state.pop("bench_movie", None)
+
+
 def _inputs():
     db = backend()
     all_movies = db.catalogue().sort_values("title")
     users = db.list_users()
     genre, movie, user = st.columns(3, gap="large")
     with genre:
-        chosen_genre = st.selectbox("Genre", db.genre_names(), key="bench_genre")
+        chosen_genre = st.selectbox(
+            "Genre", db.genre_names(), key="bench_genre",
+            on_change=_on_genre_change,
+        )
 
     # Restrict Film dropdown to movies that belong to the chosen genre.
-    genre_movies = all_movies[all_movies["genres"].apply(lambda g: chosen_genre in g)]
+    # genres column is a Python list in both MySQL and MongoDB backends.
+    genre_movies = all_movies[all_movies["genres"].apply(
+        lambda g: chosen_genre in g if isinstance(g, list) else chosen_genre in str(g)
+    )]
 
-    # If the previously stored movie is no longer valid for this genre, reset it
-    # before the selectbox renders — Streamlit raises an error if the stored value
-    # is not present in the current options list.
-    if st.session_state.get("bench_movie") not in genre_movies["movie_id"].values:
-        st.session_state["bench_movie"] = genre_movies.iloc[0]["movie_id"]
+    # Safety guard: bench_movie is cleared by _on_genre_change on every genre
+    # switch, so this will always fire after a genre change. It is also the
+    # first-load initialiser (bench_movie absent from session_state on page open).
+    valid_ids = genre_movies["movie_id"].tolist()
+    if st.session_state.get("bench_movie") not in valid_ids:
+        st.session_state["bench_movie"] = valid_ids[0]
 
     with movie:
         chosen_movie = st.selectbox(
-            "Film", genre_movies["movie_id"],
+            "Film", valid_ids,
             format_func=lambda mid: genre_movies.loc[genre_movies["movie_id"] == mid, "title"].iloc[0],
             key="bench_movie",
         )
