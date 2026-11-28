@@ -163,6 +163,15 @@ def render():
         st.write("**backends module file:**", f"`{_Path(_be.__file__).resolve()}`")
         st.write("**repo root on sys.path:**", f"`{_Path(_be.__file__).resolve().parent.parent}`")
 
+        # ── ENGINES object identity: confirm session and backends share one dict ──
+        import session as _session_mod
+        _be_engines_id = id(_be.ENGINES)
+        _sess_engines_id = id(_session_mod._backends_mod.ENGINES)
+        _same = _be_engines_id == _sess_engines_id
+        st.write(f"**ENGINES id (backends module):** `{_be_engines_id}`")
+        st.write(f"**ENGINES id (session._backends_mod):** `{_sess_engines_id}`")
+        st.write(f"**Same dict object?** {'✅ yes' if _same else '⚠️ NO — two separate ENGINES dicts'}")
+
         # ── Live import flags (read directly from module, not frozen import) ──
         st.write("**`_mysql_ok`:**", f"`{repr(_be._mysql_ok)}`")
         st.write("**`_mongo_ok`:**", f"`{repr(_be._mongo_ok)}`")

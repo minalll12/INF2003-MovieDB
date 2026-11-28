@@ -1,6 +1,6 @@
 import streamlit as st
 
-from backends import ENGINES
+import backends as _backends_mod
 from data_store import DataStore
 
 DEFAULT_ENGINE = "MySQL (Relational)"
@@ -16,14 +16,14 @@ def get_store():
 
 @st.cache_resource
 def _get_engine_cached(name, class_key):
-    # class_key = "<module>.<qualname>" of ENGINES[name] at call time.
-    # Including it in the cache key means a class change (e.g. CSV fallback →
-    # real backend) produces a cache miss and a fresh instance.
-    return ENGINES[name](get_store())
+    # Always read from the live backends module object so that _get_engine_cached
+    # never uses a stale frozen ENGINES reference captured at session.py import time.
+    # class_key encodes the selected class; a change forces a cache miss.
+    return _backends_mod.ENGINES[name](get_store())
 
 
 def get_engine(name):
-    cls = ENGINES[name]
+    cls = _backends_mod.ENGINES[name]
     return _get_engine_cached(name, f"{cls.__module__}.{cls.__qualname__}")
 
 
