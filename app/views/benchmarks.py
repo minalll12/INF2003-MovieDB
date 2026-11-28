@@ -5,7 +5,7 @@ from html import escape
 import pandas as pd
 import streamlit as st
 
-from backends import ENGINES, _mysql_error, _mongo_error
+from backends import ENGINES
 from components import html, page_title, section_head
 from session import backend, engine_name, get_engine, set_engine
 
@@ -152,22 +152,63 @@ def render():
         f'data models with the same inputs. We discard a warm-up run, time {RUNS_PER_QUERY} executions '
         "and report the median.</div>"
     )
-    # Temporary diagnostic — shows real vs CSV-fallback class for each engine.
+    # Temporary diagnostic — reads live from the backends module at render time.
     with st.expander("BACKEND DIAGNOSTIC", expanded=True):
-        from pathlib import Path as _Path
+        import sys as _sys
+        import inspect as _inspect
         import backends as _be
-        st.caption(f"`backends.py` → `{_Path(_be.__file__).resolve()}`")
-        st.caption(f"repo root on sys.path: `{_Path(_be.__file__).resolve().parent.parent}`")
-        for eng_name, err in [
-            (list(ENGINES)[0], _mysql_error),
-            (list(ENGINES)[1], _mongo_error),
-        ]:
-            eng_instance = get_engine(eng_name)
-            cls = type(eng_instance).__name__
-            is_real = cls in ("MySQLBackend", "MongoBackend")
-            st.write(f"**{eng_name}** → `{cls}` {'✅ real DB' if is_real else '⚠️ CSV fallback'}")
-            if err:
-                st.error(err)
+        from pathlib import Path as _Path
+
+        # ── Module identity ──────────────────────────────────────────────
+        st.write("**backends module file:**", f"`{_Path(_be.__file__).resolve()}`")
+        st.write("**repo root on sys.path:**", f"`{_Path(_be.__file__).resolve().parent.parent}`")
+
+        # ── Live import flags (read directly from module, not frozen import) ──
+        st.write("**`_mysql_ok`:**", f"`{repr(_be._mysql_ok)}`")
+        st.write("**`_mongo_ok`:**", f"`{repr(_be._mongo_ok)}`")
+        st.write("**`_mysql_error`:**", f"`{repr(_be._mysql_error)}`")
+        st.write("**`_mongo_error`:**", f"`{repr(_be._mongo_error)}`")
+
+        # ── ENGINES dict (class selected for each engine) ────────────────
+        st.write("---")
+        st.write("**ENGINES dict (from live module):**")
+        for key, cls in _be.ENGINES.items():
+            try:
+                src = _inspect.getfile(cls)
+            except Exception:
+                src = "(unknown)"
+            st.write(f"- `{key}` → class `{cls.__name__}` | module `{cls.__module__}` | file `{src}`")
+
+        # ── sys.modules state for mysql / mongodb ────────────────────────
+        st.write("---")
+        st.write("**sys.modules entries:**")
+        for _mod_name in ("mysql", "mysql.backend", "mongodb", "mongodb.backend"):
+            _mod = _sys.modules.get(_mod_name)
+            if _mod is None:
+                st.write(f"- `{_mod_name}` → **NOT in sys.modules**")
+            else:
+                _mod_file = getattr(_mod, "__file__", "(no __file__)")
+                st.write(f"- `{_mod_name}` → `{_mod_file}`")
+
+        # ── get_engine results (actual cached instances) ─────────────────
+        st.write("---")
+        st.write("**get_engine() instances:**")
+        for _eng_name in _be.ENGINES:
+            try:
+                _inst = get_engine(_eng_name)
+                _cls = type(_inst)
+                try:
+                    _inst_src = _inspect.getfile(_cls)
+                except Exception:
+                    _inst_src = "(unknown)"
+                _is_real = _cls.__name__ in ("MySQLBackend", "MongoBackend")
+                st.write(
+                    f"- `{_eng_name}` → `{_cls.__name__}` "
+                    f"({'✅ real DB' if _is_real else '⚠️ CSV fallback'}) "
+                    f"| file `{_inst_src}`"
+                )
+            except Exception as _exc:
+                st.error(f"get_engine({_eng_name!r}) raised {type(_exc).__name__}: {_exc}")
 
     genre, movie_id, user_id = _inputs()
     st.write("")
