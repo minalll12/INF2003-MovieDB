@@ -32,15 +32,26 @@ def _queries(engine, genre, movie_id, user_id):
 
 def _inputs():
     db = backend()
-    movies = db.catalogue().sort_values("title")
+    all_movies = db.catalogue().sort_values("title")
     users = db.list_users()
     genre, movie, user = st.columns(3, gap="large")
     with genre:
-        chosen_genre = st.selectbox("Genre", db.genre_names())
+        chosen_genre = st.selectbox("Genre", db.genre_names(), key="bench_genre")
+
+    # Restrict Film dropdown to movies that belong to the chosen genre.
+    genre_movies = all_movies[all_movies["genres"].apply(lambda g: chosen_genre in g)]
+
+    # If the previously stored movie is no longer valid for this genre, reset it
+    # before the selectbox renders — Streamlit raises an error if the stored value
+    # is not present in the current options list.
+    if st.session_state.get("bench_movie") not in genre_movies["movie_id"].values:
+        st.session_state["bench_movie"] = genre_movies.iloc[0]["movie_id"]
+
     with movie:
         chosen_movie = st.selectbox(
-            "Film", movies["movie_id"],
-            format_func=lambda mid: movies.loc[movies["movie_id"] == mid, "title"].iloc[0],
+            "Film", genre_movies["movie_id"],
+            format_func=lambda mid: genre_movies.loc[genre_movies["movie_id"] == mid, "title"].iloc[0],
+            key="bench_movie",
         )
     with user:
         chosen_user = st.selectbox(
