@@ -25,21 +25,20 @@ Run from inside `app/` so `.streamlit/config.toml` (dark theme) is picked up.
 
 ## Data
 
-On first run the six CSVs in `data/cleaned/` are copied into `app/store/`, and every write
-(new users, reviews, watchlist changes) goes to that copy. `data/cleaned/` is never modified.
-**System settings → Reset demo data** in the sidebar restores the copy from `data/cleaned/`.
-`app/store/` is gitignored.
+The app connects to **MySQL** (Railway Cloud) and **MongoDB** (Atlas) via the `mysql/` and
+`mongodb/` backend modules. The engine selector in the sidebar switches between them at runtime.
+
+If a real database backend fails to import (missing driver or config), the app falls back to
+CSV-based stand-ins (`RelationalBackend` / `DocumentBackend`) that read from `app/store/`.
+On first run the six CSVs in `data/cleaned/` are copied into `app/store/`; `data/cleaned/`
+is never modified. `app/store/` is gitignored.
 
 ## Database switch
 
-`backends.py` defines `RelationalBackend` (MySQL) and `DocumentBackend` (MongoDB). Both
-currently read the CSV store; the three benchmark queries are written in each data model's style
-(joins across normalised tables vs. documents with embedded genres). Once the `mysql/` and
-`mongodb/` modules are ready, each class should call them instead. Pages only talk to
-`backend()`, so no UI code needs to change.
-
-The benchmark numbers are only meaningful once the real databases are connected. The
-CSV stand-ins compare pandas joins against plain Python lists, not MySQL against MongoDB.
+`backends.py` registers the real `MySQLBackend` and `MongoBackend` classes when their
+imports succeed, with CSV fallbacks otherwise. Pages only talk to `backend()`, so no UI
+code changes when switching engines. The **Performance** page benchmarks three comparison
+queries head-to-head against both live databases.
 
 ## Passwords
 

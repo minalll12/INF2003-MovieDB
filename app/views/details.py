@@ -2,6 +2,7 @@ from html import escape
 
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
 from components import (
     empty_state,
@@ -12,7 +13,7 @@ from components import (
     review_row,
     section_head,
 )
-from session import backend, current_user, open_browse, toggle_watchlist
+from session import backend, current_user, get_back_target, go_back, open_browse, open_discover, toggle_watchlist
 
 
 def _backdrop(movie):
@@ -21,10 +22,16 @@ def _backdrop(movie):
         art_style = ""
     else:
         art_style = f"background-image:url('{escape(str(raw_art).strip())}')"
+    target_url, page_name = get_back_target()
     html(
         '<div class="backdrop">'
         f'<div class="art" style="{art_style}"></div>'
-        '<div class="veil"></div></div>'
+        '<div class="veil"></div>'
+        '<div class="backdrop-content">'
+        f'<a href="{target_url}" target="_self" class="film-back-btn" data-page="{page_name}" '
+        f'onclick="var fn = window.filmGoBack || (window.parent && window.parent.filmGoBack); if(fn){{return fn(event,\'{target_url}\',\'{page_name}\');}}">← BACK</a>'
+        '</div>'
+        '</div>'
     )
 
 
@@ -86,18 +93,91 @@ def _reviews(movie):
 
 def render():
     movie_id = st.session_state.get("selected_movie")
+    if not movie_id and "film" in st.query_params:
+        film_id = str(st.query_params["film"]).strip()
+        if film_id:
+            st.session_state["selected_movie"] = film_id
+            movie_id = film_id
+    elif movie_id:
+        st.query_params["film"] = str(movie_id)
+
     movie = backend().get_movie(movie_id) if movie_id else None
     if movie is None:
-        empty_state("Pick a film to read about it.", "BROWSE FILMS →", open_browse, key="no_film")
+        target_url, page_name = get_back_target()
+        components.html(
+            f"""
+            <script>
+            (function() {{
+                try {{
+                    var pwin = window.parent;
+                    var fn = (pwin && pwin.filmGoBack) || window.filmGoBack;
+                    if (fn) {{
+                        fn(null, "{target_url}", "{page_name}");
+                    }} else {{
+                        pwin.location.href = "{target_url}";
+                    }}
+                }} catch(e) {{
+                    window.parent.location.href = "{target_url}";
+                }}
+            }})();
+            </script>
+            """,
+            height=0,
+            width=0,
+        )
         return
-    html(
-        '<script>try{'
-        'var c=window.parent.document.querySelector("[data-testid=stAppViewBlockWrapper]")'
-        '||window.parent.document.documentElement;'
-        'c.scrollTop=0;'
-        '}catch(e){}</script>'
-    )
     _backdrop(movie)
     _header(movie)
     st.write("")
     _reviews(movie)
+
+    components.html(
+        f"""
+        <script>
+        (function() {{
+            try {{
+                var win = window.parent;
+                var doc = win.document;
+                var currentId = "{escape(str(movie_id))}";
+                if (win._currentFilmId !== currentId) {{
+                    win._currentFilmId = currentId;
+                    function scrollToTop() {{
+                        var targets = [
+                            win,
+                            doc.documentElement,
+                            doc.body,
+                            doc.querySelector('.stApp'),
+                            doc.querySelector('[data-testid="stAppViewContainer"]'),
+                            doc.querySelector('[data-testid="stMain"]'),
+                            doc.querySelector('.stMain'),
+                            doc.getElementById('stMain'),
+                            doc.querySelector('main'),
+                            doc.querySelector('section.main'),
+                            doc.querySelector('[data-testid="stMainBlockContainer"]')
+                        ];
+                        targets.forEach(function(t) {{
+                            if (!t) return;
+                            try {{ t.scrollTop = 0; }} catch(e) {{}}
+                            try {{ if (t.scrollTo) t.scrollTo(0, 0); }} catch(e) {{}}
+                        }});
+                        try {{
+                            var header = doc.querySelector('[data-testid="stHeader"]');
+                            if (header && header.scrollIntoView) {{
+                                header.scrollIntoView({{ block: 'start', inline: 'nearest', behavior: 'instant' }});
+                            }}
+                        }} catch(e) {{}}
+                    }}
+                    scrollToTop();
+                    if (win.requestAnimationFrame) win.requestAnimationFrame(scrollToTop);
+                    setTimeout(scrollToTop, 20);
+                    setTimeout(scrollToTop, 80);
+                    setTimeout(scrollToTop, 200);
+                    setTimeout(scrollToTop, 400);
+                }}
+            }} catch(e) {{}}
+        }})();
+        </script>
+        """,
+        height=0,
+        width=0,
+    )

@@ -136,6 +136,10 @@ class MySQLBackend:
         row = crud.get_user(user_id)
         return None if row is None else {k: row[k] for k in ("user_id", "username", "email")}
 
+    def get_user_by_username(self, username):
+        row = crud.get_user_by_username(username)
+        return None if row is None else {k: row[k] for k in ("user_id", "username", "email")}
+
     def member_since(self, user_id):
         row = crud.get_user(user_id)
         return None if row is None else row["created_at"]

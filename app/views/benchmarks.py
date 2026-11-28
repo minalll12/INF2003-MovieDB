@@ -30,17 +30,43 @@ def _queries(engine, genre, movie_id, user_id):
     }
 
 
+def _on_genre_change():
+    # Runs before the rerun triggered by a Genre change, clearing bench_movie so
+    # the Film dropdown always resets to the first valid film for the new genre.
+    # This fires before Streamlit locks any widget state for the upcoming run,
+    # which is why it is more reliable than setting session_state mid-script.
+    st.session_state.pop("bench_movie", None)
+
+
 def _inputs():
     db = backend()
-    movies = db.catalogue().sort_values("title")
+    all_movies = db.catalogue().sort_values("title")
     users = db.list_users()
     genre, movie, user = st.columns(3, gap="large")
     with genre:
-        chosen_genre = st.selectbox("Genre", db.genre_names())
+        chosen_genre = st.selectbox(
+            "Genre", db.genre_names(), key="bench_genre",
+            on_change=_on_genre_change,
+        )
+
+    # Restrict Film dropdown to movies that belong to the chosen genre.
+    # genres column is a Python list in both MySQL and MongoDB backends.
+    genre_movies = all_movies[all_movies["genres"].apply(
+        lambda g: chosen_genre in g if isinstance(g, list) else chosen_genre in str(g)
+    )]
+
+    # Safety guard: bench_movie is cleared by _on_genre_change on every genre
+    # switch, so this will always fire after a genre change. It is also the
+    # first-load initialiser (bench_movie absent from session_state on page open).
+    valid_ids = genre_movies["movie_id"].tolist()
+    if st.session_state.get("bench_movie") not in valid_ids:
+        st.session_state["bench_movie"] = valid_ids[0]
+
     with movie:
         chosen_movie = st.selectbox(
-            "Film", movies["movie_id"],
-            format_func=lambda mid: movies.loc[movies["movie_id"] == mid, "title"].iloc[0],
+            "Film", valid_ids,
+            format_func=lambda mid: genre_movies.loc[genre_movies["movie_id"] == mid, "title"].iloc[0],
+            key="bench_movie",
         )
     with user:
         chosen_user = st.selectbox(
@@ -51,7 +77,7 @@ def _inputs():
 
 
 def _single_engine(genre, movie_id, user_id):
-    section_head("No. 01 — SINGLE ENGINE")
+    section_head("No. 01 - SINGLE ENGINE")
     st.session_state.setdefault("bench_engine", engine_name())
     st.radio(
         "Data source", list(ENGINES), key="bench_engine", horizontal=True,
@@ -59,7 +85,8 @@ def _single_engine(genre, movie_id, user_id):
     )
     if not st.button("RUN QUERIES →"):
         return
-    results = _queries(backend(), genre, movie_id, user_id)
+    with st.spinner("Executing benchmark queries..."):
+        results = _queries(backend(), genre, movie_id, user_id)
     captions = ["Rows returned", "Average rating", "Watchlist rows"]
     for slot, caption, (name, (elapsed, value)) in zip(st.columns(3), captions, results.items()):
         with slot:
@@ -84,11 +111,12 @@ def _comparison_table(rows):
 
 
 def _comparison(genre, movie_id, user_id):
-    section_head("No. 02 — HEAD TO HEAD")
+    section_head("No. 02 - HEAD TO HEAD")
     if not st.button("RUN ALL COMPARISONS →", type="primary"):
         return
-    names = list(ENGINES)
-    timings = {name: _queries(get_engine(name), genre, movie_id, user_id) for name in names}
+    with st.spinner("Executing head-to-head comparisons..."):
+        names = list(ENGINES)
+        timings = {name: _queries(get_engine(name), genre, movie_id, user_id) for name in names}
     rows = []
     for query in timings[names[0]]:
         mysql_ms = timings[names[0]][query][0]
@@ -117,12 +145,17 @@ def _comparison(genre, movie_id, user_id):
 
 
 def render():
+    html('<div class="perf-page-marker" style="display:none"></div>')
     page_title("Performance")
     html(
         '<div class="read" style="max-width:640px;margin-bottom:32px">Each query runs against both '
         f'data models with the same inputs. We discard a warm-up run, time {RUNS_PER_QUERY} executions '
         "and report the median.</div>"
     )
+    # Temporary diagnostic — shows real vs CSV-fallback class for each engine.
+    for eng_name, eng_instance in [(n, get_engine(n)) for n in ENGINES]:
+        st.caption(f"{eng_name}: {type(eng_instance).__name__}")
+
     genre, movie_id, user_id = _inputs()
     st.write("")
     _single_engine(genre, movie_id, user_id)

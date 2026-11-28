@@ -1,32 +1,32 @@
 """Shared result cache for non-user-specific DB reads.
 
-Each function wraps a MySQLBackend method in @st.cache_data so the query
-runs at most once per TTL window, shared across all Streamlit sessions on
-this server. User-specific data (watchlist_ids) is NOT cached here — it
-must reflect watchlist toggles immediately.
+Each function wraps a backend method in @st.cache_data so the query
+runs at most once per TTL window per engine, shared across all Streamlit
+sessions on this server. User-specific data (watchlist_ids) is NOT cached
+here — it must reflect watchlist toggles immediately.
+
+The engine name is part of every cache key so switching databases never
+serves stale results from the other engine.
 """
 import streamlit as st
 
-from session import get_engine
-
-# Always talk to MySQL — bypasses session_state so @st.cache_data works cleanly.
-_ENGINE = "MySQL (Relational)"
+from session import engine_name, get_engine
 
 
 def _db():
-    return get_engine(_ENGINE)
+    return get_engine(engine_name())
 
 
 @st.cache_data(ttl=300, show_spinner=False)
-def well_rated(min_reviews):
-    return _db().well_rated(min_reviews)
+def well_rated(_engine_name, min_reviews):
+    return get_engine(_engine_name).well_rated(min_reviews)
 
 
 @st.cache_data(ttl=300, show_spinner=False)
-def most_reviewed():
-    return _db().most_reviewed()
+def most_reviewed(_engine_name):
+    return get_engine(_engine_name).most_reviewed()
 
 
 @st.cache_data(ttl=120, show_spinner=False)
-def latest_reviews(limit):
-    return _db().latest_reviews(limit)
+def latest_reviews(_engine_name, limit):
+    return get_engine(_engine_name).latest_reviews(limit)

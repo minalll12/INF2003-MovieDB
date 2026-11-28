@@ -86,6 +86,11 @@ def get_user(user_id: str):
     return {"user_id": u["_id"], "username": u["username"], "email": u["email"], "created_at": u["created_at"]} if u else None
 
 
+def get_user_by_username(username: str):
+    u = get_db().users.find_one({"username_lower": _s(username, "username").lower()}, {"password_hash": 0})
+    return {"user_id": u["_id"], "username": u["username"], "email": u["email"], "created_at": u["created_at"]} if u else None
+
+
 def list_users():
     return [{"user_id": u["_id"], "username": u["username"], "email": u["email"]}
             for u in get_db().users.find({}, {"username": 1, "email": 1}).sort("_id", ASCENDING)]

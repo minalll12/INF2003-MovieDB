@@ -7,19 +7,19 @@ import pandas as pd
 
 from auth import hash_password, verify_password
 
-# Wire in the real database backends. Both accept store=None and ignore it.
-# If a package is missing or the database is unreachable, we fall back to the CSV classes below.
+# Import the real database backends.
+# CSV implementations remain available as a fallback if backend imports fail.
 try:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from mysql.backend import MySQLBackend
     _mysql_ok = True
-except Exception:
+except ImportError:
     _mysql_ok = False
 
 try:
     from mongodb.backend import MongoBackend
     _mongo_ok = True
-except Exception:
+except ImportError:
     _mongo_ok = False
 
 
@@ -164,15 +164,26 @@ class CsvBackend:
             "updated_at": timestamp,
         })
 
-    def update_review(self, review_id, rating, text):
+    def update_review(self, review_id, rating, text, user_id=None):
         reviews = self.store["reviews"].copy()
         row = reviews["review_id"] == review_id
+        if user_id is not None:
+            row = row & (reviews["user_id"] == user_id)
+        if not row.any():
+            return False
         reviews.loc[row, ["rating", "review_text", "updated_at"]] = [round(float(rating), 1), text, now()]
         self.store.replace("reviews", reviews)
+        return True
 
-    def delete_review(self, review_id):
+    def delete_review(self, review_id, user_id=None):
         reviews = self.store["reviews"]
-        self.store.replace("reviews", reviews[reviews["review_id"] != review_id])
+        match = reviews["review_id"] == review_id
+        if user_id is not None:
+            match = match & (reviews["user_id"] == user_id)
+        if not match.any():
+            return False
+        self.store.replace("reviews", reviews[~match])
+        return True
 
     # Watchlist
 
@@ -207,7 +218,12 @@ class CsvBackend:
 
     def get_user(self, user_id):
         users = self.store["users"]
-        match = users[users["user_id"] == user_id]
+        match = users[users["user_id"].astype(str) == str(user_id)]
+        return None if match.empty else match.iloc[0][["user_id", "username", "email"]].to_dict()
+
+    def get_user_by_username(self, username):
+        users = self.store["users"]
+        match = users[users["username"].astype(str).str.lower() == str(username).strip().lower()]
         return None if match.empty else match.iloc[0][["user_id", "username", "email"]].to_dict()
 
     def member_since(self, user_id):
@@ -325,6 +341,6 @@ class DocumentBackend(CsvBackend):
 
 
 ENGINES = {
-    "MySQL (Relational)": MySQLBackend,
-    "MongoDB (Document)": MongoBackend,
+    "MySQL (Relational)": MySQLBackend if _mysql_ok else RelationalBackend,
+    "MongoDB (Document)": MongoBackend if _mongo_ok else DocumentBackend,
 }

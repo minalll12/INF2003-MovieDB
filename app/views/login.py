@@ -2,6 +2,7 @@ import re
 from html import escape
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from components import html
 from session import backend, log_in
@@ -46,9 +47,11 @@ def _masthead():
 
 
 def _sign_in():
-    username = st.text_input("Username", key="login_username")
-    password = st.text_input("Password", type="password", key="login_password")
-    if not st.button("SIGN IN →", type="primary", width="stretch", key="do_sign_in"):
+    with st.form("sign_in_form", clear_on_submit=False, border=False):
+        username = st.text_input("Username", key="login_username", autocomplete="username")
+        password = st.text_input("Password", type="password", key="login_password", autocomplete="current-password")
+        submitted = st.form_submit_button("SIGN IN →", type="primary", width="stretch")
+    if not submitted:
         return
     user = backend().authenticate(username, password)
     if user is None:
@@ -76,11 +79,13 @@ def _registration_error(username, email, password, confirm):
 
 
 def _create_account():
-    username = st.text_input("Username", key="reg_username").strip()
-    email = st.text_input("Email", key="reg_email").strip()
-    password = st.text_input("Password", type="password", key="reg_password")
-    confirm = st.text_input("Confirm password", type="password", key="reg_confirm")
-    if not st.button("CREATE ACCOUNT →", type="primary", width="stretch", key="do_register"):
+    with st.form("create_account_form", clear_on_submit=False, border=False):
+        username = st.text_input("Username", key="reg_username", autocomplete="username").strip()
+        email = st.text_input("Email", type="email", key="reg_email", autocomplete="email").strip()
+        password = st.text_input("Password", type="password", key="reg_password", autocomplete="new-password")
+        confirm = st.text_input("Confirm password", type="password", key="reg_confirm", autocomplete="new-password")
+        submitted = st.form_submit_button("CREATE ACCOUNT →", type="primary", width="stretch")
+    if not submitted:
         return
     error = _registration_error(username, email, password, confirm)
     if error:
@@ -95,6 +100,130 @@ def _create_account():
     st.rerun()
 
 
+def _inject_autofill_script():
+    components.html(
+        """
+        <script>
+        (function() {
+            function applyAutofillAttributes() {
+                try {
+                    var doc = window.parent.document;
+                    if (!doc) return;
+
+                    var configs = [
+                        {
+                            find: function() {
+                                return doc.querySelector('[class*="st-key-login_username"] input') ||
+                                       doc.querySelector('input[aria-label="Username"]');
+                            },
+                            name: 'username',
+                            autocomplete: 'username',
+                            id: 'username'
+                        },
+                        {
+                            find: function() {
+                                return doc.querySelector('[class*="st-key-login_password"] input') ||
+                                       doc.querySelector('input[aria-label="Password"]');
+                            },
+                            name: 'password',
+                            autocomplete: 'current-password',
+                            id: 'password'
+                        },
+                        {
+                            find: function() {
+                                return doc.querySelector('[class*="st-key-reg_username"] input');
+                            },
+                            name: 'username',
+                            autocomplete: 'username',
+                            id: 'reg_username'
+                        },
+                        {
+                            find: function() {
+                                return doc.querySelector('[class*="st-key-reg_email"] input') ||
+                                       doc.querySelector('input[aria-label="Email"]');
+                            },
+                            name: 'email',
+                            autocomplete: 'email',
+                            type: 'email',
+                            id: 'reg_email'
+                        },
+                        {
+                            find: function() {
+                                return doc.querySelector('[class*="st-key-reg_password"] input');
+                            },
+                            name: 'new-password',
+                            autocomplete: 'new-password',
+                            id: 'reg_password'
+                        },
+                        {
+                            find: function() {
+                                return doc.querySelector('[class*="st-key-reg_confirm"] input') ||
+                                       doc.querySelector('input[aria-label="Confirm password"]');
+                            },
+                            name: 'confirm-password',
+                            autocomplete: 'new-password',
+                            id: 'reg_confirm'
+                        }
+                    ];
+
+                    configs.forEach(function(cfg) {
+                        var el = cfg.find();
+                        if (el) {
+                            if (cfg.name && el.getAttribute('name') !== cfg.name) el.setAttribute('name', cfg.name);
+                            if (cfg.autocomplete && el.getAttribute('autocomplete') !== cfg.autocomplete) el.setAttribute('autocomplete', cfg.autocomplete);
+                            if (cfg.id && (!el.id || el.id.indexOf('text_input') !== -1)) el.setAttribute('id', cfg.id);
+                            if (cfg.type && el.getAttribute('type') !== cfg.type) el.setAttribute('type', cfg.type);
+                        }
+                    });
+
+                    // Ensure forms have method="POST" for browser password manager detection
+                    var forms = doc.querySelectorAll('form[data-testid="stForm"]');
+                    forms.forEach(function(f) {
+                        if (!f.getAttribute('method')) f.setAttribute('method', 'POST');
+                        if (!f.getAttribute('action')) f.setAttribute('action', '#');
+                        if (!f._hasAutofillSubmit) {
+                            f._hasAutofillSubmit = true;
+                            f.addEventListener('submit', function() {
+                                var inputs = f.querySelectorAll('input');
+                                inputs.forEach(function(inp) {
+                                    inp.dispatchEvent(new Event('input', { bubbles: true }));
+                                    inp.dispatchEvent(new Event('change', { bubbles: true }));
+                                });
+                                var u = f.querySelector('input[autocomplete="username"]');
+                                var p = f.querySelector('input[type="password"]');
+                                if (u && p && u.value && p.value && window.parent.PasswordCredential && window.parent.navigator.credentials) {
+                                    try {
+                                        var cred = new window.parent.PasswordCredential({
+                                            id: u.value,
+                                            password: p.value,
+                                            name: u.value
+                                        });
+                                        window.parent.navigator.credentials.store(cred);
+                                    } catch(err) {}
+                                }
+                            }, true);
+                        }
+                    });
+                } catch(e) {}
+            }
+
+            applyAutofillAttributes();
+            if (window.parent && !window.parent._autofillObserver) {
+                try {
+                    var doc = window.parent.document;
+                    window.parent._autofillObserver = new MutationObserver(applyAutofillAttributes);
+                    window.parent._autofillObserver.observe(doc.body, { childList: true, subtree: true });
+                } catch(e) {}
+            }
+            setInterval(applyAutofillAttributes, 200);
+        })();
+        </script>
+        """,
+        height=0,
+        width=0,
+    )
+
+
 def render():
     _poster_wall()
     _masthead()
@@ -106,3 +235,4 @@ def render():
                 _sign_in()
             with create:
                 _create_account()
+    _inject_autofill_script()

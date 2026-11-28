@@ -121,12 +121,12 @@ class MongoBackend:
         crud.add_review(user_id, movie_id, rating, text)
         self._dirty()
 
-    def update_review(self, review_id, rating, text):
-        crud.update_review(review_id, rating, text)
+    def update_review(self, review_id, rating, text, user_id=None):
+        crud.update_review(review_id, rating, text, user_id=user_id)
         self._dirty()
 
-    def delete_review(self, review_id):
-        crud.delete_review(review_id)
+    def delete_review(self, review_id, user_id=None):
+        crud.delete_review(review_id, user_id=user_id)
         self._dirty()
 
     # ---------------------------------------------------------------- watchlist
@@ -151,6 +151,10 @@ class MongoBackend:
 
     def get_user(self, user_id):
         u = crud.get_user(user_id)
+        return None if u is None else {k: u[k] for k in ("user_id", "username", "email")}
+
+    def get_user_by_username(self, username):
+        u = crud.get_user_by_username(username)
         return None if u is None else {k: u[k] for k in ("user_id", "username", "email")}
 
     def member_since(self, user_id):

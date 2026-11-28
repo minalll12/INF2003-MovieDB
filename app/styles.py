@@ -147,46 +147,138 @@ footer,
 [data-testid="stHeader"] [data-testid="stHeaderActionElements"] { display: none; }
 
 [data-testid="stToolbar"] {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    background: transparent;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
 }
+
+/* Force toolbar container to span full 100% width */
+[data-testid="stToolbar"] > div {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Hide any empty Streamlit spacer / sidebar-stub siblings structurally (Streamlit-version-independent) */
+[data-testid="stToolbar"] > *:not([data-testid="stTopNav"]):not(:has([data-testid="stTopNav"])),
+[data-testid="stToolbar"] > div > *:not([data-testid="stTopNav"]):not(:has([data-testid="stTopNav"])),
+[data-testid="stToolbar"] [data-testid="stExpandSidebarButton"],
+[data-testid="stToolbar"] button[aria-label="Expand sidebar"] {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    flex: 0 0 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    border: none !important;
+}
+
 [data-testid="stTopNav"] {
     background: transparent;
     gap: 0;
-    justify-content: center;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+    display: flex !important;
+    align-items: stretch !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
-[data-testid="stTopNav"] a, [data-testid="stTopNav"] button {
+
+/* 3-column layout: left 25% | center 50% | right 25% */
+[data-testid="stTopNav"] .nav-col-left {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 25% !important;
+    width: 25% !important;
+    min-width: 0 !important;
+    gap: 0 !important;
+    padding-left: var(--gutter) !important;
+    overflow: hidden !important;
+}
+[data-testid="stTopNav"] .nav-col-center {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 50% !important;
+    width: 50% !important;
+    min-width: 0 !important;
+    gap: 0 !important;
+}
+[data-testid="stTopNav"] .nav-col-right {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex: 0 0 25% !important;
+    width: 25% !important;
+    min-width: 0 !important;
+    gap: 0 !important;
+    padding-right: var(--gutter) !important;
+}
+
+/* Nav links inside the columns */
+[data-testid="stTopNav"] .nav-col-center > * a,
+[data-testid="stTopNav"] .nav-col-center > * button {
+    border-left: 1px solid var(--rule) !important;
+}
+[data-testid="stTopNav"] .nav-col-center > *:first-child a,
+[data-testid="stTopNav"] .nav-col-center > *:first-child button {
+    border-left: 1px solid var(--rule) !important;
+}
+[data-testid="stTopNav"] .nav-col-center > *:last-child a,
+[data-testid="stTopNav"] .nav-col-center > *:last-child button {
+    border-right: 1px solid var(--rule) !important;
+}
+
+/* Remove old nav margin selectors that no longer apply */
+[data-testid="stTopNav"] > .nav-item-discover,
+[data-testid="stTopNav"] > *:has(a[data-testid="stTopNavLink"]:not([href*="browse"]):not([href*="watchlist"])),
+[data-testid="stTopNav"] > *:has(a[href*="discover"]),
+[data-testid="stTopNav"] > *:nth-child(3),
+[data-testid="stTopNav"] > .nav-item-watchlist,
+[data-testid="stTopNav"] > *:has(a[href*="watchlist"]),
+[data-testid="stTopNav"] > *:nth-child(5) {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+[data-testid="stTopNav"] a:not([class*="wordmark"]):not([class*="st-key-wordmark"] *),
+[data-testid="stTopNav"] button:not([class*="st-key-wordmark"] *) {
     background: transparent !important;
     border-radius: 0;
     border-left: 1px solid var(--rule);
     padding: 4px 18px !important;
 }
 [data-testid="stTopNav"] > *:first-child a,
-[data-testid="stTopNav"] > *:first-child button { border-left: none; }
-/* Discover option */
-[data-testid="stTopNav"] > *:has(a[href*="discover"]),
-[data-testid="stTopNav"] > *:nth-child(3) {
-    margin-left: 25% !important;
-}
-[data-testid="stTopNav"] > *:has(a[href*="discover"]) a {
-    border-left: none !important;
-}
-/* Watchlist option */
-[data-testid="stTopNav"] > *:has(a[href*="watchlist"]),
-[data-testid="stTopNav"] > *:nth-child(5) {
-    margin-right: 15% !important;
-}
+[data-testid="stTopNav"] > *:first-child button,
+[data-testid="stTopNav"] .nav-col-left a,
+[data-testid="stTopNav"] .nav-col-left button,
+[data-testid="stTopNav"] .nav-col-right [data-testid="stPopoverButton"] { border-left: none !important; }
+[data-testid="stTopNav"] > .nav-item-watchlist a,
+[data-testid="stTopNav"] > .nav-item-watchlist button,
 [data-testid="stTopNav"] > *:has(a[href*="watchlist"]) a,
 [data-testid="stTopNav"] > *:has(a[href*="watchlist"]) button,
 [data-testid="stTopNav"] a[href*="watchlist"],
 [data-testid="stTopNav"] > *:nth-child(5) a,
 [data-testid="stTopNav"] > *:nth-child(5) button {
-    border-right: 1px solid var(--rule) !important;
+    border-right: none !important;
 }
 
-[data-testid="stTopNav"] a *, [data-testid="stTopNav"] button * {
+[data-testid="stTopNav"] a:not([class*="wordmark"]):not([class*="st-key-wordmark"] *) *,
+[data-testid="stTopNav"] button:not([class*="st-key-wordmark"] *) * {
     font-family: 'Inter', system-ui, sans-serif !important;
     font-size: 11px !important;
     font-weight: 500;
@@ -194,96 +286,60 @@ footer,
     text-transform: uppercase;
     color: var(--muted) !important;
 }
-[data-testid="stTopNav"] a:hover *, [data-testid="stTopNav"] button:hover * { color: var(--paper) !important; }
-[data-testid="stTopNav"] a[aria-current="page"] *,
-[data-testid="stTopNav"] [aria-selected="true"] * { color: var(--gold) !important; font-weight: 500; }
+[data-testid="stTopNav"] a:not([class*="wordmark"]):not([class*="st-key-wordmark"] *):hover *,
+[data-testid="stTopNav"] button:not([class*="st-key-wordmark"] *):hover * {
+    color: var(--paper) !important;
+}
+[data-testid="stTopNav"] a:not([class*="wordmark"]):not([class*="st-key-wordmark"] *)[aria-current="page"] *,
+[data-testid="stTopNav"] [aria-selected="true"]:not([class*="st-key-wordmark"] *) * {
+    color: var(--gold) !important;
+    font-weight: 500;
+}
 [data-testid="stTopNav"] svg { display: none; }
 
-/* Back button positioned at the beginning of the navbar */
-[data-testid="stTopNav"] [class*="st-key-nav_back"],
-[data-testid="stTopNav"] > [class*="st-key-nav_back"] {
+/* Header back button removed across the app */
+[class*="st-key-nav_back"] {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Wordmark inside stTopNav */
+[data-testid="stTopNav"] [class*="st-key-wordmark"],
+[data-testid="stTopNav"] > [class*="st-key-wordmark"],
+[data-testid="stHeader"] [class*="st-key-wordmark"],
+.perf-nav [class*="st-key-wordmark"] {
     position: static !important;
     display: inline-flex !important;
     align-items: center !important;
     margin: 0 !important;
     margin-left: 0 !important;
+    transform: none !important;
+    top: auto !important;
+    left: auto !important;
+    order: -1 !important;
     padding: 0 !important;
     width: auto !important;
     max-width: fit-content !important;
     min-width: 0 !important;
-    flex: 0 0 auto !important;
-    order: -1 !important;
-    z-index: auto !important;
+    z-index: 10 !important;
     height: 100% !important;
     flex-shrink: 0 !important;
 }
-[data-testid="stTopNav"] [class*="st-key-nav_back"] > div,
-[data-testid="stTopNav"] [class*="st-key-nav_back"] [data-testid="stElementContainer"],
-[data-testid="stTopNav"] [class*="st-key-nav_back"] [data-testid="stButton"] {
-    display: inline-flex !important;
-    align-items: center !important;
-    height: 100% !important;
-    width: auto !important;
-    max-width: fit-content !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-[data-testid="stTopNav"] [class*="st-key-nav_back"] button,
-[data-testid="stTopNav"] [class*="st-key-nav_back"] [data-testid="stBaseButton-tertiary"] {
-    background: transparent !important;
-    border-radius: 0 !important;
-    border: none !important;
-    padding: 4px 10px !important;
-    width: auto !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    font-family: 'Inter', system-ui, sans-serif !important;
-    font-size: 11px !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.08em !important;
-    text-transform: uppercase !important;
-    color: var(--muted) !important;
-    box-shadow: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    line-height: normal !important;
-    height: 100% !important;
-    cursor: pointer !important;
-    transition: all 0.15s ease-in-out !important;
-}
-[data-testid="stTopNav"] [class*="st-key-nav_back"] button:hover,
-[data-testid="stTopNav"] [class*="st-key-nav_back"] [data-testid="stBaseButton-tertiary"]:hover {
-    color: var(--paper) !important;
-    background: transparent !important;
-}
-
-/* Fallback when not yet attached inside stTopNav */
-[class*="st-key-nav_back"]:not([data-testid="stTopNav"] *) {
-    display: none !important;
-}
-
-/* Wordmark inside stTopNav right next to the back button */
-[data-testid="stTopNav"] [class*="st-key-wordmark"],
-[data-testid="stTopNav"] > [class*="st-key-wordmark"] {
-    position: static !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    margin: 0 !important;
-    margin-left: 12px !important;
-    padding: 0 !important;
-    width: auto !important;
-    max-width: fit-content !important;
-    min-width: 0 !important;
-    flex: 0 0 auto !important;
-    order: -1 !important;
-    z-index: auto !important;
-    height: 100% !important;
-    flex-shrink: 0 !important;
+.perf-nav [class*="st-key-wordmark"] {
+    margin-left: 0 !important;
 }
 [data-testid="stTopNav"] [class*="st-key-wordmark"] > div,
 [data-testid="stTopNav"] [class*="st-key-wordmark"] [data-testid="stElementContainer"],
-[data-testid="stTopNav"] [class*="st-key-wordmark"] [data-testid="stMarkdownContainer"] {
+[data-testid="stTopNav"] [class*="st-key-wordmark"] [data-testid="stMarkdownContainer"],
+[data-testid="stHeader"] [class*="st-key-wordmark"] > div,
+[data-testid="stHeader"] [class*="st-key-wordmark"] [data-testid="stElementContainer"],
+[data-testid="stHeader"] [class*="st-key-wordmark"] [data-testid="stMarkdownContainer"],
+.perf-nav [class*="st-key-wordmark"] > div,
+.perf-nav [class*="st-key-wordmark"] [data-testid="stElementContainer"],
+.perf-nav [class*="st-key-wordmark"] [data-testid="stMarkdownContainer"] {
     display: inline-flex !important;
     align-items: center !important;
     height: 100% !important;
@@ -293,49 +349,129 @@ footer,
     margin: 0 !important;
     padding: 0 !important;
 }
-[data-testid="stTopNav"] [class*="st-key-wordmark"] p {
+[data-testid="stTopNav"] [class*="st-key-wordmark"] p,
+[data-testid="stHeader"] [class*="st-key-wordmark"] p,
+.perf-nav [class*="st-key-wordmark"] p {
     margin: 0 !important;
     padding: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
 }
-[data-testid="stTopNav"] [class*="st-key-wordmark"] .wordmark {
-    font-size: 20px !important;
+/* Wordmark inside stTopNav / stHeader: override generic navbar link styles to match footer logo */
+[data-testid="stTopNav"] [class*="st-key-wordmark"] a,
+[data-testid="stTopNav"] [class*="st-key-wordmark"] a.wordmark-link,
+[data-testid="stTopNav"] [class*="st-key-wordmark"] .wordmark-link,
+[data-testid="stHeader"] [class*="st-key-wordmark"] a,
+[data-testid="stHeader"] [class*="st-key-wordmark"] a.wordmark-link,
+[data-testid="stHeader"] [class*="st-key-wordmark"] .wordmark-link,
+.perf-nav [class*="st-key-wordmark"] a,
+.perf-nav [class*="st-key-wordmark"] a.wordmark-link,
+.perf-nav [class*="st-key-wordmark"] .wordmark-link {
+    background: transparent !important;
+    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+[data-testid="stTopNav"] [class*="st-key-wordmark"] .wordmark,
+[data-testid="stTopNav"] [class*="st-key-wordmark"] a .wordmark,
+[data-testid="stTopNav"] [class*="st-key-wordmark"] .wordmark-link .wordmark,
+[data-testid="stHeader"] [class*="st-key-wordmark"] .wordmark,
+[data-testid="stHeader"] [class*="st-key-wordmark"] a .wordmark,
+[data-testid="stHeader"] [class*="st-key-wordmark"] .wordmark-link .wordmark,
+.perf-nav [class*="st-key-wordmark"] .wordmark,
+.perf-nav [class*="st-key-wordmark"] a .wordmark,
+.perf-nav [class*="st-key-wordmark"] .wordmark-link .wordmark {
+    font-family: 'Inter', system-ui, sans-serif !important;
+    font-weight: 400 !important;
+    font-size: 18px !important;
+    letter-spacing: -0.02em !important;
     line-height: 1 !important;
+    color: var(--paper) !important;
+    text-transform: none !important;
+    font-style: normal !important;
+    white-space: nowrap !important;
+    user-select: none !important;
     display: inline-flex !important;
     align-items: center !important;
     margin: 0 !important;
-    user-select: none !important;
-    white-space: nowrap !important;
+    padding: 0 !important;
+    text-decoration: none !important;
+}
+[data-testid="stTopNav"] [class*="st-key-wordmark"] .wordmark em,
+[data-testid="stTopNav"] [class*="st-key-wordmark"] a .wordmark em,
+[data-testid="stTopNav"] [class*="st-key-wordmark"] .wordmark-link .wordmark em,
+[data-testid="stHeader"] [class*="st-key-wordmark"] .wordmark em,
+[data-testid="stHeader"] [class*="st-key-wordmark"] a .wordmark em,
+[data-testid="stHeader"] [class*="st-key-wordmark"] .wordmark-link .wordmark em,
+.perf-nav [class*="st-key-wordmark"] .wordmark em,
+.perf-nav [class*="st-key-wordmark"] a .wordmark em,
+.perf-nav [class*="st-key-wordmark"] .wordmark-link .wordmark em {
+    font-family: 'Inter', system-ui, sans-serif !important;
+    color: var(--gold) !important;
+    font-style: italic !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
 }
 
-/* Fallback when not yet attached inside stTopNav */
-[class*="st-key-wordmark"]:not([data-testid="stTopNav"] *) {
+/* Fallback when not yet attached inside stTopNav or stHeader */
+[class*="st-key-wordmark"]:not([data-testid="stTopNav"] *):not([data-testid="stHeader"] *):not(.perf-nav *) {
     display: none !important;
 }
 
-/* Account button positioned in the navbar immediately to the right of Profile */
+/* Performance page header: only the logo */
+.perf-nav {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 58px !important;
+    min-height: 58px !important;
+    padding-left: var(--gutter) !important;
+    box-sizing: border-box !important;
+}
+
+/* Account element considered as the last child of navbar, aligned alone to the right */
+[data-testid="stTopNav"] > *:last-child,
+[data-testid="stTopNav"] > [class*="st-key-account"],
 [data-testid="stTopNav"] [class*="st-key-account"],
-[data-testid="stTopNav"] > [class*="st-key-account"] {
+[data-testid="stTopNav"]:has([class*="st-key-account"]) > *:last-child,
+[data-testid="stTopNav"] > *:last-child:has([data-testid="stPopover"]) {
     position: static !important;
+    margin-left: auto !important;
+    margin-right: var(--gutter) !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    order: 9999 !important;
     display: inline-flex !important;
     align-items: center !important;
-    margin: 0 !important;
     padding: 0 !important;
-    order: 9999 !important;
-    z-index: auto !important;
+    z-index: 10 !important;
     height: 100% !important;
     flex-shrink: 0 !important;
+    transform: none !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
 }
 [data-testid="stTopNav"] [class*="st-key-account"] > div,
-[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopover"] {
+[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopover"],
+[data-testid="stTopNav"] > *:last-child > div,
+[data-testid="stTopNav"] > *:last-child [data-testid="stPopover"] {
     display: inline-flex !important;
     align-items: center !important;
     height: 100% !important;
     margin: 0 !important;
 }
 [data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopover"] > button,
-[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopoverButton"] {
+[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopoverButton"],
+[data-testid="stTopNav"] > *:last-child [data-testid="stPopover"] > button,
+[data-testid="stTopNav"] > *:last-child [data-testid="stPopoverButton"] {
     background: transparent !important;
     border-radius: 0 !important;
     border: none !important;
@@ -358,18 +494,22 @@ footer,
     transition: all 0.15s ease-in-out !important;
 }
 [data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopover"] > button:hover,
-[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopoverButton"]:hover {
+[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopoverButton"]:hover,
+[data-testid="stTopNav"] > *:last-child [data-testid="stPopover"] > button:hover,
+[data-testid="stTopNav"] > *:last-child [data-testid="stPopoverButton"]:hover {
     color: var(--paper) !important;
     border-color: var(--rule) !important;
     background: transparent !important;
 }
-[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopover"] svg {
+[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stPopover"] svg,
+[data-testid="stTopNav"] > *:last-child [data-testid="stPopover"] svg {
     display: inline-block !important;
     fill: currentColor !important;
 }
 [class*="st-key-account"] [data-testid="stPopover"] > button [data-testid="stIconMaterial"],
 [class*="st-key-account"] [data-testid="stPopoverButton"] [data-testid="stIconMaterial"],
-[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stIconMaterial"] {
+[data-testid="stTopNav"] [class*="st-key-account"] [data-testid="stIconMaterial"],
+[data-testid="stTopNav"] > *:last-child [data-testid="stIconMaterial"] {
     font-family: 'Material Symbols Rounded', 'Material Symbols Outlined', 'Material Icons' !important;
     font-size: 20px !important;
     line-height: 1 !important;
@@ -379,19 +519,33 @@ footer,
     vertical-align: middle !important;
 }
 
-/* Fallback when not yet attached inside stTopNav */
+/* Fallback when not yet attached inside stTopNav: strictly hide to avoid flashing on page load */
 [class*="st-key-account"]:not([data-testid="stTopNav"] *) {
-    position: fixed !important;
-    top: 11px !important;
-    right: var(--gutter) !important;
-    z-index: 1000005 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    display: none !important;
 }
 
-/* Dropdown popover body and its options */
+/* Popover body: hidden by default via visibility (not display:none so :has() override works).
+   The early-injected <style id="rh-popover-guard"> in the parent <head> also enforces this.
+   Using clip-path as an extra layer since Streamlit mounts the popover as a <body> portal,
+   meaning visibility alone may flash before the :has() selector applies. */
+[data-testid="stPopoverBody"] {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    clip-path: inset(100%) !important;
+    transition: none !important;
+}
+/* Reveal only when a popover button is explicitly expanded by user click */
+body:has([data-testid="stPopoverButton"][aria-expanded="true"]) [data-testid="stPopoverBody"],
+body:has([data-testid="stPopover"] button[aria-expanded="true"]) [data-testid="stPopoverBody"],
+body:has([class*="st-key-account"] button[aria-expanded="true"]) [data-testid="stPopoverBody"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    clip-path: none !important;
+}
+
+/* Dropdown popover body styling */
 [data-testid="stPopoverBody"] {
     background: var(--surface) !important;
     border: 1px solid var(--rule) !important;
@@ -422,10 +576,12 @@ footer,
 iframe[title="streamlit.components.v1.html"],
 [data-testid="stCustomComponentV1"]:has(iframe[title="streamlit.components.v1.html"]),
 [data-testid="stElementContainer"]:has(iframe[title="streamlit.components.v1.html"]) {
-    display: none !important;
     position: absolute !important;
     height: 0 !important;
     width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
     border: none !important;
@@ -442,6 +598,21 @@ iframe[title="streamlit.components.v1.html"],
 }
 .wordmark em { color: var(--gold); font-style: italic; font-weight: 400; }
 
+/* Wordmark link wrapper: purely functional click/URL wrapper with zero visual change */
+.wordmark-link,
+a.wordmark-link,
+a.wordmark-link:hover,
+a.wordmark-link:focus,
+a.wordmark-link:active,
+a.wordmark-link:visited {
+    all: unset !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
 /* The account popover is deliberately quiet. */
 [data-testid="stPopover"] button {
     font-family: var(--label) !important;
@@ -453,11 +624,6 @@ iframe[title="streamlit.components.v1.html"],
     background: transparent;
 }
 [data-testid="stPopover"] button:hover { color: var(--gold); border-color: var(--gold); }
-[data-testid="stPopoverBody"] {
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 2px;
-}
 
 /* ---------- typography primitives ---------- */
 
@@ -1362,10 +1528,43 @@ div[class*="st-key-genre_strip_wrap"],
 
 /* ---------- details ---------- */
 
+/* Flush backdrop with top header navbar */
+[data-testid="stMain"]:has(.backdrop) [data-testid="stMainBlockContainer"],
+body:has(.backdrop) [data-testid="stMainBlockContainer"],
+[data-testid="stMainBlockContainer"]:has(.backdrop) {
+    padding-top: 0 !important;
+}
+
+/* Collapse any element containers rendered before .backdrop in the main vertical block */
+[data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] > [data-testid="stElementContainer"]:has(~ [data-testid="stElementContainer"] .backdrop):not(:has(iframe)),
+[data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] > [data-testid="stElementContainer"]:empty,
+[data-testid="stElementContainer"]:has(> :empty:only-child):not(:has(iframe)) {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+[data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] > [data-testid="stElementContainer"]:has(.backdrop) {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    animation: none !important;
+}
+
+[data-testid="stElementContainer"]:has(.backdrop) > [data-testid="stMarkdownContainer"],
+[data-testid="stElementContainer"]:has(.backdrop) > [data-testid="stMarkdownContainer"] > div {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
 .backdrop {
     position: relative;
     width: 100vw;
     margin-left: calc(50% - 50vw);
+    margin-top: 0 !important;
+    top: 0 !important;
     height: 340px;
     overflow: hidden;
 }
@@ -1380,6 +1579,139 @@ div[class*="st-key-genre_strip_wrap"],
     position: absolute;
     inset: 0;
     background: linear-gradient(0deg, var(--ink) 4%, rgba(13, 12, 10, 0.55) 60%, rgba(13, 12, 10, 0.75) 100%);
+}
+
+/* Film Details Floating Back Button inside .backdrop on top of .veil */
+.backdrop-content {
+    position: absolute !important;
+    inset: 0 !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 24px var(--gutter) !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
+}
+
+.backdrop-content [class*="st-key-film_back_btn"],
+[class*="st-key-film_back_btn"] {
+    pointer-events: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    width: auto !important;
+    max-width: fit-content !important;
+    min-width: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 50 !important;
+}
+
+[data-testid="stMainBlockContainer"]:has(.backdrop) > [data-testid="stVerticalBlock"] > [class*="st-key-film_back_btn"] {
+    position: absolute !important;
+    top: 24px !important;
+    left: var(--gutter) !important;
+}
+
+.backdrop-content [class*="st-key-film_back_btn"] {
+    position: static !important;
+}
+
+[class*="st-key-film_back_btn"] > div,
+[class*="st-key-film_back_btn"] [data-testid="stButton"] {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.film-back-btn,
+a.film-back-btn,
+[class*="st-key-film_back_btn"] button {
+    pointer-events: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    background: rgba(13, 12, 10, 0.72) !important;
+    backdrop-filter: blur(14px) saturate(1.4) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(1.4) !important;
+    border: 1px solid rgba(212, 175, 55, 0.35) !important;
+    border-radius: 9999px !important;
+    padding: 8px 18px 8px 14px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    font-family: var(--label), 'Inter', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    color: var(--paper) !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    user-select: none !important;
+    outline: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.film-back-btn p,
+.film-back-btn span,
+[class*="st-key-film_back_btn"] button p,
+[class*="st-key-film_back_btn"] button span {
+    font-family: inherit !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    color: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.film-back-btn:hover,
+a.film-back-btn:hover,
+[class*="st-key-film_back_btn"] button:hover {
+    background: rgba(24, 20, 15, 0.94) !important;
+    border-color: var(--gold) !important;
+    color: var(--gold) !important;
+    text-decoration: none !important;
+    transform: translateX(-3px) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.75), 0 0 14px rgba(212, 175, 55, 0.3) !important;
+}
+
+.film-back-btn:hover p,
+.film-back-btn:hover span,
+[class*="st-key-film_back_btn"] button:hover p,
+[class*="st-key-film_back_btn"] button:hover span {
+    color: var(--gold) !important;
+}
+
+.film-back-btn:focus,
+.film-back-btn:focus-visible,
+[class*="st-key-film_back_btn"] button:focus,
+[class*="st-key-film_back_btn"] button:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.4) !important;
+}
+
+.film-back-btn:active,
+[class*="st-key-film_back_btn"] button:active {
+    transform: translateX(-1px) scale(0.98) !important;
+    background: rgba(30, 25, 18, 0.98) !important;
 }
 .detail-block,
 [class*="st-key-detail_block"] {
@@ -1489,10 +1821,14 @@ div[class*="st-key-genre_strip_wrap"],
 }
 .stat { padding: 0 24px; border-left: 1px solid var(--rule); }
 .stat:first-child { border-left: none; padding-left: 0; }
-.stat .figure { font-family: var(--display); font-weight: 400; font-size: 52px; line-height: 1.1; color: var(--paper); }
+.stat .figure { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.1; color: var(--paper); }
 .stat .name { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
 /* ---------- sign in ---------- */
+
+body:has(.wall) [data-testid="stHeader"] {
+    display: none !important;
+}
 
 .wall {
     position: fixed;
@@ -1545,6 +1881,20 @@ div[class*="st-key-genre_strip_wrap"],
     border-color: var(--gold) !important;
 }
 
+/* Hide "Press Enter to apply" helper messages on the login page */
+[class*="st-key-auth_panel"] [data-testid="InputInstructions"],
+[class*="st-key-auth_panel"] .stInputInstruction,
+[class*="st-key-auth_panel"] [class*="InputInstruction"],
+[class*="st-key-auth_panel"] [data-testid="stTextInput"] small,
+[class*="st-key-auth_panel"] [data-testid="stTextInput"] [data-testid="InputInstructions"],
+[data-testid="InputInstructions"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 /* The demo entry stays a quiet text link under the main form. */
 [class*="st-key-demo_entry"] [data-testid="stExpander"] details {
     background: transparent;
@@ -1559,6 +1909,24 @@ div[class*="st-key-genre_strip_wrap"],
     border: 1px solid rgba(212, 175, 55, 0.2);
     border-radius: 2px;
     padding: 24px;
+}
+
+[class*="st-key-auth_panel"] [data-testid="stForm"] {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+/* Maintain dark luxury aesthetic when browser or password manager autofills inputs */
+[class*="st-key-auth_panel"] input:-webkit-autofill,
+[class*="st-key-auth_panel"] input:-webkit-autofill:hover, 
+[class*="st-key-auth_panel"] input:-webkit-autofill:focus, 
+[class*="st-key-auth_panel"] input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #1a1610 inset !important;
+    -webkit-text-fill-color: var(--paper) !important;
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: var(--paper) !important;
 }
 
 /* ---------- editorial header (Discover page) ---------- */
@@ -1785,6 +2153,22 @@ div[class*="st-key-genre_strip_wrap"],
 .bench-row .w { font-family: var(--label); font-size: 12px; letter-spacing: 0.12em; color: var(--gold); text-align: right; }
 .bench-row .h { font-family: var(--label); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
 .bench-row .h.right { text-align: right; }
+
+/* Benchmark spinner styling */
+[data-testid="stSpinner"] {
+    margin: 16px 0 !important;
+}
+[data-testid="stSpinner"] > div {
+    border-color: var(--gold) transparent transparent transparent !important;
+}
+[data-testid="stSpinner"] p,
+[data-testid="stSpinner"] span {
+    font-family: var(--label) !important;
+    font-size: 11px !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    color: var(--gold) !important;
+}
 
 /* ---------- genre scroll strip (Discover) ---------- */
 
