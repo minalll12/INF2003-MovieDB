@@ -154,6 +154,10 @@ def render():
     )
     # Temporary diagnostic — shows real vs CSV-fallback class for each engine.
     with st.expander("BACKEND DIAGNOSTIC", expanded=True):
+        from pathlib import Path as _Path
+        import backends as _be
+        st.caption(f"`backends.py` → `{_Path(_be.__file__).resolve()}`")
+        st.caption(f"repo root on sys.path: `{_Path(_be.__file__).resolve().parent.parent}`")
         for eng_name, err in [
             (list(ENGINES)[0], _mysql_error),
             (list(ENGINES)[1], _mongo_error),
@@ -163,7 +167,7 @@ def render():
             is_real = cls in ("MySQLBackend", "MongoBackend")
             st.write(f"**{eng_name}** → `{cls}` {'✅ real DB' if is_real else '⚠️ CSV fallback'}")
             if err:
-                st.error(f"ImportError: {err}")
+                st.error(err)
 
     genre, movie_id, user_id = _inputs()
     st.write("")

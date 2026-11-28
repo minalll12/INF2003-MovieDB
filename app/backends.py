@@ -14,17 +14,17 @@ try:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from mysql.backend import MySQLBackend
     _mysql_ok = True
-except ImportError as _e:
+except Exception as _e:
     _mysql_ok = False
-    _mysql_error = str(_e)
+    _mysql_error = f"{type(_e).__name__}: {_e}"
 
 _mongo_error: str | None = None
 try:
     from mongodb.backend import MongoBackend
     _mongo_ok = True
-except ImportError as _e:
+except Exception as _e:
     _mongo_ok = False
-    _mongo_error = str(_e)
+    _mongo_error = f"{type(_e).__name__}: {_e}"
 
 
 SORT_OPTIONS = {
