@@ -77,7 +77,7 @@ def _inputs():
 
 
 def _single_engine(genre, movie_id, user_id):
-    section_head("No. 01 — SINGLE ENGINE")
+    section_head("No. 01 - SINGLE ENGINE")
     st.session_state.setdefault("bench_engine", engine_name())
     st.radio(
         "Data source", list(ENGINES), key="bench_engine", horizontal=True,
@@ -111,7 +111,7 @@ def _comparison_table(rows):
 
 
 def _comparison(genre, movie_id, user_id):
-    section_head("No. 02 — HEAD TO HEAD")
+    section_head("No. 02 - HEAD TO HEAD")
     if not st.button("RUN ALL COMPARISONS →", type="primary"):
         return
     with st.spinner("Executing head-to-head comparisons..."):
