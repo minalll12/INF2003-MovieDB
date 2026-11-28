@@ -9,18 +9,22 @@ from auth import hash_password, verify_password
 
 # Import the real database backends.
 # CSV implementations remain available as a fallback if backend imports fail.
+_mysql_error: str | None = None
 try:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from mysql.backend import MySQLBackend
     _mysql_ok = True
-except ImportError:
+except ImportError as _e:
     _mysql_ok = False
+    _mysql_error = str(_e)
 
+_mongo_error: str | None = None
 try:
     from mongodb.backend import MongoBackend
     _mongo_ok = True
-except ImportError:
+except ImportError as _e:
     _mongo_ok = False
+    _mongo_error = str(_e)
 
 
 SORT_OPTIONS = {

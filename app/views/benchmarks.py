@@ -5,7 +5,7 @@ from html import escape
 import pandas as pd
 import streamlit as st
 
-from backends import ENGINES
+from backends import ENGINES, _mysql_error, _mongo_error
 from components import html, page_title, section_head
 from session import backend, engine_name, get_engine, set_engine
 
@@ -154,11 +154,16 @@ def render():
     )
     # Temporary diagnostic — shows real vs CSV-fallback class for each engine.
     with st.expander("BACKEND DIAGNOSTIC", expanded=True):
-        for eng_name in ENGINES:
+        for eng_name, err in [
+            (list(ENGINES)[0], _mysql_error),
+            (list(ENGINES)[1], _mongo_error),
+        ]:
             eng_instance = get_engine(eng_name)
             cls = type(eng_instance).__name__
             is_real = cls in ("MySQLBackend", "MongoBackend")
             st.write(f"**{eng_name}** → `{cls}` {'✅ real DB' if is_real else '⚠️ CSV fallback'}")
+            if err:
+                st.error(f"ImportError: {err}")
 
     genre, movie_id, user_id = _inputs()
     st.write("")
